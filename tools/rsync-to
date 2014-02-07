@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Rsync the master in this working copy to the install on the given HN.
+#
+
+#set -o xtrace
+set -o errexit
+
+TOP=$(cd $(dirname $0)/../; pwd)
+NODE=$1
+[[ -z "$NODE" ]] && echo 'rsync-to: error: no headnode given' && exit 1
+BASEDIR=/opt/smartdc/sdcadm
+
+extraOpts=
+if [[ $(uname -s) != "SunOS" ]]; then
+    extraOpts="--exclude *.node --exclude build"
+else
+    # Clean node_modules everytime.
+    ssh $NODE rm -rf $BASEDIR/node_modules
+fi
+
+for f in bin lib node_modules package.json; do
+    rsync -av ${TOP}/$f $NODE:$BASEDIR/$f $extraOpts
+done
