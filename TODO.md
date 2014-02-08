@@ -15,6 +15,7 @@
 
 # later (in no particular order)
 
+- restify-client and bunyan-light without dtrace-provider
 - how to add/exclude DCs?
 - cmdln.js support for bash tab completion
 - node-smartdc installs joyentcloud and warns about deprecation on stderr.
