@@ -2,7 +2,7 @@
 /*
  * Copyright (c) 2014 Joyent Inc. All rights reserved.
  *
- * joyent - Joyent public cloud (https://my.joyentcloud.com/) CLI
+ * joyentcloud
  */
 
 var p = console.log;

@@ -1,13 +1,13 @@
 #
 # Copyright (c) 2014, Joyent, Inc. All rights reserved.
 #
-# Makefile for joyent/joyent
+# Makefile for node-joyentcloud
 #
 
 #
 # Vars, Tools, Files, Flags
 #
-JS_FILES	:= bin/joyent \
+JS_FILES	:= bin/joyentcloud \
 	$(shell find lib -name '*.js' | grep -v '/tmp/')
 JSL_CONF_NODE	 = tools/jsl.node.conf
 JSL_FILES_NODE	 = $(JS_FILES)

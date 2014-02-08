@@ -1,1 +1,1 @@
-# joyent CLI Changelog
+# node-joyentcloud CLI Changelog
