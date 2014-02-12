@@ -1,5 +1,6 @@
 # first
 
+- lib/cloudapi2.js and drop using node-smartdc
 - machines:
     - short default output
     - long '-l' output, -H, -o, -s

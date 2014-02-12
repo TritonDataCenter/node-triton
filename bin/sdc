@@ -2,7 +2,7 @@
 /*
  * Copyright (c) 2014 Joyent Inc. All rights reserved.
  *
- * joyentcloud
+ * sdc command
  */
 
 var p = console.log;

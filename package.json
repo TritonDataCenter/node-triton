@@ -1,6 +1,6 @@
 {
-  "name": "joyentcloud",
-  "description": "Joyent Compute Service CLI (http://www.joyent.com/products/compute-service)",
+  "name": "sdc",
+  "description": "Joyent SmartDataCenter CLI (http://www.joyent.com/products/compute-service)",
   "version": "1.0.0",
   "author": "Joyent (joyent.com)",
   "private": true,

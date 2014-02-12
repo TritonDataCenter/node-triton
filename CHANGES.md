@@ -1,1 +1,1 @@
-# node-joyentcloud CLI Changelog
+# node-sdc CLI Changelog
