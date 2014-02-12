@@ -28,5 +28,7 @@
       where we console.error just the minimal fields that we want to show
         joyentcloud: warn: $msg
       Not sure about other fields.
+- plugin support, e.g. allow 3rd-party node-joyentcloud-foo npm modules that would
+  add a "joyentcloud foo" subcmd. Reasonable?
 - windows testing
 
