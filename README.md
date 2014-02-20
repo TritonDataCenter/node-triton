@@ -24,6 +24,11 @@ TODO
 TODO
 
 
+# node-sdc differences with node-smartdc
+
+- There is a single `sdc` command instead of a number of `sdc-FOO` commands.
+- The `SDC_USER` envvar is accepted in preference to `SDC_ACCOUNT`.
+
 
 # cloudapi2.js differences with node-smartdc/lib/cloudapi.js
 

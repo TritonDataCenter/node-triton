@@ -16,7 +16,7 @@ var log = bunyan.createLogger({
     level: 'trace'
 })
 
-var USER = process.env.SDC_ACCOUNT || process.env.SDC_USER || 'bob';
+var USER = process.env.SDC_USER || process.env.SDC_ACCOUNT || 'bob';
 var KEY_ID = process.env.SDC_KEY_ID || 'b4:f0:b4:6c:18:3b:44:63:b4:4e:58:22:74:43:d4:bc';
 
 var sign = auth.cliSigner({

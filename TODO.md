@@ -4,8 +4,7 @@
     - short default output
     - long '-l' output, -H, -o, -s
     - get image defaults and fill those in
-- couple commands: machine, provision (create-machine?)
-- re-write of cloudapi.js (eventually a separate module)
+- few more commands?  provision (create-machine?)
 - uuid caching
 - UUID prefix support
 - profile command (adding profile, edit, etc.)
