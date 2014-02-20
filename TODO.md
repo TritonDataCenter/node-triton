@@ -1,6 +1,5 @@
 # first
 
-- lib/cloudapi2.js and drop using node-smartdc
 - machines:
     - short default output
     - long '-l' output, -H, -o, -s
@@ -10,13 +9,29 @@
 - uuid caching
 - UUID prefix support
 - profile command (adding profile, edit, etc.)
-- multi-dc support... profile.dcs
 
 
 
 # later (in no particular order)
 
+- signing: should sigstr include more than just the date? How about the request
+  path??? Not according to the cloudapi docs.
 - restify-client and bunyan-light without dtrace-provider
+- Get node-smartdc-auth to take a log option. Perhaps borrow from imgapi.js'
+  cliSigner et al.
+- node-smartdc-auth: Support a path to a priv key for "keyId" arg. Or a separate
+  alternative arg. Copy this from imgapi.cliSigner.
+        sign: cloudapi.cliSigner({
+            keyId: <KEY-ID>,
+            user: <USER>,
+            log: <BUNYAN-LOGGER>,
+        }),
+- the error reporting for a signing error sucks:
+    getAccount: err { message: 'error signing request',
+        code: 'Signing',
+        exitStatus: 1 }
+    e.g. when the KEY_ID is nonsense. Does imgapi's auth have better error
+    reporting?
 - how to add/exclude DCs?
 - cmdln.js support for bash tab completion
 - node-smartdc installs joyentcloud and warns about deprecation on stderr.

@@ -15,7 +15,8 @@
     "mkdirp": "0.3.5",
     "node-uuid": "1.4.1",
     "once": "1.3.0",
-    "smartdc": "git+ssh://git@github.com:joyent/node-smartdc.git#master",
+    "restify": "git+ssh://git@github.com:mcavage/node-restify.git#9bab8b7f",
+    "smartdc-auth": "git+ssh://git@github.com:joyent/node-smartdc-auth.git#9f21966",
     "verror": "1.3.7"
   },
   "engines": {
