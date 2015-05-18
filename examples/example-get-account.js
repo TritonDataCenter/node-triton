@@ -25,7 +25,7 @@ var sign = auth.cliSigner({
     log: log
 });
 var client = cloudapi.createClient({
-    url: 'https://us-sw-1.api.joyentcloud.com',
+    url: 'https://us-sw-1.api.joyent.com',
     user: USER,
     version: '*',
     sign: sign,

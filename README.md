@@ -1,5 +1,5 @@
 `sdc` is a CLI for Joyent SmartDataCenter and the
-Joyent Public Cloud (<https://my.joyentcloud.com>,
+Joyent Public Cloud (<https://my.joyent.com>,
 <http://www.joyent.com/products/compute-service>).
 
 # Installation
