@@ -2,6 +2,9 @@
 Joyent Public Cloud (<https://my.joyent.com>,
 <http://www.joyent.com/products/compute-service>).
 
+**This project is experimental and probably broken. For now, please look
+at [node-smartdc](https://github.com/joyent/node-smartdc).**
+
 # Installation
 
 1. Install [node.js](http://nodejs.org/).
