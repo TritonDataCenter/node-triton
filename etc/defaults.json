@@ -1,12 +1,3 @@
 {
-    "defaultProfile": "env",
-    "dc": {
-        "us-east-1": "https://us-east-1.api.joyent.com",
-        "us-west-1": "https://us-west-1.api.joyent.com",
-        "us-sw-1": "https://us-sw-1.api.joyent.com",
-        "eu-ams-1": "https://eu-ams-1.api.joyent.com"
-    },
-    "dcAlias": {
-        "joyent": ["us-east-1", "us-sw-1", "us-west-1", "eu-ams-1"]
-    }
+    "defaultProfile": "env"
 }

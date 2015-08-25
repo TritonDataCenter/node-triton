@@ -1,5 +1,5 @@
-`sdc` is a CLI for Joyent SmartDataCenter and the
-Joyent Public Cloud (<https://my.joyent.com>,
+`triton` is a tool for Joyent's Triton (a.k.a. SmartDataCenter), either for on-premises installations
+of Triton or Joyent's Public Cloud (<https://my.joyent.com>,
 <http://www.joyent.com/products/compute-service>).
 
 **This project is experimental and probably broken. For now, please look
@@ -8,15 +8,15 @@ at [node-smartdc](https://github.com/joyent/node-smartdc).**
 # Installation
 
 1. Install [node.js](http://nodejs.org/).
-2. `npm install -g sdc`
+2. `npm install -g git://github.com/joyent/node-triton`
 
 Verify that installed and is on your PATH:
 
-    $ sdc --version
-    sdc CLI 1.0.0
+    $ triton --version
+    Triton client 1.0.0
 
 Before you can used the CLI you'll need a Joyent account, an SSH key uploaded
-and `sdc` configured with those account details.
+and `triton` configured with those account details.
 
 # Setup
 
@@ -27,7 +27,7 @@ TODO
 TODO
 
 
-# node-sdc differences with node-smartdc
+# node-triton differences with node-smartdc
 
 - There is a single `sdc` command instead of a number of `sdc-FOO` commands.
 - The `SDC_USER` envvar is accepted in preference to `SDC_ACCOUNT`.

@@ -1,6 +1,6 @@
 {
-  "name": "sdc",
-  "description": "Joyent SmartDataCenter CLI (http://www.joyent.com/products/compute-service)",
+  "name": "triton",
+  "description": "Joyent Triton tool and client (http://www.joyent.com/products/compute-service)",
   "version": "1.0.0",
   "author": "Joyent (joyent.com)",
   "private": true,

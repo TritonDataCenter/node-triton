@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /*
- * Copyright (c) 2014 Joyent Inc. All rights reserved.
+ * Copyright (c) 2015 Joyent Inc. All rights reserved.
  *
- * sdc command
+ * triton command
  */
 
 var p = console.log;
@@ -10,5 +10,5 @@ var cmdln = require('cmdln');
 var CLI = require('../lib/cli');
 
 if (require.main === module) {
-    cmdln.main(CLI, process.arg, {showCode: true});
+    cmdln.main(CLI, process.argv, {showCode: true});
 }
