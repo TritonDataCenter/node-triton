@@ -1,5 +1,3 @@
 /node_modules
 /tmp
-/docs/*.json
-/docs/*.html
 /build

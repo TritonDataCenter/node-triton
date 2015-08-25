@@ -10,5 +10,10 @@ var cmdln = require('cmdln');
 var CLI = require('../lib/cli');
 
 if (require.main === module) {
-    cmdln.main(CLI, process.argv, {showCode: true});
+    var cli = new CLI();
+    cmdln.main(cli, {
+        argv: process.argv,
+        showCode: true,
+        showNoCommandErr: false
+    });
 }

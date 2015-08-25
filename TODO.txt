@@ -1,0 +1,66 @@
+
+# today
+
+triton
+
+triton -v   # bunyan trace logging
+
+triton vms|containers|machines          # list machines
+triton vm|container|machine ID|ALIAS    # get machine
+    # -1 for unique match
+
+triton images   # list
+triton packages # list
+triton image IMAGE
+triton package PACKAGE
+
+triton provision  # triton create-machine ??
+
+triton create -p PKG [...] IMG
+triton create -i IMG -p PKG [-n NAME] [...]
+    # example: triton create base64 -p t4-standard-1g
+
+
+
+
+
+
+# maybe today
+
+triton config defaultPkg t4-standard-1g
+
+triton login|ssh VM      # kexec?
+
+triton delete VM|IMAGE    # substring matching? too dangerous
+    triton delete --vm VM
+    triton delete --image IMAGE
+
+
+
+# profiles
+
+triton profile   # list all profiles
+triton profile NAME  # show NAME profile
+triton profile -a NAME  # sets it as active
+triton profile -n|--new  # ???
+
+For today: only the implicit 'env' profile.
+
+
+
+# config
+
+~/.triton/
+    config.json
+        {"currProfile": "east3b"}
+    east3b/    # profile
+    PROFILE2/
+        ...
+
+
+
+# another day
+
+triton config get|set|list    # see 'npm config'
+
+triton --shell   # or whatever, repl
