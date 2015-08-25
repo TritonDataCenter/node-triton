@@ -1,25 +1,25 @@
 
 # today
 
-triton
+triton instances|insts  # list machines
+triton instance|inst ID|NAME|UNIQUE-NAME-SUBSTRING    # get machine
+    # -1 for unique match, a la 'vmadm lookup -1'
 
-triton -v   # bunyan trace logging
-
-triton vms|containers|machines          # list machines
-triton vm|container|machine ID|ALIAS    # get machine
-    # -1 for unique match
-
-triton images   # list
-triton packages # list
-triton image IMAGE
 triton package PACKAGE
 
-triton provision  # triton create-machine ??
-
+triton create  # triton create-instance
 triton create -p PKG [...] IMG
 triton create -i IMG -p PKG [-n NAME] [...]
     # example: triton create base64 -p t4-standard-1g
 
+
+# DONE
+
+triton
+triton -v   # bunyan trace logging
+triton images   # list images
+triton packages # list packages
+triton image IMAGE # get image
 
 
 
