@@ -5,12 +5,13 @@ triton instances|insts  # list machines
 triton instance|inst ID|NAME|UNIQUE-NAME-SUBSTRING    # get machine
     # -1 for unique match, a la 'vmadm lookup -1'
 
-triton package PACKAGE
-
 triton create  # triton create-instance
 triton create -p PKG [...] IMG
 triton create -i IMG -p PKG [-n NAME] [...]
     # example: triton create base64 -p t4-standard-1g
+
+triton image NAME|SUBSTRING
+triton package NAME|SUBSTRING
 
 
 # DONE
@@ -18,8 +19,10 @@ triton create -i IMG -p PKG [-n NAME] [...]
 triton
 triton -v   # bunyan trace logging
 triton images   # list images
-triton packages # list packages
 triton image IMAGE # get image
+triton packages # list packages
+triton package PACKAGE
+
 
 
 
