@@ -1,11 +1,7 @@
 "shortid" instead of full UUID "id" in default output, and then allow lookup
 by that shortid. Really nice for 80 columns.
-    - images
-    - packages
     - insts
     - networks
-
-triton create -n|--dry-run   # does the fake delay, shows what img/pkg/etc.
 
 image "name@version" in 'triton insts' table. Optionally?
 
@@ -31,6 +27,8 @@ triton cloudapi ...
 triton ssh ...
 
 triton info
+
+triton create -n|--dry-run   # does the fake delay, shows what img/pkg/etc.
 
 
 
