@@ -1,8 +1,5 @@
-bash completion
-
-triton delete VM|IMAGE    # substring matching? too dangerous
-    triton delete --vm VM
-    triton delete --image IMAGE
+bash completion (subcmd options)
+bash completion (cached data: insts, imgs, pkgs, names and ids)
 
 "shortid" instead of full UUID "id" in default output, and then allow lookup
 by that shortid. Really nice for 80 columns.
@@ -22,6 +19,10 @@ triton instances|insts  # list machines
 triton instance|inst ID|NAME    # get machine
 
 triton create  # triton create-instance
+
+triton delete VM|IMAGE    # substring matching? too dangerous
+    triton delete --vm VM
+    triton delete --image IMAGE
 
 triton cloudapi ...
 triton ssh ...
