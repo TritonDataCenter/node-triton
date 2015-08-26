@@ -22,6 +22,9 @@
     "vasync": "1.6.3",
     "verror": "1.6.0"
   },
+  "bin": {
+      "triton": "./bin/triton"
+  },
   "engines": {
     "node": ">=0.10"
   }
