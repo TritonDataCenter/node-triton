@@ -1,9 +1,6 @@
 
 # today
 
-triton instances|insts  # list machines
-triton instance|inst ID|NAME|UNIQUE-NAME-SUBSTRING    # get machine
-    # -1 for unique match, a la 'vmadm lookup -1'
 
 triton create  # triton create-instance
 triton create -p PKG [...] IMG
@@ -23,37 +20,21 @@ triton image IMAGE # get image
 triton packages # list packages
 triton package PACKAGE
 
+triton instances|insts  # list machines
+triton instance|inst ID|NAME    # get machine
 
+triton cloudapi ...
 
 
 
 
 # maybe today
 
-triton config defaultPkg t4-standard-1g
-
 triton login|ssh VM      # kexec?
 
 triton delete VM|IMAGE    # substring matching? too dangerous
     triton delete --vm VM
     triton delete --image IMAGE
-
-triton raw|cloudapi ...    # raw cloudapi call
-    Equivalent of:
-        function cloudapi() {
-            local now=`date -u "+%a, %d %h %Y %H:%M:%S GMT"` ;
-            local signature=`echo ${now} | tr -d '\n' | openssl dgst -sha256 -sign ~/.ssh/automation.id_rsa | openssl enc -e -a | tr -d '\n'` ;
-            local curl_opts=
-            [[ -n $SDC_TESTING ]] && curl_opts="-k $curl_opts";
-            [[ -n $TRACE ]] && set -x;
-            curl -is $curl_opts \
-                -H "Accept: application/json" -H "api-version: ~7.2" \
-                -H "Date: ${now}" \
-                -H "Authorization: Signature keyId=\"/$SDC_ACCOUNT/keys/$SDC_KEY_ID\",algorithm=\"rsa-sha256\" ${signature}" \
-                --url $SDC_URL$@ ;
-            [[ -n $TRACE ]] && set +x;
-            echo "";
-        }
 
 "shortid" instead of full UUID "id" in default output, and then allow lookup
 by that shortid. Really nice for 80 columns.
