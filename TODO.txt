@@ -6,6 +6,11 @@ by that shortid. Really nice for 80 columns.
 
 image "name@version" in 'triton insts' table. Optionally?
 
+delete, stop, start, reboot:
+- print alias only if have it
+- don't dupe the id in status line
+- drop time from status line
+
 # DONE
 
 triton
