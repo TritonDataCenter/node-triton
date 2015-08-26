@@ -1,36 +1,4 @@
-
-# today
-
-
-triton create  # triton create-instance
-triton create -p PKG [...] IMG
-triton create -i IMG -p PKG [-n NAME] [...]
-    # example: triton create base64 -p t4-standard-1g
-
-triton image NAME|SUBSTRING
-triton package NAME|SUBSTRING
-
-
-# DONE
-
-triton
-triton -v   # bunyan trace logging
-triton images   # list images
-triton image IMAGE # get image
-triton packages # list packages
-triton package PACKAGE
-
-triton instances|insts  # list machines
-triton instance|inst ID|NAME    # get machine
-
-triton cloudapi ...
-
-
-
-
-# maybe today
-
-triton login|ssh VM      # kexec?
+bash completion
 
 triton delete VM|IMAGE    # substring matching? too dangerous
     triton delete --vm VM
@@ -38,6 +6,33 @@ triton delete VM|IMAGE    # substring matching? too dangerous
 
 "shortid" instead of full UUID "id" in default output, and then allow lookup
 by that shortid. Really nice for 80 columns.
+
+image "name@version" in 'triton insts' table. Optionally?
+
+# DONE
+
+triton
+triton -v   # bunyan trace logging
+triton images   # list images
+triton image ID|NAME # get image
+triton packages # list packages
+triton package ID|NAME
+
+triton instances|insts  # list machines
+triton instance|inst ID|NAME    # get machine
+
+triton create  # triton create-instance
+
+triton cloudapi ...
+triton ssh ...
+
+triton info
+
+
+
+# maybe today
+
+
 
 triton images
     Drop 'state' in default columns. Add type to be able to see lx or not
