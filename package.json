@@ -27,5 +27,6 @@
   },
   "engines": {
     "node": ">=0.10"
-  }
+  },
+  "license": "MPL-2.0"
 }

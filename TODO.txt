@@ -1,11 +1,10 @@
 TritonApi
 
+note in README that full UUIDs is much faster in the API
 
 "shortid" instead of full UUID "id" in default output, and then allow lookup
 by that shortid. Really nice for 80 columns.
-    - insts
     - networks
-    - don't bother if not [0-9a-f-]
 
 12 char shortids (matches docker)
 
