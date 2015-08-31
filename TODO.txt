@@ -1,4 +1,10 @@
-TritonApi
+s/Triton/TritonApi/g in triton.js
+
+MPL blurb at the start of each file.
+
+'make check'
+
+test suite
 
 note in README that full UUIDs is much faster in the API
 
@@ -6,7 +12,7 @@ note in README that full UUIDs is much faster in the API
 by that shortid. Really nice for 80 columns.
     - networks
 
-12 char shortids (matches docker)
+*type*: cloudapi changes to clarify: LX, docker, smartos, kvm instances
 
 
 # maybe next
