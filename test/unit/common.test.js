@@ -43,8 +43,14 @@ test('humanDurationFromMs', function (t) {
 test('humanSizeFromBytes', function (t) {
     var humanSizeFromBytes = common.humanSizeFromBytes;
 
+    t.equal(humanSizeFromBytes(-1), '-1.0 B');
     t.equal(humanSizeFromBytes(0), '0 B');
+    t.equal(humanSizeFromBytes(1), '1.0 B');
+
     t.equal(humanSizeFromBytes({}, 0), '0 B');
+    t.equal(humanSizeFromBytes({}, 1024), '1.0 KiB');
+    t.equal(humanSizeFromBytes({narrow: true}, 1024), '1K');
+    t.equal(humanSizeFromBytes({precision: 2}, 1024), '1.00 KiB');
 
     t.end();
 });
