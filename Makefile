@@ -44,6 +44,6 @@ dumpvar:
 	fi
 	@echo "$(VAR) is '$($(VAR))'"
 
-
 include ./tools/mk/Makefile.deps
 include ./tools/mk/Makefile.targ
+JSL_FLAGS += --nofilelist
