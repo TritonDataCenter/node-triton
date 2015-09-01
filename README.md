@@ -1,15 +1,13 @@
-Triton
-======
+# Triton
 
-`triton` is a tool for Joyent's Triton (a.k.a. SmartDataCenter), either for on-premises installations
-of Triton or Joyent's Public Cloud (<https://my.joyent.com>,
-<http://www.joyent.com/products/compute-service>).
+`triton` is a CLI tool for Joyent's Triton (a.k.a. SmartDataCenter), either for
+on-premises installations of Triton or Joyent's Public Cloud
+(<https://my.joyent.com>, <http://www.joyent.com/products/compute-service>).
 
 **This project is experimental and probably broken. For now, please look
 at [node-smartdc](https://github.com/joyent/node-smartdc).**
 
-Installation
-------------
+## Installation
 
 1. Install [node.js](http://nodejs.org/).
 2. `npm install -g git://github.com/joyent/node-triton`
@@ -22,13 +20,11 @@ Verify that installed and is on your PATH:
 Before you can used the CLI you'll need a Joyent account, an SSH key uploaded
 and `triton` configured with those account details.
 
-Setup
------
+## Setup
 
 TODO
 
-Example
--------
+## Example
 
 Get a quick overview of your account
 
@@ -74,13 +70,13 @@ Or non-interactively
     joyent_20150826T120743Z
 
 
-### node-triton differences with node-smartdc
+## node-triton differences with node-smartdc
 
 - There is a single `sdc` command instead of a number of `sdc-FOO` commands.
 - The `SDC_USER` envvar is accepted in preference to `SDC_ACCOUNT`.
 
 
-### cloudapi2.js differences with node-smartdc/lib/cloudapi.js
+## cloudapi2.js differences with node-smartdc/lib/cloudapi.js
 
 The old node-smartdc module included an lib for talking directly to the SDC
 Cloud API (node-smartdc/lib/cloudapi.js). Part of this module (node-sdc) is a
@@ -96,3 +92,18 @@ differences and backward incompatibilities are discussed here.
 - All (all? at least at the time of this writing) methods in cloudapi2.js have
   a signature of `function (options, callback)` instead of the sometimes
   haphazard extra arguments.
+
+
+## Development Hooks
+
+Before commiting be sure to:
+
+    make check      # lint and style checks
+    make test       # run unit tests
+
+A good way to do that is to install the stock pre-commit hook in your
+clone via:
+
+    make git-hooks
+
+

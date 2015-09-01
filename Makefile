@@ -32,6 +32,10 @@ test:
 test-integration:
 	./node_modules/.bin/tape test/integration/*.test.js
 
+.PHONY: git-hooks
+git-hooks:
+	[[ -e .git/hooks/pre-commit ]] || ln -s ./tools/pre-commit.sh .git/hooks/pre-commit
+
 .PHONY: dumpvar
 dumpvar:
 	@if [[ -z "$(VAR)" ]]; then \
