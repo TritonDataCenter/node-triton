@@ -4,7 +4,10 @@ MPL blurb at the start of each file.
 
 'make check'
 
-test suite
+test suite:
+- all the commands: test/integration/cli-*.test.js
+- TritonApi testing: test/integration/api-*.test.js
+- more test/unit/...
 
 note in README that full UUIDs is much faster in the API
 
