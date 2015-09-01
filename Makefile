@@ -26,7 +26,11 @@ all:
 
 .PHONY: test
 test:
-	./test/runtests
+	./node_modules/.bin/tape test/unit/*.test.js
+
+.PHONY: test-integration
+test-integration:
+	./node_modules/.bin/tape test/integration/*.test.js
 
 .PHONY: dumpvar
 dumpvar:

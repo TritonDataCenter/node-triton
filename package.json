@@ -1,6 +1,6 @@
 {
   "name": "triton",
-  "description": "Joyent Triton tool and client (https://www.joyent.com/triton)",
+  "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
   "version": "1.0.0",
   "author": "Joyent (joyent.com)",
   "private": true,
@@ -21,6 +21,9 @@
     "tabula": "1.4.2",
     "vasync": "1.6.3",
     "verror": "1.6.0"
+  },
+  "devDependencies": {
+    "tape": "4.2.0"
   },
   "bin": {
     "triton": "./bin/triton"
