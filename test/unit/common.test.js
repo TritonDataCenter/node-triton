@@ -35,6 +35,16 @@ test('humanDurationFromMs', function (t) {
 
     t.equal(humanDurationFromMs(47*second), '47s');
     t.equal(humanDurationFromMs(1*week), '1w');
+    t.equal(humanDurationFromMs(0), '0ms');
+
+    t.end();
+});
+
+test('humanSizeFromBytes', function (t) {
+    var humanSizeFromBytes = common.humanSizeFromBytes;
+
+    t.equal(humanSizeFromBytes(0), '0 B');
+    t.equal(humanSizeFromBytes({}, 0), '0 B');
 
     t.end();
 });
