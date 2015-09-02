@@ -21,6 +21,10 @@ bash completion (cached data: insts, imgs, pkgs, names and ids)
 
 PUBAPI-1117 triton create -c|--count N
 
+Rate limiting. Testing with non-op accounts. I suspect PUBAPI-1117 and other
+usage will lead to rate limiting errors from cloudapi. `triton` should
+(a) retry reasonably on those error codes and (b) proactively control rate
+of cloudapi requests (tunable).
 
 triton images
     Drop 'state' in default columns. Add type to be able to see lx or not
