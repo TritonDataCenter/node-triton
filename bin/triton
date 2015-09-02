@@ -3,18 +3,4 @@
  * Copyright (c) 2015 Joyent Inc. All rights reserved.
  */
 
-var p = console.log;
-var cmdln = require('cmdln');
-var main = require('../lib/cli').main;
-
-if (require.main === module) {
-    main();
-    /*
-    var cli = new CLI();
-    cmdln.main(cli, {
-        argv: process.argv,
-        showCode: true,
-        showNoCommandErr: false
-    });
-    */
-}
+require('../lib/cli').main();
