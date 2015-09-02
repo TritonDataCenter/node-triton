@@ -5,13 +5,16 @@
 
 var p = console.log;
 var cmdln = require('cmdln');
-var CLI = require('../lib/cli');
+var main = require('../lib/cli').main;
 
 if (require.main === module) {
+    main();
+    /*
     var cli = new CLI();
     cmdln.main(cli, {
         argv: process.argv,
         showCode: true,
         showNoCommandErr: false
     });
+    */
 }
