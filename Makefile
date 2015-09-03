@@ -26,11 +26,11 @@ all:
 
 .PHONY: test
 test:
-	./node_modules/.bin/tape test/unit/*.test.js
+	NODE_NDEBUG= ./node_modules/.bin/tape test/unit/*.test.js
 
 .PHONY: test-integration
 test-integration:
-	./node_modules/.bin/tape test/integration/*.test.js
+	NODE_NDEBUG= ./node_modules/.bin/tape test/integration/*.test.js
 
 .PHONY: git-hooks
 git-hooks:
