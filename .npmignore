@@ -2,3 +2,9 @@
 /tmp
 /test/config.json
 /npm-debug.log
+/deps
+/examples
+/tools
+/Makefile
+/TODO.txt
+/test

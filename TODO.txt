@@ -11,11 +11,10 @@ note in README that full UUIDs is much faster in the API
 
 *type*: cloudapi changes to clarify: LX, docker, smartos, kvm instances
 
+bash completion: exclude '-J', better top/bottom comment boilerplate,
+put the CLI's version in the top comment, ISO date format
 
 # maybe next
-
-bash completion (subcmd options)
-bash completion (cached data: insts, imgs, pkgs, names and ids)
 
 PUBAPI-1117 triton create -c|--count N
 

@@ -70,6 +70,21 @@ Or non-interactively
     joyent_20150826T120743Z
 
 
+## Bash completion
+
+You can quickly source `triton` bash completions in your current
+shell with:
+
+    source <(triton completion)
+
+For a more permanent installation:
+
+    triton completion >> ~/.bashrc
+
+    # Or maybe:
+    triton completion > /usr/local/etc/bash_completion.d/triton
+
+
 ## node-triton differences with node-smartdc
 
 - There is a single `sdc` command instead of a number of `sdc-FOO` commands.
