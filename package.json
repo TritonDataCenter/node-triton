@@ -9,7 +9,7 @@
     "backoff": "2.4.1",
     "bigspinner": "3.1.0",
     "bunyan": "1.4.0",
-    "cmdln": "git+https://github.com/trentm/node-cmdln.git#8610afe",
+    "cmdln": "3.3.0",
     "dashdash": "1.10.0",
     "extsprintf": "1.0.2",
     "lomstream": "1.1.0",
