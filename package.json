@@ -25,6 +25,9 @@
   "devDependencies": {
     "tape": "4.2.0"
   },
+  "scripts": {
+    "test": "make test"
+  },
   "bin": {
     "triton": "./bin/triton"
   },
