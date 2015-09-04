@@ -1,7 +1,3 @@
-s/Triton/TritonApi/g in triton.js
-
-MPL blurb at the start of each file.
-
 test suite:
 - all the commands: test/integration/cli-*.test.js
 - TritonApi testing: test/integration/api-*.test.js
