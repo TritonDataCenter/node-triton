@@ -1,42 +1,70 @@
 # Triton
 
+![logo](https://www.joyent.com/content/01-home/triton-logo.svg)
+
 `triton` is a CLI tool for Joyent's Triton (a.k.a. SmartDataCenter), either for
 on-premises installations of Triton or Joyent's Public Cloud
 (<https://my.joyent.com>, <http://www.joyent.com/products/compute-service>).
 
-**This project is experimental and probably broken. For now, please look
-at [node-smartdc](https://github.com/joyent/node-smartdc).**
+**This project aims to replace
+[node-smartdc](https://github.com/joyent/node-smartdc) as both the API
+client library for triton ([cloudapi](https://apidocs.joyent.com/cloudapi/))
+and the command line tool**
 
 ## Installation
 
 1. Install [node.js](http://nodejs.org/).
 2. `npm install -g git://github.com/joyent/node-triton`
 
-Verify that installed and is on your PATH:
+Verify it installed and is on your PATH:
 
     $ triton --version
-    Triton client 1.0.0
-
-Before you can used the CLI you'll need a Joyent account, an SSH key uploaded
-and `triton` configured with those account details.
+    joyent-triton 1.0.0
 
 ## Setup
 
-TODO
+Before you can use the CLI you'll need a Joyent account, an SSH key uploaded
+and `triton` configured with those account details.
+
+1. Create a Joyent Public Cloud account here https://www.joyent.com/public-cloud
+2. Upload an SSH key (instructions on the site above)
+3. Set the proper environmental variables (instructions also above)
+
+Example environmental variables
+
+    SDC_URL=https://us-east-3b.api.joyent.com
+    SDC_ACCOUNT=dave.eddy@joyent.com
+    SDC_KEY_ID=04:0c:22:25:c9:85:d8:e4:fa:27:0d:67:94:68:9e:e9
 
 ## Example
+
+List instances
+
+    $ triton instances
+    SHORTID  NAME  IMG  STATE  PRIMARYIP  AGO
+
+We have no instances created yet, so let's create some.  In order to create
+an instance we need to specify two things: an image and a package.  An image
+represents what will be used as the root of the instances filesystem, and the
+package represents the size of the instance, eg. ram, disk size, cpu shares,
+etc.  More information on images and packages below - for now we'll just use
+a basic combo of SmartOS 64bit and a small 128M ram package.
+
+
+### XXX 1. show create, 2. show instances again, 3. show ssh'ing in, 4. explain images and packages
 
 Get a quick overview of your account
 
     $ triton info
-    dave.eddy@joyent.com - Dave Eddy <dave.eddy@joyent.com>
-    https://us-east-3b.api.joyent.com
-
-    5 instance(s)
-    - 1 stopped
-    - 4 running
-    - 610.3 MiB RAM Total
-    - 14.3 GiB Disk Total
+    login: dave.eddy@joyent.com
+    name: Dave Eddy
+    email: dave.eddy@joyent.com
+    url: https://us-east-3b.api.joyent.com
+    totalDisk: 8.5 GiB
+    totalMemory: 366.2 MiB
+    instances: 3
+        running: 2
+        stopped: 1
 
 See running instances
 
@@ -87,14 +115,14 @@ For a more permanent installation:
 
 ## node-triton differences with node-smartdc
 
-- There is a single `sdc` command instead of a number of `sdc-FOO` commands.
+- There is a single `triton` command instead of a number of `sdc-*` commands.
 - The `SDC_USER` envvar is accepted in preference to `SDC_ACCOUNT`.
 
 
 ## cloudapi2.js differences with node-smartdc/lib/cloudapi.js
 
 The old node-smartdc module included an lib for talking directly to the SDC
-Cloud API (node-smartdc/lib/cloudapi.js). Part of this module (node-sdc) is a
+Cloud API (node-smartdc/lib/cloudapi.js). Part of this module (node-triton) is a
 re-write of the Cloud API lib with some backward incompatibilities. The
 differences and backward incompatibilities are discussed here.
 
@@ -121,4 +149,6 @@ clone via:
 
     make git-hooks
 
+## License
 
+MPL 2.0
