@@ -212,6 +212,18 @@ as a single `DOCKER_HOST`. See the [Triton Docker
 documentation](https://apidocs.joyent.com/docker) for more information.)
 
 
+## Configuration
+
+This section defines all the vars in a TritonApi config. The baked in defaults
+are in "etc/defaults.json" and can be overriden for the CLI in
+"~/.triton/config.json".
+
+| Name | Description |
+| ---- | ----------- |
+| profile | The name of the triton profile to use. The default with the CLI is "env", i.e. take config from `SDC_*` envvars. |
+| cacheDir | The path (relative to the config dir, "~/.triton") where cache data is stored. The default is "cache", i.e. the `triton` CLI caches at "~/.triton/cache". |
+
+
 ## node-triton differences with node-smartdc
 
 - There is a single `triton` command instead of a number of `sdc-*` commands.
@@ -251,3 +263,4 @@ clone via:
 ## License
 
 MPL 2.0
+
