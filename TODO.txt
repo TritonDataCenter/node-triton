@@ -24,28 +24,6 @@ triton images
     for 'linux' ones. That might hit that stupid naming problem.
 
 
-# profiles
-
-triton profile   # list all profiles
-triton profile NAME  # show NAME profile
-triton profile -a NAME  # sets it as active
-triton profile -n|--new  # ???
-
-For today: only the implicit 'env' profile.
-
-
-
-# config
-
-~/.triton/
-    config.json
-        {"currProfile": "east3b"}
-    east3b/    # profile
-    PROFILE2/
-        ...
-
-
-
 # another day
 
 triton config get|set|list    # see 'npm config'
