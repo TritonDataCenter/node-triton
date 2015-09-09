@@ -72,7 +72,7 @@ For a more permanent installation:
     triton completion > /usr/local/etc/bash_completion.d/triton
 
 
-## Example
+## Examples
 
 ### Create and view instances
 
@@ -190,8 +190,8 @@ More operations will be added to the list over time.
 
 ### View packages and images
 
-Packages definitions and images available vary between different datacenters
-and different Triton cloud implementation.
+Package definitions and images available vary between different datacenters
+and different Triton cloud implementations.
 
 To see all the packages offered in the datacenter and specific package information, use
 
@@ -206,8 +206,8 @@ Similarly, to find out the available images and their details, do
 Note that docker images are not shown in `triton images` as they are
 maintained in Docker Hub and other third-party registries configured to be
 used with Joyent's Triton clouds. **In general, docker containers should be
-provisioned and managed with the regular [`docker` CLI](https://docs.docker.com/installation/#installation)
-(Triton provides an endpoint that represents the *entire datacenter*
+provisioned and managed with the regular [`docker` CLI](https://docs.docker.com/installation/#installation)**
+(Triton provides an endpoint that represents the _entire datacenter_
 as a single `DOCKER_HOST`. See the [Triton Docker
 documentation](https://apidocs.joyent.com/docker) for more information.)
 
