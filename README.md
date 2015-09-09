@@ -10,7 +10,7 @@ docker containers, infrastructure containers and hardware virtual machines avail
 Triton solution.
 
 There is currently another CLI tool known as [node-smartdc](https://github.com/joyent/node-smartdc)
-for CloudAPI. `node-smartdc` CLI works off the 32-character object UUID to uniquely 
+for CloudAPI. `node-smartdc` CLI works off the 32-character object UUID to uniquely
 identify object instances in API requests, and returns response payload in JSON format.
 The CLI covers both basic and advanced usage of [CloudAPI](https://apidocs.joyent.com/cloudapi/).
 
@@ -26,7 +26,7 @@ beta and will be expanded over time to support all CloudAPI commands, eventually
 
 Before you can use the CLI you'll need an account on the cloud to which you are connecting and
 an SSH key uploaded. The SSH key is used to identify and secure SSH access to containers and
-other resources in Triton. 
+other resources in Triton.
 
 If you do not already have an account on Joyent Public Cloud, sign up [here](https://www.joyent.com/public-cloud).
 
@@ -147,7 +147,7 @@ To obtain more detailed information of your instance
         "compute_node": "44454c4c-5400-1034-8053-b5c04f383432",
         "package": "t4-standard-2G"
     }
-    
+
 
 ### SSH to an instance
 
@@ -263,4 +263,3 @@ clone via:
 ## License
 
 MPL 2.0
-
