@@ -1,6 +1,6 @@
-# Triton
+![logo](./tools/triton-text.svg)
 
-![logo](https://www.joyent.com/content/01-home/triton-logo.svg)
+# node-triton
 
 `triton` is a CLI tool for working with the CloudAPI for Joyent's Triton [Public Cloud]
 (https://docs.joyent.com/public-cloud) and [Private Cloud] (https://docs.joyent.com/private-cloud).
