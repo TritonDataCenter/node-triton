@@ -9,7 +9,7 @@
  */
 
 var assert = require('assert-plus');
-var exec = require('child_process').exec;
+var execFile = require('child_process').execFile;
 var VError = require('verror').VError;
 
 
@@ -21,7 +21,7 @@ var VError = require('verror').VError;
  * logging and error handling boilerplate.
  *
  * @param args {Object}
- *      - command {String} Required.
+ *      - command {String|Array} Required.
  *      - log {Bunyan Logger} Required. Use to log details at trace level.
  *      - execOpts {Array} Optional. child_process.exec options.
  *      - errMsg {String} Optional. Error string to use in error message on
@@ -38,10 +38,11 @@ function execPlus(args, cb) {
     assert.func(cb);
     var command = args.command;
     var execOpts = args.execOpts;
+    if (typeof (command) === 'string')
+        command = ['/bin/sh', '-c', command];
 
-    // args.log.trace({exec: true, command: command, execOpts: execOpts},
-    //      'exec start');
-    exec(command, execOpts, function (err, stdout, stderr) {
+    execFile(command[0], command.slice(1), execOpts,
+        function (err, stdout, stderr) {
         args.log.trace({exec: true, command: command, execOpts: execOpts,
             err: err, stdout: stdout, stderr: stderr}, 'exec done');
         if (err) {

@@ -28,7 +28,9 @@ try {
     assert.string(CONFIG.url, 'test/config.json#url');
     assert.string(CONFIG.account, 'test/config.json#account');
     assert.string(CONFIG.key_id, 'test/config.json#key_id');
-    assert.optionalBool(CONFIG.insecure, 'test/config.json#insecure');
+    if (CONFIG.insecure === undefined)
+        CONFIG.insecure = false;
+    assert.bool(CONFIG.insecure, 'test/config.json#insecure');
 } catch (e) {
     error('* * *');
     error('node-triton integration tests require a ./test/config.json');
@@ -46,7 +48,7 @@ try {
     throw e;
 }
 
-var TRITON = 'node ' + path.resolve(__dirname, '../../bin/triton');
+var TRITON = [process.execPath, path.resolve(__dirname, '../../bin/triton')];
 var UA = 'node-triton-test';
 
 var LOG = require('../lib/log');
@@ -59,13 +61,18 @@ var LOG = require('../lib/log');
  * Call the `triton` CLI with the given args.
  */
 function triton(args, cb) {
+    var command = [].concat(TRITON).concat(args);
+    if (typeof (args) === 'string')
+        command = command.join(' ');
+
     testcommon.execPlus({
-        command: TRITON + ' ' + args,
+        command: command,
         execOpts: {
             maxBuffer: Infinity,
             env: {
                 PATH: process.env.PATH,
                 HOME: process.env.HOME,
+                SSH_AUTH_SOCK: process.env.SSH_AUTH_SOCK,
                 SDC_URL: CONFIG.url,
                 SDC_ACCOUNT: CONFIG.account,
                 SDC_KEY_ID: CONFIG.key_id,
