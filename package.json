@@ -12,7 +12,6 @@
     "cmdln": "3.3.0",
     "dashdash": "1.10.0",
     "extsprintf": "1.0.2",
-    "glob": "5.0.14",
     "lomstream": "1.1.0",
     "mkdirp": "0.5.1",
     "node-uuid": "1.4.3",
