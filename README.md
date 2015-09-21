@@ -1,4 +1,4 @@
-![logo](./tools/triton-text.svg)
+![logo](./tools/triton-text.png)
 
 # node-triton
 
