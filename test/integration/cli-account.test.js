@@ -29,7 +29,7 @@ test('triton account', function (tt) {
         h.triton('account -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
-            t.ok(/Usage:\s+triton account/.test(stdout));
+            t.ok(/Usage:\s+triton account/.test(stdout), 'account usage');
             t.end();
         });
     });
@@ -38,7 +38,7 @@ test('triton account', function (tt) {
         h.triton('help account', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
-            t.ok(/Usage:\s+triton account/.test(stdout));
+            t.ok(/Usage:\s+triton account/.test(stdout), 'account usage');
             t.end();
         });
     });

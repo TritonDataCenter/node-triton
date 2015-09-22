@@ -31,7 +31,6 @@ var VError = require('verror').VError;
  */
 function execPlus(args, cb) {
     assert.object(args, 'args');
-    assert.string(args.command, 'args.command');
     assert.optionalString(args.errMsg, 'args.errMsg');
     assert.optionalObject(args.execOpts, 'args.execOpts');
     assert.object(args.log, 'args.log');
