@@ -30,9 +30,9 @@ try {
     assert.string(CONFIG.keyId, 'test/config.json#keyId');
     if (CONFIG.insecure === undefined)
         CONFIG.insecure = false;
-    if (CONFIG.destructive === undefined)
-        CONFIG.destructive = false;
-    assert.bool(CONFIG.insecure, 'test/config.json#destructive');
+    if (CONFIG.destructiveAllowed === undefined)
+        CONFIG.destructiveAllowed = false;
+    assert.bool(CONFIG.insecure, 'test/config.json#destructiveAllowed');
 } catch (e) {
     error('* * *');
     error('node-triton integration tests require a ./test/config.json');

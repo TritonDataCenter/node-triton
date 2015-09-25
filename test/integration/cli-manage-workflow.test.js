@@ -28,7 +28,7 @@ var VM_PACKAGE = 't4-standard-128M';
 
 // TODO clean this up
 assert.equal(h.CONFIG.url, 'https://us-east-3b.api.joyent.com');
-if (h.CONFIG.destructive !== true) {
+if (h.CONFIG.destructiveAllowed !== true) {
     console.error('skipping manage integration tests - destructive actions disabled');
     return;
 }
