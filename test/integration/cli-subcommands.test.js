@@ -40,7 +40,7 @@ var subs = [
     ['packages', 'pkgs'],
     ['package', 'pkg'],
     ['networks'],
-    ['network'],
+    ['network']
 ];
 
 // --- Tests

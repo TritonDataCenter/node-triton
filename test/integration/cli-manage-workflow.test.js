@@ -54,15 +54,17 @@ function triton(t, args, cb) {
 // global variable to hold vm instance JSON
 var instance;
 
+
 // --- Tests
 
 if (opts.skip) {
     console.error('** skipping manage workflow tests');
     console.error('** set "destructiveAllowed" to enable');
 }
-test('triton manage workflow', opts, function (t) {
+test('triton manage workflow', opts, function (tt) {
+
     // create a test machine (blocking) and output JSON
-    test('triton create', function (t) {
+    tt.test('triton create', function (t) {
         triton(t, ['create', '-wjn', VM_ALIAS, VM_IMAGE, VM_PACKAGE],
             function (stdout) {
 
@@ -87,7 +89,7 @@ test('triton manage workflow', opts, function (t) {
     });
 
     // test `triton instance -j` with the UUID, the alias, and the short ID
-    test('triton instance', function (t) {
+    tt.test('triton instance', function (t) {
         var uuid = instance.id;
         var shortId = common.uuidToShortId(uuid);
         vasync.parallel({
@@ -106,8 +108,8 @@ test('triton manage workflow', opts, function (t) {
                     triton(t, ['instance', '-j', shortId], function (stdout) {
                         cb(null, stdout);
                     });
-                },
-            ],
+                }
+            ]
         }, function (err, results) {
             if (h.ifErr(t, err, 'no error'))
                 return t.end();
@@ -131,9 +133,10 @@ test('triton manage workflow', opts, function (t) {
     });
 
     // remove test instance
-    test('triton delete', function (t) {
+    tt.test('triton delete', function (t) {
         triton(t, ['delete', '-w', instance.id], function (stdout) {
             t.end();
         });
     });
+
 });

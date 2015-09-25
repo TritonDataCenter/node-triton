@@ -8,7 +8,7 @@
 # Vars, Tools, Files, Flags
 #
 JS_FILES	:= bin/triton \
-	$(shell find lib -name '*.js' | grep -v '/tmp/')
+	$(shell find lib test -name '*.js' | grep -v '/tmp/')
 JSL_CONF_NODE	 = tools/jsl.node.conf
 JSL_FILES_NODE	 = $(JS_FILES)
 JSSTYLE_FILES	 = $(JS_FILES)

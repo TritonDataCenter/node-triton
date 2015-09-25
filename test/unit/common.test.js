@@ -25,7 +25,7 @@ var log = require('../lib/log');
 
 test('objCopy+deepObjCopy', function (t) {
     var o1 = {foo: 'bar'};
-    var o2 = {arr: [1,2,3]};
+    var o2 = {arr: [1, 2, 3]};
 
     // shallow copy
     var c1 = common.objCopy(o1);
@@ -177,7 +177,6 @@ test('humanDurationFromMs', function (t) {
     var hour = minute * 60;
     var day = hour * 24;
     var week = day * 7;
-    var year = day * 365;
 
     t.equal(humanDurationFromMs(47*second), '47s');
     t.equal(humanDurationFromMs(1*week), '1w');
