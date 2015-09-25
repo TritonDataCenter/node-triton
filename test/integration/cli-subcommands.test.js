@@ -21,6 +21,8 @@ var common = require('../../lib/common');
 
 var subs = [
     ['info'],
+    ['profile'],
+    ['profiles'],
     ['account', 'whoami'],
     ['keys'],
     ['services'],
