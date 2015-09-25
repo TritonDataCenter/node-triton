@@ -27,7 +27,7 @@ try {
     assert.object(CONFIG, 'test/config.json');
     assert.string(CONFIG.url, 'test/config.json#url');
     assert.string(CONFIG.account, 'test/config.json#account');
-    assert.string(CONFIG.key_id, 'test/config.json#key_id');
+    assert.string(CONFIG.keyId, 'test/config.json#keyId');
     if (CONFIG.insecure === undefined)
         CONFIG.insecure = false;
     if (CONFIG.destructive === undefined)
@@ -40,7 +40,7 @@ try {
     error('    {');
     error('        "url": "<CloudAPI URL>",');
     error('        "account": "<account>",');
-    error('        "key_id": "<ssh key fingerprint>",');
+    error('        "keyId": "<ssh key fingerprint>",');
     error('        "insecure": true|false   // optional');
     error('    }');
     error('');
@@ -77,7 +77,7 @@ function triton(args, cb) {
                 SSH_AUTH_SOCK: process.env.SSH_AUTH_SOCK,
                 SDC_URL: CONFIG.url,
                 SDC_ACCOUNT: CONFIG.account,
-                SDC_KEY_ID: CONFIG.key_id,
+                SDC_KEY_ID: CONFIG.keyId,
                 SDC_TLS_INSECURE: CONFIG.insecure
             }
         },
