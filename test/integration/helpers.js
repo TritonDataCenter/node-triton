@@ -75,6 +75,7 @@ function triton(args, cb) {
                 PATH: process.env.PATH,
                 HOME: process.env.HOME,
                 SSH_AUTH_SOCK: process.env.SSH_AUTH_SOCK,
+                TRITON_PROFILE: 'env',
                 SDC_URL: CONFIG.url,
                 SDC_ACCOUNT: CONFIG.account,
                 SDC_KEY_ID: CONFIG.keyId,
