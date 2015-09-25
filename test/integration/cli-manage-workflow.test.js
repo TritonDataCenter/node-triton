@@ -12,7 +12,6 @@
  * Test create/start/stop/delete/etc. work flows
  */
 
-var assert = require('assert');
 var f = require('util').format;
 
 var vasync = require('vasync');
@@ -26,12 +25,9 @@ var VM_ALIAS = 'node-triton-test-vm-1';
 var VM_IMAGE = 'base-64@15.2.0';
 var VM_PACKAGE = 't4-standard-128M';
 
-// TODO clean this up
-assert.equal(h.CONFIG.url, 'https://us-east-3b.api.joyent.com');
-if (h.CONFIG.destructiveAllowed !== true) {
-    console.error('skipping manage integration tests - destructive actions disabled');
-    return;
-}
+var opts = {
+    skip: !h.CONFIG.destructiveAllowed
+};
 
 /*
  * h.triton wrapper that:
@@ -60,78 +56,84 @@ var instance;
 
 // --- Tests
 
-// create a test machine (blocking) and output JSON
-test('triton create', function (t) {
-    triton(t, ['create', '-wjn', VM_ALIAS, VM_IMAGE, VM_PACKAGE],
-        function (stdout) {
+if (opts.skip) {
+    console.error('** skipping manage workflow tests');
+    console.error('** set "destructiveAllowed" to enable');
+}
+test('triton manage workflow', opts, function (t) {
+    // create a test machine (blocking) and output JSON
+    test('triton create', function (t) {
+        triton(t, ['create', '-wjn', VM_ALIAS, VM_IMAGE, VM_PACKAGE],
+            function (stdout) {
 
-        // parse JSON response
-        var lines = stdout.trim().split('\n');
-        t.equal(lines.length, 2, 'correct number of JSON lines');
-        try {
-            lines = lines.map(function (line) {
-                return JSON.parse(line);
-            });
-        } catch (e) {
-            t.fail('failed to parse JSON');
+            // parse JSON response
+            var lines = stdout.trim().split('\n');
+            t.equal(lines.length, 2, 'correct number of JSON lines');
+            try {
+                lines = lines.map(function (line) {
+                    return JSON.parse(line);
+                });
+            } catch (e) {
+                t.fail('failed to parse JSON');
+                t.end();
+            }
+
+            instance = lines[1];
+            t.equal(lines[0].id, lines[1].id, 'correct UUID given');
+            t.equal(lines[1].state, 'running', 'correct machine state');
+
             t.end();
-        }
-
-        instance = lines[1];
-        t.equal(lines[0].id, lines[1].id, 'correct UUID given');
-        t.equal(lines[1].state, 'running', 'correct machine state');
-
-        t.end();
-    });
-});
-
-// test `triton instance -j` with the UUID, the alias, and the short ID
-test('triton instance', function (t) {
-    var uuid = instance.id;
-    var shortId = common.uuidToShortId(uuid);
-    vasync.parallel({
-        funcs: [
-            function (cb) {
-                triton(t, ['instance', '-j', VM_ALIAS], function (stdout) {
-                    cb(null, stdout);
-                });
-            },
-            function (cb) {
-                triton(t, ['instance', '-j', uuid], function (stdout) {
-                    cb(null, stdout);
-                });
-            },
-            function (cb) {
-                triton(t, ['instance', '-j', shortId], function (stdout) {
-                    cb(null, stdout);
-                });
-            },
-        ],
-    }, function (err, results) {
-        if (h.ifErr(t, err, 'no error'))
-            return t.end();
-
-        var output;
-        try {
-            output = results.operations.map(function (op) {
-                return JSON.parse(op.result);
-            });
-        } catch (e) {
-            t.fail('failed to parse JSON');
-            t.end();
-        }
-
-        output.forEach(function (res) {
-            t.deepEqual(output[0], res, 'same data');
         });
-
-        t.end();
     });
-});
 
-// remove test instance
-test('triton delete', function (t) {
-    triton(t, ['delete', '-w', instance.id], function (stdout) {
-        t.end();
+    // test `triton instance -j` with the UUID, the alias, and the short ID
+    test('triton instance', function (t) {
+        var uuid = instance.id;
+        var shortId = common.uuidToShortId(uuid);
+        vasync.parallel({
+            funcs: [
+                function (cb) {
+                    triton(t, ['instance', '-j', VM_ALIAS], function (stdout) {
+                        cb(null, stdout);
+                    });
+                },
+                function (cb) {
+                    triton(t, ['instance', '-j', uuid], function (stdout) {
+                        cb(null, stdout);
+                    });
+                },
+                function (cb) {
+                    triton(t, ['instance', '-j', shortId], function (stdout) {
+                        cb(null, stdout);
+                    });
+                },
+            ],
+        }, function (err, results) {
+            if (h.ifErr(t, err, 'no error'))
+                return t.end();
+
+            var output;
+            try {
+                output = results.operations.map(function (op) {
+                    return JSON.parse(op.result);
+                });
+            } catch (e) {
+                t.fail('failed to parse JSON');
+                t.end();
+            }
+
+            output.forEach(function (res) {
+                t.deepEqual(output[0], res, 'same data');
+            });
+
+            t.end();
+        });
+    });
+
+    // remove test instance
+    test('triton delete', function (t) {
+        triton(t, ['delete', '-w', instance.id], function (stdout) {
+            t.end();
+        });
     });
 });
