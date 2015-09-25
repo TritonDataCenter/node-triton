@@ -41,7 +41,8 @@ try {
     error('        "url": "<CloudAPI URL>",');
     error('        "account": "<account>",');
     error('        "keyId": "<ssh key fingerprint>",');
-    error('        "insecure": true|false   // optional');
+    error('        "insecure": true|false,  // optional');
+    error('        "destructiveAllowed": true|false  // optional');
     error('    }');
     error('');
     error('Note: This test suite with create machines, images, et al using');
@@ -76,10 +77,10 @@ function triton(args, cb) {
                 HOME: process.env.HOME,
                 SSH_AUTH_SOCK: process.env.SSH_AUTH_SOCK,
                 TRITON_PROFILE: 'env',
-                SDC_URL: CONFIG.url,
-                SDC_ACCOUNT: CONFIG.account,
-                SDC_KEY_ID: CONFIG.keyId,
-                SDC_TLS_INSECURE: CONFIG.insecure
+                TRITON_URL: CONFIG.url,
+                TRITON_ACCOUNT: CONFIG.account,
+                TRITON_KEY_ID: CONFIG.keyId,
+                TRITON_TLS_INSECURE: CONFIG.insecure
             }
         },
         log: LOG
