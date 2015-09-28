@@ -19,11 +19,14 @@
     "read": "1.0.7",
     "restify-clients": "1.1.0",
     "restify-errors": "3.0.0",
+    "sshpk": "1.2.1",
     "smartdc-auth": "git+https://github.com/joyent/node-smartdc-auth.git#3be3c1e",
     "strsplit": "1.0.0",
     "tabula": "1.6.1",
+    "tilde-expansion": "0.0.0",
     "vasync": "1.6.3",
-    "verror": "1.6.0"
+    "verror": "1.6.0",
+    "wordwrap": "1.0.0"
   },
   "devDependencies": {
     "tape": "4.2.0"

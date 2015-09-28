@@ -3,6 +3,8 @@ test suite:
 - TritonApi testing: test/integration/api-*.test.js
 - more test/unit/...
 
+sub-user support (profiles, `triton account`, env, auth)
+
 note in README that full UUIDs is much faster in the API
 
 *type*: cloudapi changes to clarify: LX, docker, smartos, kvm instances
