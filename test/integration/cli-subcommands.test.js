@@ -28,7 +28,7 @@ var subs = [
     ['services'],
     ['datacenters'],
     ['create-instance', 'create'],
-    ['instances', 'insts'],
+    ['instances', 'insts', 'list', 'ls'],
     ['instance', 'inst'],
     ['instance-audit', 'audit'],
     ['start-instance', 'start'],
