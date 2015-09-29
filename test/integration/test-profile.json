@@ -1,0 +1,7 @@
+{
+    "name": "node-triton-test-profile-1",
+    "account": "some-name",
+    "url": "http://example.com/test",
+    "keyId": "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00",
+    "curr": false
+}
