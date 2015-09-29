@@ -16,9 +16,11 @@ The CLI covers both basic and advanced usage of [CloudAPI](https://apidocs.joyen
 
 As a lightweight programmable interface for CloudAPI, the `triton` CLI supports both name or
 UUID identification of object instances and the use of short ID, as well as the choice
-between concise tabular responses and full JSON responses. **The `triton` CLI is currently in
-beta and will be expanded over time to support all CloudAPI commands, eventually replacing
-`node-smartdc` as both the API client library for Triton cloud and the command line tool.**
+between concise tabular responses and full JSON responses.
+
+**The `triton` CLI is currently in beta and will be expanded over time to
+support all CloudAPI commands, eventually replacing `node-smartdc` as both the
+API client library for Triton cloud and the command line tool.**
 
 ## Setup
 
@@ -42,7 +44,7 @@ Have the URL handy as you'll need it in the next step.
 ### Installation
 
 1. Install [node.js](http://nodejs.org/).
-2. `npm install -g git://github.com/joyent/node-triton`
+2. `npm install -g joyent-triton`
 
 Verify that it is installed and on your PATH:
 
