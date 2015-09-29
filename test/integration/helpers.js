@@ -14,6 +14,7 @@
 
 var error = console.error;
 var assert = require('assert-plus');
+var f = require('util').format;
 var path = require('path');
 
 var testcommon = require('../lib/testcommon');
@@ -87,11 +88,50 @@ function triton(args, cb) {
     }, cb);
 }
 
+/*
+ * triton wrapper that:
+ * - tests no error is present
+ * - tests stdout is not empty
+ * - tests stderr is empty
+ *
+ * In the event that any of the above is false, this function will NOT
+ * fire the callback, which will result in the early terminate of these
+ * tests as `t.end()` will never be called.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Object|Array} opts - options object
+ * @param {Function} cb - callback called like "cb(stdout)"
+ */
+function safeTriton(t, opts, cb) {
+    if (Array.isArray(opts)) {
+        opts = {args: opts};
+    }
+    t.comment(f('running: triton %s', opts.args.join(' ')));
+    triton(opts.args, function (err, stdout, stderr) {
+        t.error(err, 'no error running child process');
+        t.equal(stderr, '', 'no stderr produced');
+        t.notEqual(stdout, '', 'stdout produced');
+
+        if (opts.json) {
+            try {
+                stdout = JSON.parse(stdout);
+            } catch (e) {
+                t.fail('failed to parse JSON');
+                return;
+            }
+        }
+
+        if (!err && stdout && !stderr)
+            cb(stdout);
+    });
+}
+
 
 // --- exports
 
 module.exports = {
     CONFIG: CONFIG,
     triton: triton,
+    safeTriton: safeTriton,
     ifErr: testcommon.ifErr
 };
