@@ -44,7 +44,7 @@ Have the URL handy as you'll need it in the next step.
 ### Installation
 
 1. Install [node.js](http://nodejs.org/).
-2. `npm install -g joyent-triton`
+2. `npm install -g triton`
 
 Verify that it is installed and on your PATH:
 
