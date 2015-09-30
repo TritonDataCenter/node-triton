@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015, Joyent, Inc. All rights reserved.
+# Copyright (c) 2015, Joyent, Inc.
 #
 # Makefile for node-triton
 #
@@ -31,6 +31,21 @@ test:
 .PHONY: test-integration
 test-integration:
 	NODE_NDEBUG= ./node_modules/.bin/tape test/integration/*.test.js
+
+.PHONY: clean
+clean::
+	rm -f triton-*.tgz
+
+# Ensure CHANGES.md and package.json have the same version.
+.PHONY: versioncheck
+versioncheck:
+	@echo version is: $(shell cat package.json | json version)
+	[[ `cat package.json | json version` == `grep '^## ' CHANGES.md | head -1 | awk '{print $$2}'` ]]
+
+.PHONY: cutarelease
+cutarelease: clean versioncheck
+	[[ `git status | tail -n1` == "nothing to commit, working directory clean" ]]
+	./tools/cutarelease.py -p triton -f package.json
 
 .PHONY: git-hooks
 git-hooks:
