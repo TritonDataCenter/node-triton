@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 2.0.0 (not yet released)
+## 2.0.0
 
 - Changed name to `triton` npm package, graciously given up by
   [suguru](https://www.npmjs.com/~suguru) from his
