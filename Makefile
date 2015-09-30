@@ -43,7 +43,7 @@ versioncheck:
 	[[ `cat package.json | json version` == `grep '^## ' CHANGES.md | head -1 | awk '{print $$2}'` ]]
 
 .PHONY: cutarelease
-cutarelease: clean versioncheck
+cutarelease: versioncheck
 	[[ `git status | tail -n1` == "nothing to commit, working directory clean" ]]
 	./tools/cutarelease.py -p triton -f package.json
 
