@@ -17,40 +17,54 @@ var assert = require('assert-plus');
 var f = require('util').format;
 var path = require('path');
 
-var testcommon = require('../lib/testcommon');
+var mod_config = require('../../lib/config');
 
+var testcommon = require('../lib/testcommon');
 
 
 // --- globals
 
-try {
-    var CONFIG = require('../config.json');
-    assert.object(CONFIG, 'test/config.json');
-    assert.string(CONFIG.url, 'test/config.json#url');
-    assert.string(CONFIG.account, 'test/config.json#account');
-    assert.string(CONFIG.keyId, 'test/config.json#keyId');
-    if (CONFIG.insecure === undefined)
-        CONFIG.insecure = false;
-    if (CONFIG.destructiveAllowed === undefined)
-        CONFIG.destructiveAllowed = false;
-    assert.bool(CONFIG.insecure, 'test/config.json#destructiveAllowed');
-} catch (e) {
-    error('* * *');
-    error('node-triton integration tests require a ./test/config.json');
-    error('');
-    error('    {');
-    error('        "url": "<CloudAPI URL>",');
-    error('        "account": "<account>",');
-    error('        "keyId": "<ssh key fingerprint>",');
-    error('        "insecure": true|false,  // optional');
-    error('        "destructiveAllowed": true|false  // optional');
-    error('    }');
-    error('');
-    error('Note: This test suite with create machines, images, et al using');
-    error('this CloudAPI and account. That could *cost* you money. :)');
-    error('* * *');
-    throw e;
+var CONFIG;
+if (process.env.TRITON_TEST_PROFILE) {
+    CONFIG = mod_config.loadProfile({
+        configDir: path.join(process.env.HOME, '.triton'),
+        name: process.env.TRITON_TEST_PROFILE
+    });
+    CONFIG.destructiveAllowed = !!process.env.TRITON_TEST_DESTRUCTIVE_ALLOWED;
+} else {
+    CONFIG = require('../config.json');
+    try {
+        assert.object(CONFIG, 'test/config.json');
+        assert.string(CONFIG.url, 'test/config.json#url');
+        assert.string(CONFIG.account, 'test/config.json#account');
+        assert.string(CONFIG.keyId, 'test/config.json#keyId');
+        assert.optionalBool(CONFIG.insecure,
+            'test/config.json#insecure');
+        assert.optionalBool(CONFIG.destrectiveAllowed,
+            'test/config.json#destructiveAllowed');
+    } catch (e) {
+        error('* * *');
+        error('node-triton integration tests require a ./test/config.json');
+        error('or TRITON_TEST_PROFILE to be set to a profile');
+        error('');
+        error('    {');
+        error('        "url": "<CloudAPI URL>",');
+        error('        "account": "<account>",');
+        error('        "keyId": "<ssh key fingerprint>",');
+        error('        "insecure": true|false,  // optional');
+        error('        "destructiveAllowed": true|false  // optional');
+        error('    }');
+        error('');
+        error('Note: This test suite with create machines, images, etc. using');
+        error('this CloudAPI and account. That could *cost* you money. :)');
+        error('* * *');
+        throw e;
+    }
 }
+if (CONFIG.insecure === undefined)
+    CONFIG.insecure = false;
+if (CONFIG.destructiveAllowed === undefined)
+    CONFIG.destructiveAllowed = false;
 
 var TRITON = [process.execPath, path.resolve(__dirname, '../../bin/triton')];
 var UA = 'node-triton-test';
