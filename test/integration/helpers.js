@@ -32,8 +32,8 @@ if (process.env.TRITON_TEST_PROFILE) {
     });
     CONFIG.destructiveAllowed = !!process.env.TRITON_TEST_DESTRUCTIVE_ALLOWED;
 } else {
-    CONFIG = require('../config.json');
     try {
+        CONFIG = require('../config.json');
         assert.object(CONFIG, 'test/config.json');
         assert.string(CONFIG.url, 'test/config.json#url');
         assert.string(CONFIG.account, 'test/config.json#account');
