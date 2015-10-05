@@ -17,8 +17,8 @@ var assert = require('assert-plus');
 var f = require('util').format;
 var path = require('path');
 
+var common = require('../../lib/common');
 var mod_config = require('../../lib/config');
-
 var testcommon = require('../lib/testcommon');
 
 
@@ -30,7 +30,8 @@ if (process.env.TRITON_TEST_PROFILE) {
         configDir: path.join(process.env.HOME, '.triton'),
         name: process.env.TRITON_TEST_PROFILE
     });
-    CONFIG.destructiveAllowed = !!process.env.TRITON_TEST_DESTRUCTIVE_ALLOWED;
+    CONFIG.destructiveAllowed = common.boolFromString(
+        process.env.TRITON_TEST_DESTRUCTIVE_ALLOWED);
 } else {
     try {
         CONFIG = require('../config.json');
@@ -40,12 +41,18 @@ if (process.env.TRITON_TEST_PROFILE) {
         assert.string(CONFIG.keyId, 'test/config.json#keyId');
         assert.optionalBool(CONFIG.insecure,
             'test/config.json#insecure');
-        assert.optionalBool(CONFIG.destrectiveAllowed,
+        assert.optionalBool(CONFIG.destructiveAllowed,
             'test/config.json#destructiveAllowed');
     } catch (e) {
         error('* * *');
-        error('node-triton integration tests require a ./test/config.json');
-        error('or TRITON_TEST_PROFILE to be set to a profile');
+        error('node-triton integration tests require either:');
+        error('');
+        error('1. environment variables like:');
+        error('');
+        error('    TRITON_TEST_PROFILE=<Triton profile name>');
+        error('    TRITON_TEST_DESTRUCTIVE_ALLOWED=1   # Optional');
+        error('');
+        error('2. or, a "./test/config.json" like this:');
         error('');
         error('    {');
         error('        "url": "<CloudAPI URL>",');
@@ -55,8 +62,10 @@ if (process.env.TRITON_TEST_PROFILE) {
         error('        "destructiveAllowed": true|false  // optional');
         error('    }');
         error('');
-        error('Note: This test suite with create machines, images, etc. using');
-        error('this CloudAPI and account. That could *cost* you money. :)');
+        error('Note: This test suite will create machines, images, etc. ');
+        error('using this CloudAPI and account. While it will do its best');
+        error('to clean up all resources, running the test suite against');
+        error('a public cloud could *cost* you money. :)');
         error('* * *');
         throw e;
     }

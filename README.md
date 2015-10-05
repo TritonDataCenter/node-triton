@@ -252,15 +252,47 @@ differences and backward incompatibilities are discussed here.
 
 ## Development Hooks
 
-Before commiting be sure to:
+Before commiting be sure to, at least:
 
     make check      # lint and style checks
-    make test       # run unit tests
+    make test-unit  # run unit tests
 
 A good way to do that is to install the stock pre-commit hook in your
 clone via:
 
     make git-hooks
+
+Also please run the full (longer) test suite (`make test`). See the next
+section.
+
+
+## Test suite
+
+node-triton has both unit tests (`make test-unit`) and integration tests (`make
+test-integration`). Integration tests require either:
+
+1. environment variables like:
+
+        TRITON_TEST_PROFILE=<Triton profile name>
+        TRITON_TEST_DESTRUCTIVE_ALLOWED=1   # Optional
+
+2. or, a "./test/config.json" like this:
+
+        {
+            "url": "<CloudAPI URL>",
+            "account": "<account>",
+            "keyId": "<ssh key fingerprint>",
+            "insecure": true|false,  // optional
+            "destructiveAllowed": true|false  // optional
+        }
+
+For example, a possible run could be:
+
+    TRITON_TEST_PROFILE=coal TRITON_TEST_DESTRUCTIVE_ALLOWED=1 make test
+
+Where "coal" here refers to a development Triton (a.k.a SDC) ["Cloud On A
+Laptop"](https://github.com/joyent/sdc#getting-started).
+
 
 ## License
 

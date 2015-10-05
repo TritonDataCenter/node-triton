@@ -25,7 +25,10 @@ all:
 	npm install
 
 .PHONY: test
-test:
+test: test-unit test-integration
+
+.PHONY: test-unit
+test-unit:
 	NODE_NDEBUG= ./node_modules/.bin/tape test/unit/*.test.js
 
 .PHONY: test-integration

@@ -19,4 +19,4 @@ set -o errexit
 set -o pipefail
 
 make check
-make test
+make test-unit
