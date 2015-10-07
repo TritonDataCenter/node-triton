@@ -11,10 +11,10 @@
         "insecure": false
     }
 
-    // Optional. Set this to allow the parts of the test suite
-    // that create and destroy resources: instances, images, networks, etc.
+    // Optional. Set this to allow the parts of the test suite that create,
+    // update and destroy resources: instances, images, networks, etc.
     // This is essentially the "safe" guard.
-    "destructiveAllowed": true
+    "allowWriteActions": true
 
     // The params used for test provisions. By default the tests use:
     // the smallest RAM package, the latest base* image.

@@ -275,7 +275,7 @@ test-integration`). Integration tests require a config file, by default at
     $ cat test/config.json
     {
         "profileName": "east3b",
-        "destructiveAllowed": true,
+        "allowWriteActions": true,
         "image": "minimal-64",
         "package": "t4-standard-128M"
     }
@@ -292,7 +292,7 @@ You can use `TRITON_TEST_CONFIG` to override the test file, e.g.:
     $ cat test/coal.json
     {
         "profileName": "coal",
-        "destructiveAllowed": true
+        "allowWriteActions": true
     }
     $ TRITON_TEST_CONFIG=test/coal.json make test
 

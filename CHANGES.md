@@ -2,7 +2,8 @@
 
 ## 2.1.1 (not yet released)
 
-(nothing yet)
+- #39 Test suite: Change the test config 'destructiveAllowed' var to
+  'writeActionsAllowed'.
 
 
 ## 2.1.0

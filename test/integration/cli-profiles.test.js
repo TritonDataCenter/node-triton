@@ -22,14 +22,15 @@ var PROFILE_FILE = path.join(__dirname, 'test-profile.json');
 var PROFILE_DATA = JSON.parse(fs.readFileSync(PROFILE_FILE, 'utf8'));
 
 var opts = {
-    skip: !h.CONFIG.destructiveAllowed
+    skip: !h.CONFIG.allowWriteActions
 };
 
+//
 // --- Tests
 
 if (opts.skip) {
-    console.error('** skipping triton profile creation tests');
-    console.error('** set "destructiveAllowed" to enable');
+    console.error('** skipping %s tests', __filename);
+    console.error('** set "allowWriteActions" in test config to enable');
 }
 
 test('triton profiles (read only)', function (tt) {

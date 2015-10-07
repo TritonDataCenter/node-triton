@@ -49,8 +49,8 @@ try {
         throw new Error('one of "profile" or "profileName" must be defined ' +
             'in ' + configPath);
     }
-    assert.optionalBool(CONFIG.destructiveAllowed,
-        'test/config.json#destructiveAllowed');
+    assert.optionalBool(CONFIG.allowWriteActions,
+        'test/config.json#allowWriteActions');
 } catch (e) {
     error('* * *');
     error('node-triton integration tests require a config file. By default');
@@ -70,8 +70,8 @@ try {
 }
 if (CONFIG.profile.insecure === undefined)
     CONFIG.profile.insecure = false;
-if (CONFIG.destructiveAllowed === undefined)
-    CONFIG.destructiveAllowed = false;
+if (CONFIG.allowWriteActions === undefined)
+    CONFIG.allowWriteActions = false;
 
 var TRITON = [process.execPath, path.resolve(__dirname, '../../bin/triton')];
 var UA = 'node-triton-test';

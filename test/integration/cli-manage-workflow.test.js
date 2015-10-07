@@ -27,7 +27,7 @@ var h = require('./helpers');
 var INST_ALIAS = f('node-triton-test-%s-vm1', os.hostname());
 
 var opts = {
-    skip: !h.CONFIG.destructiveAllowed
+    skip: !h.CONFIG.allowWriteActions
 };
 
 // global variable to hold vm instance JSON
@@ -52,8 +52,8 @@ function _jsonStreamParse(s) {
 // --- Tests
 
 if (opts.skip) {
-    console.error('** skipping manage workflow tests');
-    console.error('** set "destructiveAllowed" to enable');
+    console.error('** skipping %s tests', __filename);
+    console.error('** set "allowWriteActions" in test config to enable');
 }
 test('triton manage workflow', opts, function (tt) {
     tt.comment('Test config:');
