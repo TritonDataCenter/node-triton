@@ -269,29 +269,35 @@ section.
 ## Test suite
 
 node-triton has both unit tests (`make test-unit`) and integration tests (`make
-test-integration`). Integration tests require either:
+test-integration`). Integration tests require a config file, by default at
+"test/config.json". For example:
 
-1. environment variables like:
+    $ cat test/config.json
+    {
+        "profileName": "east3b",
+        "destructiveAllowed": true,
+        "image": "minimal-64",
+        "package": "t4-standard-128M"
+    }
 
-        TRITON_TEST_PROFILE=<Triton profile name>
-        TRITON_TEST_DESTRUCTIVE_ALLOWED=1   # Optional
+See "test/config.json.sample" for a description of all config vars. Minimally
+just a "profileName" or "profile" is required.
 
-2. or, a "./test/config.json" like this:
+Run all tests:
 
-        {
-            "url": "<CloudAPI URL>",
-            "account": "<account>",
-            "keyId": "<ssh key fingerprint>",
-            "insecure": true|false,  // optional
-            "destructiveAllowed": true|false  // optional
-        }
+    make test
 
-For example, a possible run could be:
+You can use `TRITON_TEST_CONFIG` to override the test file, e.g.:
 
-    TRITON_TEST_PROFILE=coal TRITON_TEST_DESTRUCTIVE_ALLOWED=1 make test
+    $ cat test/coal.json
+    {
+        "profileName": "coal",
+        "destructiveAllowed": true
+    }
+    $ TRITON_TEST_CONFIG=test/coal.json make test
 
-Where "coal" here refers to a development Triton (a.k.a SDC) ["Cloud On A
-Laptop"](https://github.com/joyent/sdc#getting-started).
+where "coal" here refers to a development Triton (a.k.a SDC) ["Cloud On A
+Laptop"](https://github.com/joyent/sdc#getting-started) standup.
 
 
 ## License

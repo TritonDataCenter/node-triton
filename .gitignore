@@ -1,5 +1,5 @@
 /node_modules
 /tmp
-/test/config.json
+/test/*.json
 /npm-debug.log
 /triton-*.tgz

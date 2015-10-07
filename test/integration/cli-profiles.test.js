@@ -33,18 +33,15 @@ if (opts.skip) {
 }
 
 test('triton profiles (read only)', function (tt) {
-    tt.test('triton profile env', function (t) {
+    tt.test('  triton profile env', function (t) {
         h.safeTriton(t, {json: true, args: ['profile', '-j', 'env']},
             function (p) {
 
-            t.equal(p.account,
-                process.env.TRITON_ACCOUNT || process.env.SDC_ACCOUNT,
+            t.equal(p.account, h.CONFIG.profile.account,
                 'env account correct');
-            t.equal(p.keyId,
-                process.env.TRITON_KEY_ID || process.env.SDC_KEY_ID,
+            t.equal(p.keyId, h.CONFIG.profile.keyId,
                 'env keyId correct');
-            t.equal(p.url,
-                process.env.TRITON_URL || process.env.SDC_URL,
+            t.equal(p.url, h.CONFIG.profile.url,
                 'env url correct');
 
             t.end();
@@ -55,7 +52,7 @@ test('triton profiles (read only)', function (tt) {
 });
 
 test('triton profiles (read/write)', opts, function (tt) {
-    tt.test('triton profile create', function (t) {
+    tt.test('  triton profile create', function (t) {
         h.safeTriton(t, ['profile', '-a', PROFILE_FILE],
             function (stdout) {
 
@@ -64,7 +61,7 @@ test('triton profiles (read/write)', opts, function (tt) {
         });
     });
 
-    tt.test('triton profile get', function (t) {
+    tt.test('  triton profile get', function (t) {
         h.safeTriton(t,
             {json: true, args: ['profile', '-j', PROFILE_DATA.name]},
             function (p) {
@@ -75,7 +72,7 @@ test('triton profiles (read/write)', opts, function (tt) {
         });
     });
 
-    tt.test('triton profile delete', function (t) {
+    tt.test('  triton profile delete', function (t) {
         h.safeTriton(t, ['profile', '-df', PROFILE_DATA.name],
             function (stdout) {
 

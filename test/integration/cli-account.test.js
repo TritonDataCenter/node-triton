@@ -47,7 +47,8 @@ test('triton account', function (tt) {
         h.triton('account', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
-            t.ok(new RegExp('^login: ' + h.CONFIG.account, 'm').test(stdout));
+            t.ok(new RegExp(
+                '^login: ' + h.CONFIG.profile.account, 'm').test(stdout));
             t.end();
         });
     });
@@ -57,7 +58,7 @@ test('triton account', function (tt) {
             if (h.ifErr(t, err))
                 return t.end();
             var account = JSON.parse(stdout);
-            t.equal(account.login, h.CONFIG.account, 'account.login');
+            t.equal(account.login, h.CONFIG.profile.account, 'account.login');
             t.end();
         });
     });

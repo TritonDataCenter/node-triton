@@ -13,17 +13,18 @@
  */
 
 var f = require('util').format;
-
+var os = require('os');
+var tabula = require('tabula');
+var test = require('tape');
 var vasync = require('vasync');
 
-var h = require('./helpers');
-var test = require('tape');
-
 var common = require('../../lib/common');
+var h = require('./helpers');
 
-var VM_ALIAS = 'node-triton-test-vm-1';
-var VM_IMAGE = 'base-64@15.2.0';
-var VM_PACKAGE = 't4-standard-128M';
+
+// --- globals
+
+var INST_ALIAS = f('node-triton-test-%s-vm1', os.hostname());
 
 var opts = {
     skip: !h.CONFIG.destructiveAllowed
@@ -33,6 +34,21 @@ var opts = {
 var instance;
 
 
+// --- internal support stuff
+
+function _jsonStreamParse(s) {
+    var results = [];
+    var lines = s.split('\n');
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (line) {
+            results.push(JSON.parse(line));
+        }
+    }
+    return results;
+}
+
+
 // --- Tests
 
 if (opts.skip) {
@@ -40,15 +56,93 @@ if (opts.skip) {
     console.error('** set "destructiveAllowed" to enable');
 }
 test('triton manage workflow', opts, function (tt) {
-    tt.comment('using test profile:');
+    tt.comment('Test config:');
     Object.keys(h.CONFIG).forEach(function (key) {
         var value = h.CONFIG[key];
-        tt.comment(f('  %s: %s', key, value));
+        tt.comment(f('- %s: %j', key, value));
+    });
+
+    tt.test('  cleanup existing inst with alias ' + INST_ALIAS, function (t) {
+        h.triton(['inst', '-j', INST_ALIAS], function (err, stdout, stderr) {
+            if (err) {
+                if (err.code === 3) {  // `triton` code for ResourceNotFound
+                    t.ok(true, 'no pre-existing alias in the way');
+                    t.end();
+                } else {
+                    t.ifErr(err, err);
+                    t.end();
+                }
+            } else {
+                var inst = JSON.parse(stdout);
+                h.safeTriton(t, ['delete', '-w', inst.id], function () {
+                    t.ok(true, 'deleted inst ' + inst.id);
+                    t.end();
+                });
+            }
+        });
+    });
+
+    var imgId;
+    tt.test('  find image to use', function (t) {
+        if (h.CONFIG.image) {
+            imgId = h.CONFIG.image;
+            t.ok(imgId, 'image from config: ' + imgId);
+            t.end();
+            return;
+        }
+
+        var candidateImageNames = {
+            'base-64-lts': true,
+            'base-64': true,
+            'minimal-64': true,
+            'base-32-lts': true,
+            'base-32': true,
+            'minimal-32': true,
+            'base': true
+        };
+        h.safeTriton(t, ['imgs', '-j'], function (stdout) {
+            var imgs = _jsonStreamParse(stdout);
+            // Newest images first.
+            tabula.sortArrayOfObjects(imgs, ['-published_at']);
+            var imgRepr;
+            for (var i = 0; i < imgs.length; i++) {
+                var img = imgs[i];
+                if (candidateImageNames[img.name]) {
+                    imgId = img.id;
+                    imgRepr = f('%s@%s', img.name, img.version);
+                    break;
+                }
+            }
+
+            t.ok(imgId, f('latest available base/minimal image: %s (%s)',
+                imgId, imgRepr));
+            t.end();
+        });
+    });
+
+    var pkgId;
+    tt.test('  find package to use', function (t) {
+        if (h.CONFIG.package) {
+            pkgId = h.CONFIG.package;
+            t.ok(pkgId, 'package from config: ' + pkgId);
+            t.end();
+            return;
+        }
+
+        h.safeTriton(t, ['pkgs', '-j'], function (stdout) {
+            var pkgs = _jsonStreamParse(stdout);
+            // Smallest RAM first.
+            tabula.sortArrayOfObjects(pkgs, ['memory']);
+            pkgId = pkgs[0].id;
+            t.ok(pkgId, f('smallest (RAM) available package: %s (%s)',
+                pkgId, pkgs[0].name));
+            t.end();
+        });
     });
 
     // create a test machine (blocking) and output JSON
-    tt.test('triton create', function (t) {
-        h.safeTriton(t, ['create', '-wjn', VM_ALIAS, VM_IMAGE, VM_PACKAGE],
+    tt.test('  triton create', function (t) {
+        h.safeTriton(t, ['create', '-wjn', INST_ALIAS, imgId, pkgId],
             function (stdout) {
 
             // parse JSON response
@@ -72,13 +166,13 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // test `triton instance -j` with the UUID, the alias, and the short ID
-    tt.test('triton instance', function (t) {
+    tt.test('  triton instance', function (t) {
         var uuid = instance.id;
         var shortId = common.uuidToShortId(uuid);
         vasync.parallel({
             funcs: [
                 function (cb) {
-                    h.safeTriton(t, ['instance', '-j', VM_ALIAS],
+                    h.safeTriton(t, ['instance', '-j', INST_ALIAS],
                         function (stdout) {
                         cb(null, stdout);
                     });
@@ -119,15 +213,15 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // remove instance
-    tt.test('triton delete', function (t) {
+    tt.test('  triton delete', function (t) {
         h.safeTriton(t, ['delete', '-w', instance.id], function (stdout) {
             t.end();
         });
     });
 
     // create a test machine (non-blocking)
-    tt.test('triton create', function (t) {
-        h.safeTriton(t, ['create', '-jn', VM_ALIAS, VM_IMAGE, VM_PACKAGE],
+    tt.test('  triton create', function (t) {
+        h.safeTriton(t, ['create', '-jn', INST_ALIAS, imgId, pkgId],
             function (stdout) {
 
             // parse JSON response
@@ -149,7 +243,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // wait for the machine to start
-    tt.test('triton wait', function (t) {
+    tt.test('  triton wait', function (t) {
         h.safeTriton(t, ['wait', instance.id],
             function (stdout) {
 
@@ -167,8 +261,8 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // stop the machine
-    tt.test('triton stop', function (t) {
-        h.safeTriton(t, ['stop', '-w', VM_ALIAS],
+    tt.test('  triton stop', function (t) {
+        h.safeTriton(t, ['stop', '-w', INST_ALIAS],
             function (stdout) {
             t.ok(stdout.match(/^Stop instance/, 'correct stdout'));
             t.end();
@@ -176,8 +270,8 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // wait for the machine to stop
-    tt.test('triton confirm stopped', function (t) {
-        h.safeTriton(t, {json: true, args: ['instance', '-j', VM_ALIAS]},
+    tt.test('  triton confirm stopped', function (t) {
+        h.safeTriton(t, {json: true, args: ['instance', '-j', INST_ALIAS]},
             function (d) {
             instance = d;
 
@@ -188,8 +282,8 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // start the machine
-    tt.test('triton start', function (t) {
-        h.safeTriton(t, ['start', '-w', VM_ALIAS],
+    tt.test('  triton start', function (t) {
+        h.safeTriton(t, ['start', '-w', INST_ALIAS],
             function (stdout) {
             t.ok(stdout.match(/^Start instance/, 'correct stdout'));
             t.end();
@@ -197,20 +291,17 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // wait for the machine to start
-    tt.test('triton confirm running', function (t) {
-        h.safeTriton(t, {json: true, args: ['instance', '-j', VM_ALIAS]},
-            function (d) {
-
+    tt.test('  confirm running', function (t) {
+        h.safeTriton(t, {json: true, args: ['instance', '-j', INST_ALIAS]},
+                function (d) {
             instance = d;
-
             t.equal(d.state, 'running', 'machine running');
-
             t.end();
         });
     });
 
     // remove test instance
-    tt.test('triton cleanup (delete)', function (t) {
+    tt.test('  cleanup (triton delete)', function (t) {
         h.safeTriton(t, ['delete', '-w', instance.id], function (stdout) {
             t.end();
         });

@@ -1,8 +1,16 @@
 # node-triton changelog
 
-## 2.0.1 (not yet released)
+## 2.1.0 (not yet released)
 
-(nothing yet)
+- Errors and exit status: Change `Usage` errors to always have an exit status
+  of `2` (per common practice in at least some tooling). Add `ResourceNotFound`
+  error for `triton {instance,package,image,network}` with exit status `3`.
+  This can help tooling (e.g. the test suite uses this in one place). Add
+  `triton help` docs on exit status.
+
+- Test suite: Integration tests always require a config file
+  (either `$TRITON_TEST_CONFIG` path or "test/config.json").
+  Drop the other `TRITON_TEST_*` envvars.
 
 
 ## 2.0.0

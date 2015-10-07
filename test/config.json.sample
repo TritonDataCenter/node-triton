@@ -1,0 +1,23 @@
+{
+    // This is JSON so, obviously, you need to turf the comment lines.
+
+    // Minimally you must define *one* of "profileName" ...
+    "profileName": "env",
+    // ... or "profile":
+    "profile": {
+        "url": "https://us-east-3b.api.joyent.com",
+        "account": "joe.blow",
+        "keyId": "de:e7:73:32:b0:ab:31:cd:72:ef:9f:62:ca:58:a2:ec",
+        "insecure": false
+    }
+
+    // Optional. Set this to allow the parts of the test suite
+    // that create and destroy resources: instances, images, networks, etc.
+    // This is essentially the "safe" guard.
+    "destructiveAllowed": true
+
+    // The params used for test provisions. By default the tests use:
+    // the smallest RAM package, the latest base* image.
+    "package": "<package name or uuid>",
+    "image": "<image uuid, name or name@version>"
+}

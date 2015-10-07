@@ -22,56 +22,54 @@ var mod_config = require('../../lib/config');
 var testcommon = require('../lib/testcommon');
 
 
-// --- globals
 
 var CONFIG;
-if (process.env.TRITON_TEST_PROFILE) {
-    CONFIG = mod_config.loadProfile({
-        configDir: path.join(process.env.HOME, '.triton'),
-        name: process.env.TRITON_TEST_PROFILE
-    });
-    CONFIG.destructiveAllowed = common.boolFromString(
-        process.env.TRITON_TEST_DESTRUCTIVE_ALLOWED);
-} else {
-    try {
-        CONFIG = require('../config.json');
-        assert.object(CONFIG, 'test/config.json');
-        assert.string(CONFIG.url, 'test/config.json#url');
-        assert.string(CONFIG.account, 'test/config.json#account');
-        assert.string(CONFIG.keyId, 'test/config.json#keyId');
-        assert.optionalBool(CONFIG.insecure,
-            'test/config.json#insecure');
-        assert.optionalBool(CONFIG.destructiveAllowed,
-            'test/config.json#destructiveAllowed');
-    } catch (e) {
-        error('* * *');
-        error('node-triton integration tests require either:');
-        error('');
-        error('1. environment variables like:');
-        error('');
-        error('    TRITON_TEST_PROFILE=<Triton profile name>');
-        error('    TRITON_TEST_DESTRUCTIVE_ALLOWED=1   # Optional');
-        error('');
-        error('2. or, a "./test/config.json" like this:');
-        error('');
-        error('    {');
-        error('        "url": "<CloudAPI URL>",');
-        error('        "account": "<account>",');
-        error('        "keyId": "<ssh key fingerprint>",');
-        error('        "insecure": true|false,  // optional');
-        error('        "destructiveAllowed": true|false  // optional');
-        error('    }');
-        error('');
-        error('Note: This test suite will create machines, images, etc. ');
-        error('using this CloudAPI and account. While it will do its best');
-        error('to clean up all resources, running the test suite against');
-        error('a public cloud could *cost* you money. :)');
-        error('* * *');
-        throw e;
+var configPath = process.env.TRITON_TEST_CONFIG
+        ? path.resolve(process.cwd(), process.env.TRITON_TEST_CONFIG)
+        : path.resolve(__dirname, '..', 'config.json');
+try {
+    CONFIG = require(configPath);
+    assert.object(CONFIG, configPath);
+    if (CONFIG.profile && CONFIG.profileName) {
+        throw new Error(
+            'cannot specify both "profile" and "profileName" in ' +
+            configPath);
+    } else if (CONFIG.profile) {
+        assert.string(CONFIG.profile.url, 'CONFIG.profile.url');
+        assert.string(CONFIG.profile.account, 'CONFIG.profile.account');
+        assert.string(CONFIG.profile.keyId, 'CONFIG.profile.keyId');
+        assert.optionalBool(CONFIG.profile.insecure,
+            'CONFIG.profile.insecure');
+    } else if (CONFIG.profileName) {
+        CONFIG.profile = mod_config.loadProfile({
+            configDir: path.join(process.env.HOME, '.triton'),
+            name: CONFIG.profileName
+        });
+    } else {
+        throw new Error('one of "profile" or "profileName" must be defined ' +
+            'in ' + configPath);
     }
+    assert.optionalBool(CONFIG.destructiveAllowed,
+        'test/config.json#destructiveAllowed');
+} catch (e) {
+    error('* * *');
+    error('node-triton integration tests require a config file. By default');
+    error('it looks for "test/config.json". Or you can set the');
+    error('TRITON_TEST_CONFIG envvar. E.g.:');
+    error('');
+    error('    TRITON_TEST_CONFIG=test/coal.json make test');
+    error('');
+    error('See "test/config.json.sample" for a starting point for a config.');
+    error('');
+    error('Warning: This test suite will create machines, images, etc. ');
+    error('using this CloudAPI and account. While it will do its best');
+    error('to clean up all resources, running the test suite against');
+    error('a public cloud could *cost* you money. :)');
+    error('* * *');
+    throw e;
 }
-if (CONFIG.insecure === undefined)
-    CONFIG.insecure = false;
+if (CONFIG.profile.insecure === undefined)
+    CONFIG.profile.insecure = false;
 if (CONFIG.destructiveAllowed === undefined)
     CONFIG.destructiveAllowed = false;
 
@@ -81,8 +79,6 @@ var UA = 'node-triton-test';
 var LOG = require('../lib/log');
 
 
-
-// --- internal support routines
 
 /*
  * Call the `triton` CLI with the given args.
@@ -101,10 +97,10 @@ function triton(args, cb) {
                 HOME: process.env.HOME,
                 SSH_AUTH_SOCK: process.env.SSH_AUTH_SOCK,
                 TRITON_PROFILE: 'env',
-                TRITON_URL: CONFIG.url,
-                TRITON_ACCOUNT: CONFIG.account,
-                TRITON_KEY_ID: CONFIG.keyId,
-                TRITON_TLS_INSECURE: CONFIG.insecure
+                TRITON_URL: CONFIG.profile.url,
+                TRITON_ACCOUNT: CONFIG.profile.account,
+                TRITON_KEY_ID: CONFIG.profile.keyId,
+                TRITON_TLS_INSECURE: CONFIG.profile.insecure
             }
         },
         log: LOG
