@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 2.1.2 (not yet released)
+
+(nothing yet)
+
+
 ## 2.1.1
 
 - #40 Update smartdc-auth so that newer OpenSSH `ssh-keygen` default
