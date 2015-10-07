@@ -2,6 +2,8 @@
 
 ## 2.1.1 (not yet released)
 
+- #40 Update smartdc-auth so that newer OpenSSH `ssh-keygen` default
+  fingerprint formats for setting `keyId` work.
 - #39 Test suite: Change the test config 'destructiveAllowed' var to
   'writeActionsAllowed'.
 

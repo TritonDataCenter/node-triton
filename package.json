@@ -19,7 +19,7 @@
     "restify-clients": "1.1.0",
     "restify-errors": "3.0.0",
     "sshpk": "1.2.1",
-    "smartdc-auth": "git+https://github.com/joyent/node-smartdc-auth.git#3be3c1e",
+    "smartdc-auth": "2.1.2",
     "strsplit": "1.0.0",
     "tabula": "1.6.1",
     "tilde-expansion": "0.0.0",
@@ -36,6 +36,10 @@
   },
   "bin": {
     "triton": "./bin/triton"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/joyent/node-triton.git"
   },
   "engines": {
     "node": ">=0.10"
