@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 2.1.0 (not yet released)
+## 2.1.0
 
 - Errors and exit status: Change `Usage` errors to always have an exit status
   of `2` (per common practice in at least some tooling). Add `ResourceNotFound`
