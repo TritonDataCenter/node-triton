@@ -2,7 +2,7 @@
 
 ## 2.1.2 (not yet released)
 
-(nothing yet)
+- #41 Add compatibility with ed25519 keys in ssh-agent
 
 
 ## 2.1.1
