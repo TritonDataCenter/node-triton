@@ -1,5 +1,7 @@
 # node-triton changelog
 
+## 2.1.3 (not yet released)
+
 ## 2.1.2
 
 - #41 Add compatibility with ed25519 keys in ssh-agent
