@@ -3,7 +3,7 @@
 ## 2.1.2 (not yet released)
 
 - #41 Add compatibility with ed25519 keys in ssh-agent
-
+- #42 Tools using sshpk should lock in an exact version
 
 ## 2.1.1
 
