@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 2.1.3 (not yet released)
+## 2.1.3
 
 - #44 'triton rm' alias for delete
 - #43 `triton profile ...` doesn't use the profile from `TRITON_PROFILE` envvar
