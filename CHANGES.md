@@ -2,7 +2,8 @@
 
 ## 2.1.4 (not yet released)
 
-(nothing yet)
+- #49: `triton create ... --firewall` to enable [Cloud
+  Firewall](https://docs.joyent.com/public-cloud/network/firewall).
 
 
 ## 2.1.3
