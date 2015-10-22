@@ -2,6 +2,7 @@
 
 ## 2.1.4 (not yet released)
 
+- #51: Update deps to get dtrace-provider 0.6 build fix for node v4.2.x.
 - #49: `triton create ... --firewall` to enable [Cloud
   Firewall](https://docs.joyent.com/public-cloud/network/firewall).
 
