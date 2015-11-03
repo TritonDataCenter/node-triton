@@ -1,8 +1,15 @@
 # node-triton changelog
 
-## 2.1.5 (not yet released)
+## 3.0.0 (not yet released)
 
-(nothing yet)
+- #54 RBAC support, see <https://docs.joyent.com/public-cloud/rbac> to start.
+    - [Backward incompatible.] The `triton` CLI option for the cloudapi URL has
+      changed from `--url,-u` to **`--url,-U`**.
+    - Add `triton --user,-u USER` CLI option and `TRITON_USER` (or `SDC_USER`)
+      environment variable support for specifying the RBAC user.
+    - `triton profiles` now shows the optional `user` fields.
+    - A (currently experimental and hidden) `triton rbac ...` command to
+      house RBAC CLI functionality.
 
 
 ## 2.1.4
