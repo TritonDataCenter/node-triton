@@ -12,6 +12,8 @@
       house RBAC CLI functionality.
     - `triton rbac users` to list all users.
     - `triton rbac user ...` to show, create, edit and delete users.
+    - `triton rbac roles` to list all roles.
+    - `triton rbac role ...` to show, create, edit and delete roles.
 
 
 ## 2.1.4
