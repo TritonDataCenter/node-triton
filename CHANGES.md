@@ -10,6 +10,8 @@
     - `triton profiles` now shows the optional `user` fields.
     - A (currently experimental and hidden) `triton rbac ...` command to
       house RBAC CLI functionality.
+    - `triton rbac users` to list all users.
+    - `triton rbac user ...` to show, create, edit and delete users.
 
 
 ## 2.1.4
