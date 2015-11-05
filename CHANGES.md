@@ -16,6 +16,8 @@
     - `triton rbac role ...` to show, create, edit and delete roles.
     - `triton rbac policies` to list all policies.
     - `triton rbac policy ...` to show, create, edit and delete policies.
+    - `triton rbac keys` to list all RBAC user SSH keys.
+    - `triton rbac key ...` to show, create, edit and delete user keys.
 
 
 ## 2.1.4
