@@ -14,6 +14,8 @@
     - `triton rbac user ...` to show, create, edit and delete users.
     - `triton rbac roles` to list all roles.
     - `triton rbac role ...` to show, create, edit and delete roles.
+    - `triton rbac policies` to list all policies.
+    - `triton rbac policy ...` to show, create, edit and delete policies.
 
 
 ## 2.1.4
