@@ -18,6 +18,10 @@
     - `triton rbac policy ...` to show, create, edit and delete policies.
     - `triton rbac keys` to list all RBAC user SSH keys.
     - `triton rbac key ...` to show, create, edit and delete user keys.
+    - `triton rbac info` will dump a summary of the full current RBAC
+      configuration. This command is still in development.
+    - `triton rbac instance-role-tags ...` to list and manage role tags
+      on an instance.
 
 
 ## 2.1.4
