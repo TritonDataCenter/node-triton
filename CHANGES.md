@@ -22,6 +22,8 @@
       configuration. This command is still in development.
     - `triton rbac instance-role-tags ...` to list and manage role tags
       on an instance.
+    - `triton rbac role-tags ...` lower-level command for managing role
+      tags directly on cloudapi RBAC resource *urls*.
 
 
 ## 2.1.4
