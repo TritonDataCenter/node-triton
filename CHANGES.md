@@ -22,6 +22,8 @@
       configuration. This command is still in development.
     - `triton rbac {instance,image,network,package,}role-tags ...` to list 
       and manage role tags on each of those resources.
+- #55 Update of smartdc-auth/sshpk deps, removal of duplicated code for
+  composing Authorization headers
 
 
 ## 2.1.4
