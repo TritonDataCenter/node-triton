@@ -1,0 +1,43 @@
+{
+    "users": [
+        { "login": "emma", "email": "emma@simple.example.com", "keys": "rbac-user-keys" },
+        { "login": "bert", "email": "bert@simple.example.com" }
+    ],
+    "roles": [
+        {
+            "name": "admin",
+            "default_members": [],
+            "members": ["emma"],
+            "policies": ["policy-admin"]
+        },
+        {
+            "name": "ops",
+            "default_members": ["emma"],
+            "members": ["emma"],
+            "policies": ["policy-full"]
+        },
+        {
+            "name": "read",
+            "default_members": ["bert", "emma"],
+            "members": ["bert", "emma"],
+            "policies": ["policy-readonly"]
+        }
+    ],
+    "policies": [
+        {
+            "name": "policy-admin",
+            "description": "full access",
+            "rules": ["CAN *"]
+        },
+        {
+            "name": "policy-full",
+            "description": "full access, except rbac",
+            "rules": ["CAN compute:*"]
+        },
+        {
+            "name": "policy-readonly",
+            "description": "read-only access",
+            "rules": ["CAN compute:Get*"]
+        }
+    ]
+}

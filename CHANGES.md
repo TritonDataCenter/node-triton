@@ -18,10 +18,13 @@
     - `triton rbac policy ...` to show, create, edit and delete policies.
     - `triton rbac keys` to list all RBAC user SSH keys.
     - `triton rbac key ...` to show, create, edit and delete user keys.
-    - `triton rbac info` will dump a summary of the full current RBAC
-      configuration. This command is still in development.
     - `triton rbac {instance,image,network,package,}role-tags ...` to list 
       and manage role tags on each of those resources.
+    - `triton rbac info` will dump a summary of the full current RBAC
+      state. This command is still in development.
+    - `triton rbac apply` will synchronize a local RBAC config (by default it
+      looks for "./rbac.json") to live RBAC state. Current the RBAC config
+      file format is undocumented. See "examples/rbac-\*" for examples.
 - #55 Update of smartdc-auth/sshpk deps, removal of duplicated code for
   composing Authorization headers
 
