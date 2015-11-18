@@ -2,7 +2,8 @@
 
 ## 3.0.1 (not yet released)
 
-(nothing yet)
+- #54 `triton rbac info` improvements: better help, use brackets to show
+  non-default roles.
 
 
 ## 3.0.0
