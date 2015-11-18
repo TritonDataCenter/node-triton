@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 3.0.0 (not yet released)
+## 3.0.0
 
 - #54 RBAC support, see <https://docs.joyent.com/public-cloud/rbac> to start.
     - [Backward incompatible.] The `triton` CLI option for the cloudapi URL has
