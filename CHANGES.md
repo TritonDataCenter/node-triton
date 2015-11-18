@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 3.0.1 (not yet released)
+
+(nothing yet)
+
+
 ## 3.0.0
 
 - #54 RBAC support, see <https://docs.joyent.com/public-cloud/rbac> to start.
