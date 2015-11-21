@@ -82,11 +82,24 @@ var LOG = require('../lib/log');
 
 /*
  * Call the `triton` CLI with the given args.
+ *
+ * @param args {String|Array} Required. CLI arguments to `triton ...` (without
+ *      the "triton"). This can be an array of args, or a string.
+ * @param opts {Object} Optional.
+ *      - opts.cwd {String} cwd option to exec.
+ * @param cb {Function}
  */
-function triton(args, cb) {
+function triton(args, opts, cb) {
     var command = [].concat(TRITON).concat(args);
     if (typeof (args) === 'string')
         command = command.join(' ');
+    if (cb === undefined) {
+        cb = opts;
+        opts = {};
+    }
+    assert.object(opts, 'opts');
+    assert.optionalString(opts.cwd, 'opts.cwd');
+    assert.func(cb, 'cb');
 
     testcommon.execPlus({
         command: command,
@@ -101,7 +114,8 @@ function triton(args, cb) {
                 TRITON_ACCOUNT: CONFIG.profile.account,
                 TRITON_KEY_ID: CONFIG.profile.keyId,
                 TRITON_TLS_INSECURE: CONFIG.profile.insecure
-            }
+            },
+            cwd: opts.cwd
         },
         log: LOG
     }, cb);

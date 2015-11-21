@@ -1,6 +1,6 @@
 {
     "users": [
-        { "login": "emma", "email": "emma@simple.example.com", "keys": "rbac-user-keys" },
+        { "login": "emma", "email": "emma@simple.example.com" },
         { "login": "bert", "email": "bert@simple.example.com" }
     ],
     "roles": [

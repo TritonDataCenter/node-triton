@@ -2,8 +2,23 @@
 
 ## 3.0.1 (not yet released)
 
-- #54 `triton rbac info` improvements: better help, use brackets to show
-  non-default roles.
+- #54 RBAC support, see <https://docs.joyent.com/public-cloud/rbac> to start.
+    - `triton rbac info` improvements: better help, use brackets to show
+      non-default roles.
+    - `triton rbac reset`
+    - change `triton rbac user USER` output a little for the 'keys' (show
+      the key fingerprint and name instead of the key content), 'roles',
+      and 'default_roles' fields.
+- #54 *Drop* support for shortIds for `triton rbac {users,roles,policies}`
+  commands. They all have unique *`name`* fields, just use that.
+- #54 `triton rbac apply` will implicitly look for a user key file at
+  "./rbac-user-keys/$login.pub" if no `keys` field is provided in the
+  "rbac.json" config file.
+- Change default `triton keys` and `triton rbac keys` output to be tabular.
+  Otherwise it is a little obtuse to see fingerprints (which is what currently
+  must be included in a profile). `triton [rbac] keys -A` can be used to
+  get the old behaviour (just the key content, i.e. output appropriate
+  for "~/.ssh/authorized\_keys").
 
 
 ## 3.0.0
@@ -24,7 +39,7 @@
     - `triton rbac policy ...` to show, create, edit and delete policies.
     - `triton rbac keys` to list all RBAC user SSH keys.
     - `triton rbac key ...` to show, create, edit and delete user keys.
-    - `triton rbac {instance,image,network,package,}role-tags ...` to list 
+    - `triton rbac {instance,image,network,package,}role-tags ...` to list
       and manage role tags on each of those resources.
     - `triton rbac info` will dump a summary of the full current RBAC
       state. This command is still in development.
