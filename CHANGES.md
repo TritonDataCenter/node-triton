@@ -2,6 +2,8 @@
 
 ## 3.0.1 (not yet released)
 
+- #54 `triton rbac role-tags` for now can't be hidden (as long we have the
+  need to role-tag raw resource URLs like '/my/images').
 - #54 `triton rbac apply --dev-create-keys-and-profiles` for
   experimenting/dev/testing to quickly generate and add user keys and setup
   Triton CLI profiles for all users in the RBAC config.
