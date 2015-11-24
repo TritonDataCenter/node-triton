@@ -2,6 +2,9 @@
 
 ## 3.0.1 (not yet released)
 
+- #54 `triton rbac apply --dev-create-keys-and-profiles` for
+  experimenting/dev/testing to quickly generate and add user keys and setup
+  Triton CLI profiles for all users in the RBAC config.
 - #54 RBAC support, see <https://docs.joyent.com/public-cloud/rbac> to start.
     - `triton rbac info` improvements: better help, use brackets to show
       non-default roles.
