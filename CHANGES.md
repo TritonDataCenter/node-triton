@@ -2,7 +2,13 @@
 
 ## 3.1.1 (not yet released)
 
-(nothing yet)
+- `triton --accept-version VER` hidden top-level option for development. This
+  allows calling the target cloudapi with the given value for the
+  "Accept-Version" header -- which is how CloudAPI does API versioning.
+  By default `triton` is coded to a particular cloudapi version range, so
+  forcing a different version *could* result in breaking in the triton client
+  code that handles the response. IOW, this is just a tool for developers
+  of this Triton client and CloudAPI itself.
 
 
 ## 3.1.0
