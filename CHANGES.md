@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 3.1.0 (not yet released)
+## 3.1.0
 
 - New (hidden for now, i.e. experimental) `triton env ...` to dump
   `eval`able shell commands for
