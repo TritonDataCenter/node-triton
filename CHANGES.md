@@ -16,14 +16,11 @@
         sdc-listmachines
 
   I think this should grow to support setting up Docker env as well.
-
 - #54 `triton rbac role-tags` for now can't be hidden (as long we have the
   need to role-tag raw resource URLs like '/my/images').
-
 - #54 `triton rbac apply --dev-create-keys-and-profiles` for
   experimenting/dev/testing to quickly generate and add user keys and setup
   Triton CLI profiles for all users in the RBAC config.
-
 - #54 RBAC support, see <https://docs.joyent.com/public-cloud/rbac> to start.
     - `triton rbac info` improvements: better help, use brackets to show
       non-default roles.
@@ -31,14 +28,11 @@
     - change `triton rbac user USER` output a little for the 'keys' (show
       the key fingerprint and name instead of the key content), 'roles',
       and 'default_roles' fields.
-
 - #54 *Drop* support for shortIds for `triton rbac {users,roles,policies}`
   commands. They all have unique *`name`* fields, just use that.
-
 - #54 `triton rbac apply` will implicitly look for a user key file at
   "./rbac-user-keys/$login.pub" if no `keys` field is provided in the
   "rbac.json" config file.
-
 - Change default `triton keys` and `triton rbac keys` output to be tabular.
   Otherwise it is a little obtuse to see fingerprints (which is what currently
   must be included in a profile). `triton [rbac] keys -A` can be used to
