@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 3.1.1 (not yet released)
+
+(nothing yet)
+
+
 ## 3.1.0
 
 - New (hidden for now, i.e. experimental) `triton env ...` to dump
