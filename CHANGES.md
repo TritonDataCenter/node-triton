@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 3.2.1 (not yet released)
+
+(nothing yet)
+
+
 ## 3.2.0
 
 - #58 `triton --act-as=ACCOUNT ...` for an operator account to auth as
