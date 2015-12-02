@@ -1,7 +1,10 @@
 # node-triton changelog
 
-## 3.1.1 (not yet released)
+## 3.2.0 (not yet released)
 
+- #58 `triton --act-as=ACCOUNT ...` for an operator account to auth as
+  themself, but operator on another account's resources. Note that operator
+  accesses like this are audited on the CloudAPI server side.
 - `triton --accept-version VER` hidden top-level option for development. This
   allows calling the target cloudapi with the given value for the
   "Accept-Version" header -- which is how CloudAPI does API versioning.
