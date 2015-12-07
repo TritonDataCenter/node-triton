@@ -142,9 +142,16 @@ test('triton manage workflow', opts, function (tt) {
 
     // create a test machine (blocking) and output JSON
     tt.test('  triton create', function (t) {
-        h.safeTriton(t, ['create', '-wjn', INST_ALIAS, imgId, pkgId],
-            function (stdout) {
+        var argv = [
+            'create',
+            '-wj',
+            '-m', 'foo=bar',
+            '--script', __dirname + '/script-log-boot.sh',
+            '-n', INST_ALIAS,
+            imgId, pkgId
+        ];
 
+        h.safeTriton(t, argv, function (stdout) {
             // parse JSON response
             var lines = stdout.trim().split('\n');
             t.equal(lines.length, 2, 'correct number of JSON lines');
@@ -159,6 +166,8 @@ test('triton manage workflow', opts, function (tt) {
 
             instance = lines[1];
             t.equal(lines[0].id, lines[1].id, 'correct UUID given');
+            t.equal(lines[0].metadata.foo, 'bar', 'foo metadata set');
+            t.ok(lines[0].metadata['user-script'], 'user-script set');
             t.equal(lines[1].state, 'running', 'correct machine state');
 
             t.end();
@@ -204,6 +213,7 @@ test('triton manage workflow', opts, function (tt) {
                 t.end();
             }
 
+            t.equal(output[0].metadata.foo, 'bar', 'foo metadata set');
             output.forEach(function (res) {
                 t.deepEqual(output[0], res, 'same data');
             });
@@ -218,6 +228,9 @@ test('triton manage workflow', opts, function (tt) {
             t.end();
         });
     });
+
+    // TODO: would be nice to have a `triton ssh cat /var/log/boot.log` to
+    //      verify the user-script worked.
 
     // create a test machine (non-blocking)
     tt.test('  triton create', function (t) {

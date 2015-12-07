@@ -1,8 +1,14 @@
 # node-triton changelog
 
-## 3.2.1 (not yet released)
+## 3.3.0 (not yet released)
 
-(nothing yet)
+- #59 CLI options to `triton create` to add metadata on instance creation:
+    - `triton create -m,--metadata KEY=VALUE` to add a single value
+    - `triton create -m,--metadata @FILE` to add values from a JSON
+      or key/value-per-line file
+    - `triton create -M,--metadata-file KEY=FILE` to set a key from a file
+    - `triton create --script FILE` to set the special "user-script" key
+      from a file
 
 
 ## 3.2.0

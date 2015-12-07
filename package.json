@@ -1,10 +1,10 @@
 {
   "name": "triton",
   "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "author": "Joyent (joyent.com)",
   "dependencies": {
-    "assert-plus": "0.1.5",
+    "assert-plus": "0.2.0",
     "backoff": "2.4.1",
     "bigspinner": "3.1.0",
     "bunyan": "1.5.1",
