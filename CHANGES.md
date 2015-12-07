@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 3.3.0 (not yet released)
+## 3.3.0
 
 - #59 CLI options to `triton create` to add metadata on instance creation:
     - `triton create -m,--metadata KEY=VALUE` to add a single value
