@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 3.3.1 (not yet released)
+
+(nothing yet)
+
+
 ## 3.3.0
 
 - #59 CLI options to `triton create` to add metadata on instance creation:
