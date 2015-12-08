@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 3.4.0 (not yet released)
+## 3.4.0
 
 - Improvements for using node-triton as a module. E.g. a simple example:
 
