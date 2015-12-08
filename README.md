@@ -74,7 +74,7 @@ For a more permanent installation:
     triton completion > /usr/local/etc/bash_completion.d/triton
 
 
-## Examples
+## `triton` CLI Usage
 
 ### Create and view instances
 
@@ -214,6 +214,33 @@ as a single `DOCKER_HOST`. See the [Triton Docker
 documentation](https://apidocs.joyent.com/docker) for more information.)
 
 
+## `TritonApi` Module Usage
+
+Node-triton can also be used as a node module for your own node.js tooling.
+A basic example:
+
+    var triton = require('triton');
+
+    // See `createClient` block comment for full usage details:
+    //      https://github.com/joyent/node-triton/blob/master/lib/index.js
+    var client = triton.createClient({
+        profile: {
+            url: URL,
+            account: ACCOUNT,
+            keyId: KEY_ID
+        }
+    });
+    client.listImages(function (err, images) {
+        client.close();   // Remember to close the client to close TCP conn.
+        if (err) {
+            console.error('listImages err:', err);
+        } else {
+            console.log(JSON.stringify(images, null, 4));
+        }
+    });
+
+
+
 ## Configuration
 
 This section defines all the vars in a TritonApi config. The baked in defaults
@@ -229,7 +256,8 @@ are in "etc/defaults.json" and can be overriden for the CLI in
 ## node-triton differences with node-smartdc
 
 - There is a single `triton` command instead of a number of `sdc-*` commands.
-- The `SDC_USER` env variable is accepted in preference to `SDC_ACCOUNT`.
+- `TRITON_*` environment variables are preferred to the `SDC_*` environment
+  variables. However the `SDC_*` envvars are still supported.
 
 
 ## cloudapi2.js differences with node-smartdc/lib/cloudapi.js

@@ -18,7 +18,7 @@ var f = require('util').format;
 var path = require('path');
 
 var common = require('../../lib/common');
-var mod_config = require('../../lib/config');
+var mod_triton = require('../../');
 var testcommon = require('../lib/testcommon');
 
 
@@ -41,7 +41,7 @@ try {
         assert.optionalBool(CONFIG.profile.insecure,
             'CONFIG.profile.insecure');
     } else if (CONFIG.profileName) {
-        CONFIG.profile = mod_config.loadProfile({
+        CONFIG.profile = mod_triton.loadProfile({
             configDir: path.join(process.env.HOME, '.triton'),
             name: CONFIG.profileName
         });
@@ -160,11 +160,24 @@ function safeTriton(t, opts, cb) {
 }
 
 
+/*
+ * Create a TritonApi client using the CLI.
+ */
+function createClient() {
+    return mod_triton.createClient({
+        log: LOG,
+        profile: CONFIG.profile,
+        configDir: '~/.triton'   // piggy-back on Triton CLI config dir
+    });
+}
+
+
 // --- exports
 
 module.exports = {
     CONFIG: CONFIG,
     triton: triton,
     safeTriton: safeTriton,
+    createClient: createClient,
     ifErr: testcommon.ifErr
 };

@@ -1,8 +1,17 @@
 # node-triton changelog
 
-## 3.3.1 (not yet released)
+## 3.4.0 (not yet released)
 
-(nothing yet)
+- Improvements for using node-triton as a module. E.g. a simple example:
+
+        var triton = require('triton');
+        var client = triton.createClient({profileName: 'env'});
+        client.listImages(function (err, imgs) {
+            console.log(err);
+            console.log(imgs);
+        });
+
+  See the README and "lib/index.js" for more info.
 
 
 ## 3.3.0
