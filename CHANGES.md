@@ -2,7 +2,8 @@
 
 ## 3.4.1 (not yet released)
 
-(nothing yet)
+- Add `-d,--data <data>` option to `triton cloudapi`.
+- Fix `triton rbac role ROLE`.
 
 
 ## 3.4.0
