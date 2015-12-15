@@ -36,7 +36,7 @@ If you do not already have an account on Joyent Public Cloud, sign up [here](htt
 ### API endpoint
 
 Each data center has a single CloudAPI endpoint. For Joyent Public Cloud, you can find the
-list of datacenters [here](https://docs.joyent.com/public-cloud/api-access/cloudapi#datacenter-urls).
+list of datacenters [here](https://docs.joyent.com/public-cloud/data-centers).
 For private cloud implementations, please consult the private cloud operator for the correct URL.
 Have the URL handy as you'll need it in the next step.
 
