@@ -2,6 +2,7 @@
 
 ## 3.4.1 (not yet released)
 
+- #60 Display `vcpus` in `triton packages` output.
 - Add `-d,--data <data>` option to `triton cloudapi`.
 - Fix `triton rbac role ROLE`. Also get that command to have a stable order for the
   displayed fields.
