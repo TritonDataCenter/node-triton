@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 3.4.1 (not yet released)
+## 3.4.1
 
 - #60 Display `vcpus` in `triton packages` output.
 - Add `-d,--data <data>` option to `triton cloudapi`.
