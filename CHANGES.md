@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 3.4.2 (not yet released)
+
+(nothing yet)
+
+
 ## 3.4.1
 
 - #60 Display `vcpus` in `triton packages` output.
