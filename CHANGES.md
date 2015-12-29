@@ -2,6 +2,7 @@
 
 ## 3.4.2 (not yet released)
 
+- #63 "triton images" with a filter should not be cached.
 - #65 Fix `triton profile(s)` handling when the user has no profiles yet.
 
 
