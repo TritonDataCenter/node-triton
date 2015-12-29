@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 3.4.3 (not yet released)
+
+(nothing yet)
+
+
 ## 3.4.2
 
 - #63 "triton images" with a filter should not be cached.
