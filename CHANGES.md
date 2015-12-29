@@ -2,7 +2,7 @@
 
 ## 3.4.2 (not yet released)
 
-(nothing yet)
+- #65 Fix `triton profile(s)` handling when the user has no profiles yet.
 
 
 ## 3.4.1
