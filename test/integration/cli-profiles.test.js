@@ -34,8 +34,8 @@ if (opts.skip) {
 }
 
 test('triton profiles (read only)', function (tt) {
-    tt.test('  triton profile env', function (t) {
-        h.safeTriton(t, {json: true, args: ['profile', '-j', 'env']},
+    tt.test('  triton profile get env', function (t) {
+        h.safeTriton(t, {json: true, args: ['profile', 'get', '-j', 'env']},
             function (p) {
 
             t.equal(p.account, h.CONFIG.profile.account,
@@ -54,7 +54,7 @@ test('triton profiles (read only)', function (tt) {
 
 test('triton profiles (read/write)', opts, function (tt) {
     tt.test('  triton profile create', function (t) {
-        h.safeTriton(t, ['profile', '-a', PROFILE_FILE],
+        h.safeTriton(t, ['profile', 'create', '-f', PROFILE_FILE],
             function (stdout) {
 
             t.ok(stdout.match(/^Saved profile/), 'stdout correct');
@@ -64,7 +64,7 @@ test('triton profiles (read/write)', opts, function (tt) {
 
     tt.test('  triton profile get', function (t) {
         h.safeTriton(t,
-            {json: true, args: ['profile', '-j', PROFILE_DATA.name]},
+            {json: true, args: ['profile', 'get', '-j', PROFILE_DATA.name]},
             function (p) {
 
             t.deepEqual(p, PROFILE_DATA, 'profile matched');
@@ -74,7 +74,7 @@ test('triton profiles (read/write)', opts, function (tt) {
     });
 
     tt.test('  triton profile delete', function (t) {
-        h.safeTriton(t, ['profile', '-df', PROFILE_DATA.name],
+        h.safeTriton(t, ['profile', 'delete', '-f', PROFILE_DATA.name],
             function (stdout) {
 
             t.ok(stdout.match(/^Deleted profile/), 'stdout correct');

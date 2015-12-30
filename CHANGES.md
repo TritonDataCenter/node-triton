@@ -1,5 +1,26 @@
 # node-triton changelog
 
+## 4.0.0 (not yet released)
+
+- Add the ability to create a profile copying from an existing profile,
+  via `triton profile create --copy NAME`.
+
+- [backwards incompat] #66 `triton profile` now has list, get, etc. sub-commands.
+  One backwards incompatible change here is that `triton profile NAME` is
+  now `triton profile get NAME`. Note that for bwcompat `triton profiles` is
+  a shortcut for `triton profile list`.
+
+- [backwards incompat] #66 `triton image` now has list, get sub-commands.
+  One backwards incompatible change here is that `triton image ID|NAME` is
+  now `triton image get ID|NAME`. Note that for bwcompat `triton images` is
+  a shortcut for `triton image list`.
+
+- [backwards incompat] #66 `triton package` now has list, get sub-commands.
+  One backwards incompatible change here is that `triton package ID|NAME` is
+  now `triton package get ID|NAME`. Note that for bwcompat `triton packages` is
+  a shortcut for `triton package list`.
+
+
 ## 3.6.1 (not yet released)
 
 (nothing yet)
