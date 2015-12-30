@@ -129,7 +129,7 @@ test('triton manage workflow', opts, function (tt) {
             return;
         }
 
-        h.safeTriton(t, ['pkgs', '-j'], function (stdout) {
+        h.safeTriton(t, ['pkg', 'list', '-j'], function (stdout) {
             var pkgs = _jsonStreamParse(stdout);
             // Smallest RAM first.
             tabula.sortArrayOfObjects(pkgs, ['memory']);
