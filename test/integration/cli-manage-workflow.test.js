@@ -100,7 +100,7 @@ test('triton manage workflow', opts, function (tt) {
             'minimal-32': true,
             'base': true
         };
-        h.safeTriton(t, ['imgs', '-j'], function (stdout) {
+        h.safeTriton(t, ['img', 'ls', '-j'], function (stdout) {
             var imgs = _jsonStreamParse(stdout);
             // Newest images first.
             tabula.sortArrayOfObjects(imgs, ['-published_at']);
