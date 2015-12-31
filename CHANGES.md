@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 3.5.1 (not yet released)
+
+(nothing yet)
+
+
 ## 3.5.0
 
 - #67 Add `triton create --tag|-t ...` option for adding tags on instance creation.
