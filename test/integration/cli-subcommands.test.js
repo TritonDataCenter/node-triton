@@ -22,9 +22,13 @@ var common = require('../../lib/common');
 var subs = [
     ['info'],
     ['profile'],
-    ['profiles'],
+    ['profile list', 'profile ls', 'profiles'],
+    ['profile get'],
+    ['profile set-current'],
+    ['profile create'],
+    ['profile edit'],
+    ['profile delete', 'profile rm'],
     ['account', 'whoami'],
-    ['keys'],
     ['services'],
     ['datacenters'],
     ['create-instance', 'create'],
@@ -37,12 +41,35 @@ var subs = [
     ['delete-instance', 'delete'],
     ['wait-instance', 'wait'],
     ['ssh'],
-    ['images', 'imgs'],
-    ['image', 'img'],
-    ['packages', 'pkgs'],
-    ['package', 'pkg'],
     ['networks'],
-    ['network']
+    ['network'],
+    ['key'],
+    ['key add'],
+    ['key list', 'key ls', 'keys'],
+    ['key get'],
+    ['key delete', 'key rm'],
+    ['image', 'img'],
+    ['image get'],
+    ['image list', 'images', 'imgs'],
+    ['package', 'pkg'],
+    ['package get'],
+    ['package list', 'packages', 'pkgs'],
+    ['rbac'],
+    ['rbac info'],
+    ['rbac apply'],
+    ['rbac users'],
+    ['rbac user'],
+    ['rbac keys'],
+    ['rbac key'],
+    ['rbac policies'],
+    ['rbac policy'],
+    ['rbac roles'],
+    ['rbac role'],
+    ['rbac instance-role-tags'],
+    ['rbac image-role-tags'],
+    ['rbac network-role-tags'],
+    ['rbac package-role-tags'],
+    ['rbac role-tags']
 ];
 
 // --- Tests
@@ -58,8 +85,11 @@ test('triton subcommands', function (ttt) {
             // triton help <subcmd>
             // triton <subcmd> -h
             subcmds.forEach(function (subcmd) {
-                tt.test(f('    triton help %s', subcmd), function (t) {
-                    h.triton(['help', subcmd], function (err, stdout, stderr) {
+                var helpArgs = subcmd.split(' ');
+                helpArgs.splice(helpArgs.length - 1, 0, 'help');
+
+                tt.test(f('    triton %s', helpArgs.join(' ')), function (t) {
+                    h.triton(helpArgs, function (err, stdout, stderr) {
                         if (h.ifErr(t, err, 'no error'))
                             return t.end();
                         t.equal(stderr, '', 'stderr produced');
@@ -69,8 +99,10 @@ test('triton subcommands', function (ttt) {
                     });
                 });
 
-                tt.test(f('    triton %s -h', subcmd), function (t) {
-                    h.triton([subcmd, '-h'], function (err, stdout, stderr) {
+                var flagArgs = subcmd.split(' ').concat('-h');
+
+                tt.test(f('    triton %s', flagArgs.join(' ')), function (t) {
+                    h.triton(flagArgs, function (err, stdout, stderr) {
                         if (h.ifErr(t, err, 'no error'))
                             return t.end();
                         t.equal(stderr, '', 'stderr produced');
