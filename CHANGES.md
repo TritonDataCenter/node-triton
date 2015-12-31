@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 3.6.1 (not yet released)
+
+(nothing yet)
+
+
 ## 3.6.0
 
 - #67 Add `triton create --network,-N NETWORK ...` option for specifying
