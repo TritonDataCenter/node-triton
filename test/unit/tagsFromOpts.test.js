@@ -9,7 +9,7 @@
  */
 
 /*
- * Unit tests for `metadataFromOpts()` used by `triton create ...`.
+ * Unit tests for `tagsFromOpts()` used by `triton create ...`.
  */
 
 var assert = require('assert-plus');
@@ -17,7 +17,7 @@ var dashdash = require('dashdash');
 var format = require('util').format;
 var test = require('tape');
 
-var metadataFromOpts = require('../../lib/do_create_instance').metadataFromOpts;
+var tagsFromOpts = require('../../lib/do_create_instance').tagsFromOpts;
 
 
 // ---- globals
@@ -32,30 +32,28 @@ var debug = function () {};
 
 var OPTIONS = [
     {
-        names: ['metadata', 'm'],
-        type: 'arrayOfString'
-    },
-    {
-        names: ['metadata-file', 'M'],
-        type: 'arrayOfString'
-    },
-    {
-        names: ['script'],
+        names: ['tag', 't'],
         type: 'arrayOfString'
     }
 ];
 
 var cases = [
     {
-        argv: ['triton', 'create', '-m', 'foo=bar'],
+        argv: ['triton', 'create', '-t', 'foo=bar'],
         expect: {
-            metadata: {foo: 'bar'}
+            tags: {foo: 'bar'}
         }
     },
     {
-        argv: ['triton', 'create', '-m', 'foo=bar', '-m', 'bling=bloop'],
+        argv: ['triton', 'create', '--tag', 'foo=bar'],
         expect: {
-            metadata: {
+            tags: {foo: 'bar'}
+        }
+    },
+    {
+        argv: ['triton', 'create', '-t', 'foo=bar', '-t', 'bling=bloop'],
+        expect: {
+            tags: {
                 foo: 'bar',
                 bling: 'bloop'
             }
@@ -63,13 +61,13 @@ var cases = [
     },
     {
         argv: ['triton', 'create',
-            '-m', 'num=42',
-            '-m', 'pi=3.14',
-            '-m', 'yes=true',
-            '-m', 'no=false',
-            '-m', 'array=[1,2,3]'],
+            '-t', 'num=42',
+            '-t', 'pi=3.14',
+            '-t', 'yes=true',
+            '-t', 'no=false',
+            '-t', 'array=[1,2,3]'],
         expect: {
-            metadata: {
+            tags: {
                 num: 42,
                 pi: 3.14,
                 yes: true,
@@ -81,9 +79,9 @@ var cases = [
 
     {
         argv: ['triton', 'create',
-            '-m', '@' + __dirname + '/corpus/metadata.json'],
+            '-t', '@' + __dirname + '/corpus/metadata.json'],
         expect: {
-            metadata: {
+            tags: {
                 'foo': 'bar',
                 'one': 'four',
                 'num': 42
@@ -92,9 +90,9 @@ var cases = [
     },
     {
         argv: ['triton', 'create',
-            '-m', '@' + __dirname + '/corpus/metadata.kv'],
+            '-t', '@' + __dirname + '/corpus/metadata.kv'],
         expect: {
-            metadata: {
+            tags: {
                 'foo': 'bar',
                 'one': 'four',
                 'num': 42
@@ -103,43 +101,11 @@ var cases = [
     },
     {
         argv: ['triton', 'create',
-            '--script', __dirname + '/corpus/user-script.sh'],
-        expect: {
-            metadata: {
-                'user-script': '#!/bin/sh\necho "hi"\n'
-            }
-        }
-    },
-    {
-        argv: ['triton', 'create',
-            '-m', 'foo=bar',
-            '-M', 'user-script=' + __dirname + '/corpus/user-script.sh'],
-        expect: {
-            metadata: {
-                foo: 'bar',
-                'user-script': '#!/bin/sh\necho "hi"\n'
-            }
-        }
-    },
-    {
-        argv: ['triton', 'create',
-            '-m', 'foo=bar',
-            '--metadata-file', 'foo=' + __dirname + '/corpus/user-script.sh'],
-        expect: {
-            metadata: {
-                'foo': '#!/bin/sh\necho "hi"\n'
-            },
-            /* JSSTYLED */
-            stderr: /warning: metadata "foo=.* replaces earlier value for "foo"/
-        }
-    },
-    {
-        argv: ['triton', 'create',
-            '-m', '@' + __dirname + '/corpus/metadata-illegal-types.json'],
+            '-t', '@' + __dirname + '/corpus/metadata-illegal-types.json'],
         expect: {
             err: [
                 /* jsl:ignore */
-                /invalid metadata value type/,
+                /invalid tag value type/,
                 /\(from .*corpus\/metadata-illegal-types.json\)/,
                 /must be one of string/
                 /* jsl:end */
@@ -148,7 +114,7 @@ var cases = [
     },
     {
         argv: ['triton', 'create',
-            '-m', '@' + __dirname + '/corpus/metadata-invalid-json.json'],
+            '-t', '@' + __dirname + '/corpus/metadata-invalid-json.json'],
         expect: {
             err: [
                 /* jsl:ignore */
@@ -161,9 +127,9 @@ var cases = [
 
     {
         argv: ['triton', 'create',
-            '-m', '{"foo":"bar","num":12}'],
+            '-t', '{"foo":"bar","num":12}'],
         expect: {
-            metadata: {
+            tags: {
                 'foo': 'bar',
                 'num': 12
             }
@@ -174,7 +140,7 @@ var cases = [
 
 // ---- test driver
 
-test('metadataFromOpts', function (tt) {
+test('tagsFromOpts', function (tt) {
     cases.forEach(function (c, num) {
         var testName = format('case %d: %s', num, c.argv.join(' '));
         tt.test(testName, function (t) {
@@ -191,7 +157,7 @@ test('metadataFromOpts', function (tt) {
                 stderrChunks.push(s);
             };
 
-            metadataFromOpts(opts, log, function (err, metadata) {
+            tagsFromOpts(opts, log, function (err, tags) {
                 // Restore stderr.
                 process.stderr.write = _oldStderrWrite;
                 var stderr = stderrChunks.join('');
@@ -209,8 +175,8 @@ test('metadataFromOpts', function (tt) {
                 } else {
                     t.ifError(err);
                 }
-                if (c.expect.hasOwnProperty('metadata')) {
-                    t.deepEqual(metadata, c.expect.metadata);
+                if (c.expect.hasOwnProperty('tags')) {
+                    t.deepEqual(tags, c.expect.tags);
                 }
                 if (c.expect.hasOwnProperty('stderr')) {
                     var stderrRegexps = (Array.isArray(c.expect.stderr)

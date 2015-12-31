@@ -147,6 +147,7 @@ test('triton manage workflow', opts, function (tt) {
             '-wj',
             '-m', 'foo=bar',
             '--script', __dirname + '/script-log-boot.sh',
+            '--tag', 'blah=bling',
             '-n', INST_ALIAS,
             imgId, pkgId
         ];
@@ -168,6 +169,7 @@ test('triton manage workflow', opts, function (tt) {
             t.equal(lines[0].id, lines[1].id, 'correct UUID given');
             t.equal(lines[0].metadata.foo, 'bar', 'foo metadata set');
             t.ok(lines[0].metadata['user-script'], 'user-script set');
+            t.equal(lines[0].tags.blah, 'bling', 'blah tag set');
             t.equal(lines[1].state, 'running', 'correct machine state');
 
             t.end();

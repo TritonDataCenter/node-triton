@@ -1,8 +1,9 @@
 # node-triton changelog
 
-## 3.4.3 (not yet released)
+## 3.5.0 (not yet released)
 
-(nothing yet)
+- #67 Add `triton create --tag|-t ...` option for adding tags on instance creation.
+  E.g. `triton create -n NAME -t foo=bar -t @my-tags-file.json IMAGE PACKAGE`.
 
 
 ## 3.4.2
