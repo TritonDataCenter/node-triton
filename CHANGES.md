@@ -1,8 +1,10 @@
 # node-triton changelog
 
-## 3.5.1 (not yet released)
+## 3.6.0 (not yet released)
 
-(nothing yet)
+- #67 Add `triton create --network,-N NETWORK ...` option for specifying
+  networks for instance creation. "NETWORK" is a network id, name, or
+  short id; or a comma-separated array of networks.
 
 
 ## 3.5.0

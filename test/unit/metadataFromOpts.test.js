@@ -13,7 +13,7 @@
  */
 
 var assert = require('assert-plus');
-var dashdash = require('dashdash');
+var cmdln = require('cmdln');
 var format = require('util').format;
 var test = require('tape');
 
@@ -180,7 +180,7 @@ test('metadataFromOpts', function (tt) {
         tt.test(testName, function (t) {
             debug('--', num);
             debug('c: %j', c);
-            var parser = new dashdash.Parser({options: OPTIONS});
+            var parser = new cmdln.dashdash.Parser({options: OPTIONS});
             var opts = parser.parse({argv: c.argv});
             debug('opts: %j', opts);
 
