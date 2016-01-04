@@ -63,7 +63,8 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     tt.test('  cleanup existing inst with alias ' + INST_ALIAS, function (t) {
-        h.triton(['inst', '-j', INST_ALIAS], function (err, stdout, stderr) {
+        h.triton(['inst', 'get', '-j', INST_ALIAS],
+                function (err, stdout, stderr) {
             if (err) {
                 if (err.code === 3) {  // `triton` code for ResourceNotFound
                     t.ok(true, 'no pre-existing alias in the way');
@@ -177,25 +178,25 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // test `triton instance -j` with the UUID, the alias, and the short ID
-    tt.test('  triton instance', function (t) {
+    tt.test('  triton instance get', function (t) {
         var uuid = instance.id;
         var shortId = common.uuidToShortId(uuid);
         vasync.parallel({
             funcs: [
                 function (cb) {
-                    h.safeTriton(t, ['instance', '-j', INST_ALIAS],
+                    h.safeTriton(t, ['instance', 'get', '-j', INST_ALIAS],
                         function (stdout) {
                         cb(null, stdout);
                     });
                 },
                 function (cb) {
-                    h.safeTriton(t, ['instance', '-j', uuid],
+                    h.safeTriton(t, ['instance', 'get', '-j', uuid],
                         function (stdout) {
                         cb(null, stdout);
                     });
                 },
                 function (cb) {
-                    h.safeTriton(t, ['instance', '-j', shortId],
+                    h.safeTriton(t, ['instance', 'get', '-j', shortId],
                         function (stdout) {
                         cb(null, stdout);
                     });
@@ -286,7 +287,7 @@ test('triton manage workflow', opts, function (tt) {
 
     // wait for the machine to stop
     tt.test('  triton confirm stopped', function (t) {
-        h.safeTriton(t, {json: true, args: ['instance', '-j', INST_ALIAS]},
+        h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
             function (d) {
             instance = d;
 
@@ -307,7 +308,7 @@ test('triton manage workflow', opts, function (tt) {
 
     // wait for the machine to start
     tt.test('  confirm running', function (t) {
-        h.safeTriton(t, {json: true, args: ['instance', '-j', INST_ALIAS]},
+        h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
                 function (d) {
             instance = d;
             t.equal(d.state, 'running', 'machine running');
