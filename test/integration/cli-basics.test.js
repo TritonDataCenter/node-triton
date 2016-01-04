@@ -40,7 +40,7 @@ test('triton (basics)', function (tt) {
                 return t.end();
             t.ok(/^Usage:$/m.test(stdout));
             t.ok(/triton help COMMAND/.test(stdout));
-            t.ok(/create-instance/.test(stdout));
+            t.ok(/instance/.test(stdout));
             t.end();
         });
     });
@@ -51,7 +51,7 @@ test('triton (basics)', function (tt) {
                 return t.end();
             t.ok(/^Usage:$/m.test(stdout));
             t.ok(/triton help COMMAND/.test(stdout));
-            t.ok(/create-instance/.test(stdout));
+            t.ok(/instance/.test(stdout));
             t.end();
         });
     });
@@ -62,7 +62,7 @@ test('triton (basics)', function (tt) {
                 return t.end();
             t.ok(/^Usage:$/m.test(stdout));
             t.ok(/triton help COMMAND/.test(stdout));
-            t.ok(/create-instance/.test(stdout));
+            t.ok(/instance/.test(stdout));
             t.end();
         });
     });
