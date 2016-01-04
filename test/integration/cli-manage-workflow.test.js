@@ -259,8 +259,8 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // wait for the machine to start
-    tt.test('  triton wait', function (t) {
-        h.safeTriton(t, ['wait', instance.id],
+    tt.test('  triton inst wait', function (t) {
+        h.safeTriton(t, ['inst', 'wait', instance.id],
             function (stdout) {
 
             // parse JSON response
