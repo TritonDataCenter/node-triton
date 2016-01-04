@@ -17,7 +17,8 @@ var cmdln = require('cmdln');
 var format = require('util').format;
 var test = require('tape');
 
-var metadataFromOpts = require('../../lib/do_create_instance').metadataFromOpts;
+var metadataFromOpts =
+    require('../../lib/do_instance/do_create').metadataFromOpts;
 
 
 // ---- globals

@@ -17,7 +17,7 @@ var cmdln = require('cmdln');
 var format = require('util').format;
 var test = require('tape');
 
-var tagsFromOpts = require('../../lib/do_create_instance').tagsFromOpts;
+var tagsFromOpts = require('../../lib/do_instance/do_create').tagsFromOpts;
 
 
 // ---- globals
