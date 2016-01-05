@@ -2,7 +2,8 @@
 
 ## 4.0.0 (not yet released)
 
-- XXX changes in `triton instance,key,network`
+- XXX changes in `triton instance,key,network,account`.
+  Drops `triton whoami`. Want to keep that?
 
 - Add the ability to create a profile copying from an existing profile,
   via `triton profile create --copy NAME`.
