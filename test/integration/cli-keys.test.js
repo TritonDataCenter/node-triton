@@ -23,17 +23,19 @@ var backoff = require('backoff');
 var KEY_PATH = __dirname + '/data/id_rsa.pub';
 var KEY_SIG  = '66:ca:1c:09:75:99:35:69:be:91:08:25:03:c0:17:c0';
 var KEY_EMAIL = 'test@localhost.local';
+var KEY_NAME = 'testkey';
 var MAX_CHECK_KEY_TRIES = 10;
 
 // --- Tests
 
 test('triton key', function (tt) {
     tt.test(' triton key add', function (t) {
-        h.triton('key add ' + KEY_PATH, function (err, stdout, stderr) {
+        var cmd = 'key add -n ' + KEY_NAME + ' ' + KEY_PATH;
+        h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton key add'))
                 return t.end();
 
-            t.ok(stdout.match('Added key "' + KEY_SIG + '"'));
+            t.equal(stdout, 'Added key "' + KEY_NAME + '" (' + KEY_SIG + ')\n');
             t.end();
         });
     });
@@ -43,7 +45,7 @@ test('triton key', function (tt) {
             if (h.ifErr(t, err, 'triton key get'))
                 return t.end();
 
-            t.ok(stdout.match(KEY_EMAIL));
+            t.ok(stdout.match(KEY_EMAIL), 'test key email present');
             t.end();
         });
     });
@@ -53,13 +55,16 @@ test('triton key', function (tt) {
             if (h.ifErr(t, err, 'triton key list'))
                 return t.end();
 
+            var keys = stdout.split('\n');
+            t.ok(keys[0].match('FINGERPRINT'));
+            keys.shift();
+
             // there should always be at least two keys -- the original
             // account's key, and the test key these tests added
-            var keys = stdout.split('\n');
             t.ok(keys.length > 2, 'triton key list expected key num');
 
             var testKeys = keys.filter(function (key) {
-                return key.match(KEY_EMAIL);
+                return key.match(KEY_NAME);
             });
 
             // this test is a tad dodgy, since it's plausible that there might
@@ -76,7 +81,7 @@ test('triton key', function (tt) {
             if (h.ifErr(t, err, 'triton key delete'))
                 return t.end();
 
-            t.ok(stdout.match('Deleted key "' + KEY_SIG + '"'));
+            t.ok(stdout.match('Deleted key "' + KEY_SIG + '"'), 'key deleted');
 
             // verify key is gone, which sometimes takes a while
             var call = backoff.call(function checkKey(next) {
