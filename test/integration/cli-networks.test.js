@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright (c) 2016, Joyent, Inc.
  */
 
 /*
@@ -27,11 +27,11 @@ var networks;
 
 test('triton networks', function (tt) {
 
-    tt.test(' triton networks -h', function (t) {
+    tt.test(' triton network list -h', function (t) {
         h.triton('networks -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
-            t.ok(/Usage:\s+triton networks/.test(stdout));
+            t.ok(/Usage:\s+triton network list/.test(stdout));
             t.end();
         });
     });
@@ -47,6 +47,16 @@ test('triton networks', function (tt) {
 
     tt.test(' triton networks', function (t) {
         h.triton('networks', function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+            t.ok(/^SHORTID\b/.test(stdout));
+            t.ok(/\bFABRIC\b/.test(stdout));
+            t.end();
+        });
+    });
+
+    tt.test(' triton network list', function (t) {
+        h.triton('network list', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
             t.ok(/^SHORTID\b/.test(stdout));
@@ -84,10 +94,10 @@ test('triton networks', function (tt) {
 });
 
 
-test('triton network', function (tt) {
+test('triton network get', function (tt) {
 
-    tt.test(' triton network -h', function (t) {
-        h.triton('network -h', function (err, stdout, stderr) {
+    tt.test(' triton network get -h', function (t) {
+        h.triton('network get -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
             t.ok(/Usage:\s+triton network\b/.test(stdout));
@@ -95,25 +105,26 @@ test('triton network', function (tt) {
         });
     });
 
-    tt.test(' triton help network', function (t) {
-        h.triton('help network', function (err, stdout, stderr) {
+    tt.test(' triton network help get', function (t) {
+        h.triton('network help get', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
-            t.ok(/Usage:\s+triton network\b/.test(stdout));
+            t.ok(/Usage:\s+triton network get\b/.test(stdout));
             t.end();
         });
     });
 
-    tt.test(' triton network', function (t) {
-        h.triton('network', function (err, stdout, stderr) {
+    tt.test(' triton network get', function (t) {
+        h.triton('network get', function (err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
             t.end();
         });
     });
 
-    tt.test(' triton network ID', function (t) {
-        h.triton('network ' + networks[0].id, function (err, stdout, stderr) {
+    tt.test(' triton network get ID', function (t) {
+        h.triton('network get ' + networks[0].id,
+                function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
             var network = JSON.parse(stdout);
@@ -122,9 +133,9 @@ test('triton network', function (tt) {
         });
     });
 
-    tt.test(' triton network SHORTID', function (t) {
+    tt.test(' triton network get SHORTID', function (t) {
         var shortid = networks[0].id.split('-')[0];
-        h.triton('network ' + shortid, function (err, stdout, stderr) {
+        h.triton('network get ' + shortid, function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
             var network = JSON.parse(stdout);
@@ -133,8 +144,9 @@ test('triton network', function (tt) {
         });
     });
 
-    tt.test(' triton network NAME', function (t) {
-        h.triton('network ' + networks[0].name, function (err, stdout, stderr) {
+    tt.test(' triton network get NAME', function (t) {
+        h.triton('network get ' + networks[0].name,
+                function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
             var network = JSON.parse(stdout);

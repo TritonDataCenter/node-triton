@@ -2,6 +2,8 @@
 
 ## 4.0.0 (not yet released)
 
+- XXX changes in `triton instance,key,network`
+
 - Add the ability to create a profile copying from an existing profile,
   via `triton profile create --copy NAME`.
 
