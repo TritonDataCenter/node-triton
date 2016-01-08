@@ -43,8 +43,8 @@ test('triton account', function (tt) {
         });
     });
 
-    tt.test(' triton account', function (t) {
-        h.triton('account', function (err, stdout, stderr) {
+    tt.test(' triton account get', function (t) {
+        h.triton('account get', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
             t.ok(new RegExp(
@@ -53,8 +53,8 @@ test('triton account', function (tt) {
         });
     });
 
-    tt.test(' triton account -j', function (t) {
-        h.triton('account -j', function (err, stdout, stderr) {
+    tt.test(' triton account get -j', function (t) {
+        h.triton('account get -j', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
             var account = JSON.parse(stdout);
@@ -62,5 +62,4 @@ test('triton account', function (tt) {
             t.end();
         });
     });
-
 });

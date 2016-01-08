@@ -2,6 +2,8 @@
 
 ## 4.0.0 (not yet released)
 
+- Much improved Bash completion.
+
 - XXX changes in `triton instance,key,network,account`.
   Drops `triton whoami`. Want to keep that?
 

@@ -61,17 +61,24 @@ for example:
 
 ### Bash completion
 
-You can quickly source `triton` bash completions in your current
-shell with:
+Install Bash completion with
 
-    source <(triton completion)
+```bash
+triton completion > /usr/local/etc/bash_completion.d/triton
+```
 
-For a more permanent installation:
+Alternatively, if you don't have or don't want to use a "bash\_completion.d"
+dir, then something like this would work:
 
-    triton completion >> ~/.bashrc
+```bash
+triton completion > ~/.triton.completion
+echo "source ~/.triton.completion" >> ~/.bashrc
+```
 
-    # Or maybe:
-    triton completion > /usr/local/etc/bash_completion.d/triton
+Then open a new shell or manually `source FILE` that completion file, and
+play with the bash completions:
+
+    triton <TAB>
 
 
 ## `triton` CLI Usage
