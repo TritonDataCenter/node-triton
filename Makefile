@@ -39,6 +39,8 @@ test-integration:
 clean::
 	rm -f triton-*.tgz
 
+check:: versioncheck
+
 # Ensure CHANGES.md and package.json have the same version.
 .PHONY: versioncheck
 versioncheck:
