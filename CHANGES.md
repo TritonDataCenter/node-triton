@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.0.1 (not yet released)
+
+(nothing yet)
+
+
 ## 4.0.0
 
 - [backwards incompat] #66 New consistent `triton` CLI style. See [the
