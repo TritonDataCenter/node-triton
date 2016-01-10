@@ -36,17 +36,14 @@
 - [backwards incompat] `triton whoami` was dropped. This used to be a shortcut
   for `triton account get`. It could possibly come back.
 
-- *Much* improved Bash completion.
+- *Much* improved [Bash
+  completion](https://github.com/joyent/node-triton#bash-completion). See
+  `triton completion -h` for notes on how to install.
 
 - Add the ability to create a profile copying from an existing profile,
   via `triton profile create --copy NAME`.
 
 - `triton key add` was added (<https://apidocs.joyent.com/cloudapi/#CreateKey>).
-
-
-## 3.6.1 (not yet released)
-
-(nothing yet)
 
 
 ## 3.6.0
