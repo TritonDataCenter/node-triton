@@ -40,7 +40,8 @@ test('triton networks', function (tt) {
         h.triton('help networks', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
-            t.ok(/Usage:\s+triton networks/.test(stdout));
+            // JSSTYLED
+            t.ok(/shortcut for "triton network list"/.test(stdout));
             t.end();
         });
     });

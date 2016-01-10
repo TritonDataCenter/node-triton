@@ -2,28 +2,46 @@
 
 ## 4.0.0 (not yet released)
 
-- Much improved Bash completion.
+- [backwards incompat] #66 New consistent `triton` CLI style. See [the
+  issue](https://github.com/joyent/node-triton/issues/66) for discussion.
 
-- XXX changes in `triton instance,key,network,account`.
-  Drops `triton whoami`. Want to keep that?
+    The major changes is that where some sub-commands used to be some
+    flavour of:
+
+        triton things       # list all the things
+        triton thing ID     # get a thing
+        triton thing -a ID  # create a new thing
+
+    Now commands are consistently:
+
+        triton thing list       # list all the things
+        triton thing get ID     # get a thing
+        triton thing create ... # create a new thing
+        ...
+
+    The most annoying incompatility is the need for "get" to
+    get a thing. E.g.:
+
+        BEFORE                  AFTER
+        triton img blah         triton img get blah
+        triton inst web0        triton inst get web0
+
+    For *listing* things, there is typically a shortcut with
+    the old form, e.g. `triton images` is a shortcut for
+    `triton image list`.
+
+    Currently all of the CLI *except* the experimental `triton rbac ...`
+    is converted to the new consistent style.
+
+- [backwards incompat] `triton whoami` was dropped. This used to be a shortcut
+  for `triton account get`. It could possibly come back.
+
+- *Much* improved Bash completion.
 
 - Add the ability to create a profile copying from an existing profile,
   via `triton profile create --copy NAME`.
 
-- [backwards incompat] #66 `triton profile` now has list, get, etc. sub-commands.
-  One backwards incompatible change here is that `triton profile NAME` is
-  now `triton profile get NAME`. Note that for bwcompat `triton profiles` is
-  a shortcut for `triton profile list`.
-
-- [backwards incompat] #66 `triton image` now has list, get sub-commands.
-  One backwards incompatible change here is that `triton image ID|NAME` is
-  now `triton image get ID|NAME`. Note that for bwcompat `triton images` is
-  a shortcut for `triton image list`.
-
-- [backwards incompat] #66 `triton package` now has list, get sub-commands.
-  One backwards incompatible change here is that `triton package ID|NAME` is
-  now `triton package get ID|NAME`. Note that for bwcompat `triton packages` is
-  a shortcut for `triton package list`.
+- `triton key add` was added (<https://apidocs.joyent.com/cloudapi/#CreateKey>).
 
 
 ## 3.6.1 (not yet released)
