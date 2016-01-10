@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.0.0 (not yet released)
+## 4.0.0
 
 - [backwards incompat] #66 New consistent `triton` CLI style. See [the
   issue](https://github.com/joyent/node-triton/issues/66) for discussion.
