@@ -85,7 +85,7 @@ play with the bash completions:
 
 ### Create and view instances
 
-    $ triton instances
+    $ triton instance list
     SHORTID  NAME  IMG  STATE  PRIMARYIP  AGO
 
 We have no instances created yet, so let's create some.  In order to create
@@ -96,17 +96,17 @@ etc.  More information on images and packages below - for now we'll just use
 SmartOS 64bit and a small 128M ram package which is a combo available on the
 Joyent Public Cloud.
 
-    $ triton create-instance base-64 t4-standard-128M
+    $ triton instance create base-64 t4-standard-128M
 
 Without a name specified, the container created will have a generated ID. Now
 to create a container-native Ubuntu 14.04 container with 2GB of ram with the
 name "server-1"
 
-    $ triton create-instance --name=server-1 ubuntu-14.04 t4-standard-2G
+    $ triton instance create --name=server-1 ubuntu-14.04 t4-standard-2G
 
 Now list your instances again
 
-    $ triton instances
+    $ triton instance list
     SHORTID   NAME      IMG                     STATE         PRIMARYIP        AGO
     7db6c907  b851ba9   base-64@15.2.0          running       165.225.169.63   9m
     9cf1f427  server-1  ubuntu-14.04@20150819   provisioning  -                0s
@@ -127,7 +127,7 @@ Get a quick overview of your account
 
 To obtain more detailed information of your instance
 
-    $ triton instance server-1
+    $ triton instance get server-1
     {
         "id": "9cf1f427-9a40-c188-ce87-fd0c4a5a2c2c",
         "name": "251d4fd",
@@ -184,38 +184,44 @@ Or non-interactively
 
 ### Manage an instance
 
-Commonly used container operations are supported in the Triton CLI.
-More operations will be added to the list over time.
+Commonly used container operations are supported in the Triton CLI:
 
-    $ triton help
+    $ triton help instance
     ...
-    instance-audit            List instance actions.
-    start-instance (start)    Start a single instance.
-    stop-instance (stop)      Stop a single instance.
-    reboot-instance (reboot)  Reboot a single instance.
-    delete-instance (delete)  Delete a single instance.
-    wait-instance (wait)      Wait on instances changing state.
-    ...
+        list (ls)           List instances.
+        get                 Get an instance.
+        create              Create a new instance.
+        delete (rm)         Delete one or more instances.
+
+        start               Start one or more instances.
+        stop                Stop one or more instances.
+        reboot              Reboot one or more instances.
+
+        ssh                 SSH to the primary IP of an instance
+        wait                Wait on instances changing state.
+        audit               List instance actions.
 
 ### View packages and images
 
 Package definitions and images available vary between different data centers
 and different Triton cloud implementations.
 
-To see all the packages offered in the data center and specific package information, use
+To see all the packages offered in the data center and specific package
+information, use
 
-    $ triton packages
-    $ triton package ID|NAME
+    $ triton package list
+    $ triton package get ID|NAME
 
 Similarly, to find out the available images and their details, do
 
-    $ triton images
-    $ triton image ID|NAME
+    $ triton image list
+    $ triton images ID|NAME
 
 Note that docker images are not shown in `triton images` as they are
 maintained in Docker Hub and other third-party registries configured to be
 used with Joyent's Triton clouds. **In general, docker containers should be
-provisioned and managed with the regular [`docker` CLI](https://docs.docker.com/installation/#installation)**
+provisioned and managed with the regular
+[`docker` CLI](https://docs.docker.com/installation/#installation)**
 (Triton provides an endpoint that represents the _entire datacenter_
 as a single `DOCKER_HOST`. See the [Triton Docker
 documentation](https://apidocs.joyent.com/docker) for more information.)
@@ -265,6 +271,9 @@ are in "etc/defaults.json" and can be overriden for the CLI in
 - There is a single `triton` command instead of a number of `sdc-*` commands.
 - `TRITON_*` environment variables are preferred to the `SDC_*` environment
   variables. However the `SDC_*` envvars are still supported.
+- Node-smartdc still has more complete coverage of the Triton
+  [CloudAPI](https://apidocs.joyent.com/cloudapi/). However, `triton` is
+  catching up and is much more friendly to use.
 
 
 ## cloudapi2.js differences with node-smartdc/lib/cloudapi.js
@@ -317,6 +326,9 @@ test-integration`). Integration tests require a config file, by default at
 
 See "test/config.json.sample" for a description of all config vars. Minimally
 just a "profileName" or "profile" is required.
+
+*Warning:* Running the *integration* tests will create resources and could
+incur costs if running against a public cloud.
 
 Run all tests:
 
