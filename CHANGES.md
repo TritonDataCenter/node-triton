@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.0.2 (not yet released)
+
+(nothing yet)
+
+
 ## 4.0.1
 
 - Add `triton env -t` to be able to emit a shell environment to configure `triton` itself.
