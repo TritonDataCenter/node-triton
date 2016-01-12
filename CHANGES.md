@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.0.1 (not yet released)
+## 4.0.1
 
 - Add `triton env -t` to be able to emit a shell environment to configure `triton` itself.
   This allows one to have the following Bash function to select a Triton profile for
