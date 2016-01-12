@@ -2,7 +2,11 @@
 
 ## 4.0.1 (not yet released)
 
-(nothing yet)
+- Add `triton env -t` to be able to emit a shell environment to configure `triton` itself.
+  This allows one to have the following Bash function to select a Triton profile for
+  `triton` and node-smartdc tooling:
+
+        function triton-select { eval $(triton env $1); }
 
 
 ## 4.0.0
