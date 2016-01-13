@@ -1,8 +1,49 @@
 # node-triton changelog
 
-## 4.0.2 (not yet released)
+## 4.1.0 (not yet released)
 
-(nothing yet)
+- #35 More easily distinguish KVM and LX and Docker images and instances.
+
+    In PUBAPI-1161 CloudAPI (v8.0.0) started exposing IMG.type, INST.brand and
+    INST.docker. One of the main issues for users is that telling KVM ubuntu
+    from LX ubuntu is confusing (see also joyent/smartos-live#532).
+
+    tl;dr:
+
+    - `triton image list` default output now includes the `type` instead of
+      `state`. The `state` column is still in output with `-l`, `-j`,
+      `-o state`.
+    - `triton instance list` default output now includes a `flags` column
+      instead of `primaryIp`. The 'D' and 'K' flags identify Docker and KVM
+      instances.
+    - `triton instance list -l` includes the brand.
+
+    Default output examples showing the various cases (and the attempt to
+    stay within 80 columns):
+
+    ```bash
+    $ triton imgs
+    SHORTID   NAME            VERSION   FLAGS  OS       TYPE          PUBDATE
+    1bd84670  minimal-64-lts  14.4.2    P      smartos  zone-dataset  2015-05-28
+    b67492c2  base-64-lts     14.4.2    P      smartos  zone-dataset  2015-05-28
+    ffe82a0a  ubuntu-15.04    20151105  P      linux    lx-dataset    2015-11-05
+    8a1dbc62  centos-6        20160111  P      linux    zvol          2016-01-11
+
+    $ triton insts
+    SHORTID   NAME         IMG                    STATE    FLAGS  AGE
+    da7c6edd  cocky_noyce  3d996aaa               running  DF     10m
+    deedeb42  ubu0         ubuntu-15.04@20151105  running  -      9m
+    aa9ccfda  mini2        minimal-64-lts@14.4.2  running  -      9m
+    e8fc0b96  centi0       centos-6@20160111      running  K      8m
+    ```
+
+- Filtering instances on `docker=true`:
+
+    ```bash
+    $ triton insts docker=true
+    SHORTID   NAME         IMG       STATE    FLAGS  AGE
+    da7c6edd  cocky_noyce  3d996aaa  running  DF     13m
+    ```
 
 
 ## 4.0.1
