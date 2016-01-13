@@ -2,7 +2,8 @@
 
 ## 4.1.0 (not yet released)
 
-- #35 More easily distinguish KVM and LX and Docker images and instances.
+- node-triton#35 More easily distinguish KVM and LX and Docker images and
+  instances.
 
     In PUBAPI-1161 CloudAPI (v8.0.0) started exposing IMG.type, INST.brand and
     INST.docker. One of the main issues for users is that telling KVM ubuntu
