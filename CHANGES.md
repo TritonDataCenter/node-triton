@@ -2,6 +2,8 @@
 
 ## 4.1.0 (not yet released)
 
+- Unhide `triton completion` so hopefully more find it and use it.
+
 - [joyent/node-triton#73] `triton instance list --credentials` to include
   "metadata.credentials" in instance listing.
 
