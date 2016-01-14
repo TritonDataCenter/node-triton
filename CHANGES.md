@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.1.0 (not yet released)
+## 4.1.0
 
 - Unhide `triton completion` so hopefully more find it and use it.
 
