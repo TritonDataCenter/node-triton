@@ -4,7 +4,7 @@
 
 - Unhide `triton completion` so hopefully more find it and use it.
 
-- [joyent/node-triton#73] `triton instance list --credentials` to include
+- node-triton#73 `triton instance list --credentials` to include
   "metadata.credentials" in instance listing.
 
 - node-triton#35 More easily distinguish KVM and LX and Docker images and
