@@ -30,6 +30,7 @@ var subs = [
     ['profile delete', 'profile rm'],
     ['account'],
     ['account get'],
+    ['account update'],
     ['services'],
     ['datacenters'],
     ['instance', 'inst'],

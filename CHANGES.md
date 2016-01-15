@@ -1,8 +1,8 @@
 # node-triton changelog
 
-## 4.1.1 (not yet released)
+## 4.2.0 (not yet released)
 
-(nothing yet)
+- #75 `triton account update ...`
 
 
 ## 4.1.0
