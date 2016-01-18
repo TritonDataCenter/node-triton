@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.2.1 (not yet released)
+
+(nothing yet)
+
+
 ## 4.2.0
 
 - Bash completion: Add completion for *args* to `triton account update <TAB>`.
