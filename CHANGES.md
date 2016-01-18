@@ -2,6 +2,9 @@
 
 ## 4.2.0 (not yet released)
 
+- Bash completion: Add completion for *args* to `triton account update <TAB>`.
+  This isn't perfect because a space is added after completion of "FIELD=",
+  but hopefully is helpful.
 - #75 `triton account update ...`
 
 

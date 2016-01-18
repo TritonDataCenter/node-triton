@@ -6,3 +6,10 @@ function complete_tritonprofile {
         | sed -E 's/^.*\/([^\/]+)\.json$/\1/')
     compgen $compgen_opts -W "$candidates" -- "$word"
 }
+
+function complete_tritonupdateaccountfield {
+    local word="$1"
+    local candidates
+    candidates="{{UPDATE_ACCOUNT_FIELDS}}"
+    compgen $compgen_opts -W "$candidates" -- "$word"
+}
