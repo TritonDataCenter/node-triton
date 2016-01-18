@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.2.0 (not yet released)
+## 4.2.0
 
 - Bash completion: Add completion for *args* to `triton account update <TAB>`.
   This isn't perfect because a space is added after completion of "FIELD=",
