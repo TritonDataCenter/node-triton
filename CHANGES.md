@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.3.2 (not yet released)
+
+(nothing yet)
+
+
 ## 4.3.1
 
 - #77 triton create error in v4.3.0
