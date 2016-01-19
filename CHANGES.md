@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.3.0 (not yet released)
+## 4.3.0
 
 - #76 `triton image create ...` and `triton image wait ...`
 - #72 want `triton image` to still return image details even when it is not in 'active' state 
