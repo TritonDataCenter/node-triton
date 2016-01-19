@@ -2,13 +2,15 @@
 
 ## 4.3.1 (not yet released)
 
-(nothing yet)
+- #77 triton create error in v4.3.0
 
 
 ## 4.3.0
 
+**Bad release. Use >=4.3.1.**
+
 - #76 `triton image create ...` and `triton image wait ...`
-- #72 want `triton image` to still return image details even when it is not in 'active' state 
+- #72 want `triton image` to still return image details even when it is not in 'active' state
 
 
 ## 4.2.0
