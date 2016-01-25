@@ -2,7 +2,8 @@
 
 ## 4.3.2 (not yet released)
 
-(nothing yet)
+- PUBAPI-1227: Note that `triton image list` doesn't include Docker images, at
+  least currently.
 
 
 ## 4.3.1
