@@ -2,6 +2,8 @@
 
 ## 4.3.2 (not yet released)
 
+- #79 Fix `triton instance get NAME` to make sure it gets the `dns_names` CNS
+  field.
 - PUBAPI-1227: Note that `triton image list` doesn't include Docker images, at
   least currently.
 
