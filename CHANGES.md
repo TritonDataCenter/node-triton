@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.4.0 (not yet released)
+## 4.4.0
 
 - #78 `triton image delete IMAGE`
 - #79 Fix `triton instance get NAME` to make sure it gets the `dns_names` CNS
