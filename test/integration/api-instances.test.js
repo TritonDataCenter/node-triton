@@ -56,6 +56,12 @@ test('TritonApi packages', function (tt) {
                 if (h.ifErr(t, err, 'no err'))
                     return t.end();
 
+                /*
+                 * Normalize: There can be fields that are on the machine object
+                 * for CloudAPI GetMachine, but not for ListMachine:
+                 * - dns_names (if CNS is enabled in the DC)
+                 */
+                delete inst.dns_names;
                 t.deepEqual(inst, INST, valName);
 
                 next();
