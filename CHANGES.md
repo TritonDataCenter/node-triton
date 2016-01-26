@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.4.1 (not yet released)
+
+(nothing yet)
+
+
 ## 4.4.0
 
 - #78 `triton image delete IMAGE`
