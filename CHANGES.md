@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.4.2 (not yet released)
+
+(nothing yet)
+
+
 ## 4.4.1
 
 - #83, #84 Fix running `triton` on Windows.
