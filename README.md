@@ -64,7 +64,8 @@ for example:
 Install Bash completion with
 
 ```bash
-triton completion > /usr/local/etc/bash_completion.d/triton
+triton completion > /usr/local/etc/bash_completion.d/triton     # Mac
+triton completion > /etc/bash_completion.d/triton               # Linux
 ```
 
 Alternatively, if you don't have or don't want to use a "bash\_completion.d"
@@ -258,7 +259,7 @@ A basic example:
 
 This section defines all the vars in a TritonApi config. The baked in defaults
 are in "etc/defaults.json" and can be overriden for the CLI in
-"~/.triton/config.json".
+"~/.triton/config.json" (on Windows: "%APPDATA%/Joyent/Triton/config.json").
 
 | Name | Description |
 | ---- | ----------- |

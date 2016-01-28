@@ -22,7 +22,6 @@
     "smartdc-auth": "2.2.3",
     "strsplit": "1.0.0",
     "tabula": "1.7.0",
-    "tilde-expansion": "0.0.0",
     "vasync": "1.6.3",
     "verror": "1.6.0",
     "wordwrap": "1.0.0"

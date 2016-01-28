@@ -2,7 +2,9 @@
 
 ## 4.4.1 (not yet released)
 
-(nothing yet)
+- #83, #84 Fix running `triton` on Windows.
+  Note: Triton config is stored in "%APPDATA%/Joyent/Triton/..." on Windows,
+  "~/.triton/..." on other platforms.
 
 
 ## 4.4.0
