@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.4.1 (not yet released)
+## 4.4.1
 
 - #83, #84 Fix running `triton` on Windows.
   Note: Triton config is stored in "%APPDATA%/Joyent/Triton/..." on Windows,
