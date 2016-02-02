@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.4.3 (not yet released)
+
+(nothing yet)
+
+
 ## 4.4.2
 
 - Support `triton.createClient(...)` creation without requiring a
