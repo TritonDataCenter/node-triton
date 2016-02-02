@@ -2,7 +2,9 @@
 
 ## 4.4.2 (not yet released)
 
-(nothing yet)
+- Support `triton.createClient(...)` creation without requiring a
+  `configDir`. Basically this then fallsback to a `TritonApi` with the default
+  config.
 
 
 ## 4.4.1
