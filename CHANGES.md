@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.4.2 (not yet released)
+## 4.4.2
 
 - Support `triton.createClient(...)` creation without requiring a
   `configDir`. Basically this then fallsback to a `TritonApi` with the default
