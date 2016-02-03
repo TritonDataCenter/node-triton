@@ -2,7 +2,8 @@
 
 ## 4.4.3 (not yet released)
 
-(nothing yet)
+- #86 Ensure `triton profile ls` and `triton profile set-current` work
+  when there is no current profile.
 
 
 ## 4.4.2

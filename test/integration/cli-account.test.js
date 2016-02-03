@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2016, Joyent, Inc.
  */
 
 /*
@@ -47,7 +47,7 @@ test('triton account', function (tt) {
     });
 
     tt.test(' triton account get', function (t) {
-        h.triton('account get', function (err, stdout, stderr) {
+        h.triton('-v account get', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
             t.ok(new RegExp(
