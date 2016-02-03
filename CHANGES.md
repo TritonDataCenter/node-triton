@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.4.3 (not yet released)
+## 4.4.3
 
 - #86 Ensure `triton profile ls` and `triton profile set-current` work
   when there is no current profile.
