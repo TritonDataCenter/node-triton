@@ -13,3 +13,10 @@ function complete_tritonupdateaccountfield {
     candidates="{{UPDATE_ACCOUNT_FIELDS}}"
     compgen $compgen_opts -W "$candidates" -- "$word"
 }
+
+function complete_tritonupdatefwrulefield {
+    local word="$1"
+    local candidates
+    candidates="{{UPDATE_FWRULE_FIELDS}}"
+    compgen $compgen_opts -W "$candidates" -- "$word"
+}

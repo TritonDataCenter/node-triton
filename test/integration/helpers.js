@@ -122,6 +122,8 @@ function triton(args, opts, cb) {
     }, cb);
 }
 
+
+
 /*
  * `triton ...` wrapper that:
  * - tests non-error exit
@@ -255,6 +257,68 @@ function createClient() {
 }
 
 
+/*
+ * Create a small test instance.
+ */
+function createTestInst(t, name, cb) {
+    getTestPkg(t, function (err, pkgId) {
+        t.ifErr(err);
+
+        getTestImg(t, function (err2, imgId) {
+            t.ifErr(err2);
+
+            var cmd = f('instance create -w -n %s %s %s', name, imgId, pkgId);
+            triton(cmd, function (err3, stdout) {
+                t.ifErr(err3, 'create test instance');
+
+                var match = stdout.match(/Created .+? \((.+)\)/);
+                var inst = match[1];
+
+                cb(null, inst);
+            });
+        });
+    });
+}
+
+
+/*
+ * Remove test instance, if exists.
+ */
+function deleteTestInst(t, name, cb) {
+    triton(['inst', 'get', '-j', name], function (err, stdout, stderr) {
+        if (err) {
+            if (err.code === 3) {  // `triton` code for ResourceNotFound
+                t.ok(true, 'no pre-existing alias in the way');
+            } else {
+                t.ifErr(err);
+            }
+
+            return cb();
+        }
+
+        var oldInst = JSON.parse(stdout);
+
+        safeTriton(t, ['delete', '-w', oldInst.id], function (dErr) {
+            t.ifError(dErr, 'deleted old inst ' + oldInst.id);
+            cb();
+        });
+    });
+}
+
+
+/*
+ * Print out a listing of the test config.json values.
+ */
+function printConfig(t) {
+    t.comment('Test config:');
+
+    Object.keys(CONFIG).forEach(function (key) {
+        var value = CONFIG[key];
+        t.comment(f('- %s: %j', key, value));
+    });
+}
+
+
 // --- exports
 
 module.exports = {
@@ -262,9 +326,12 @@ module.exports = {
     triton: triton,
     safeTriton: safeTriton,
     createClient: createClient,
+    createTestInst: createTestInst,
+    deleteTestInst: deleteTestInst,
     getTestImg: getTestImg,
     getTestPkg: getTestPkg,
     jsonStreamParse: jsonStreamParse,
+    printConfig: printConfig,
 
     ifErr: testcommon.ifErr
 };

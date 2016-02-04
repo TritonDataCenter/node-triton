@@ -1,7 +1,9 @@
 # node-triton changelog
 
-## 4.5.3 (not yet released)
+## 4.6.0 (not yet released)
 
+- PUBAPI-1233 firewalls: `triton fwrule ...`
+- PUBAPI-1234 instance snapshots: `triton inst snapshot ...`
 - #52 Fix 'triton ssh ...' stdout/stderr to fully flush with node >= 4.x.
 
 
