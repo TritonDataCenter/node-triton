@@ -86,6 +86,19 @@ test('triton snapshot', function (tt) {
         });
     });
 
+    tt.test(' triton instance start --snapshot', function (t) {
+        var cmd = 'instance start ' + INST + ' -w --snapshot=' + SNAP_NAME;
+
+        h.triton(cmd, function (err, stdout, stderr) {
+            if (h.ifErr(t, err, 'triton instance start --snapshot'))
+                return t.end();
+
+            t.ok(stdout.match('Start instance ' + INST));
+
+            t.end();
+        });
+    });
+
     tt.test(' triton snapshot delete', function (t) {
         var cmd = 'snapshot delete ' + INST + ' ' + SNAP_NAME + ' -w --force';
         h.triton(cmd, function (err, stdout, stderr) {
