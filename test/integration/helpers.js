@@ -121,6 +121,8 @@ function triton(args, opts, cb) {
     }, cb);
 }
 
+
+
 /*
  * triton wrapper that:
  * - tests no error is present
@@ -172,6 +174,54 @@ function createClient() {
 }
 
 
+/*
+ * Create a small instance.
+ */
+function createMachine(cb) {
+    function jsonToObjs(jsons) {
+        return jsons.split('\n').map(function (json) {
+            try {
+                return JSON.parse(json);
+            } catch (e) {}
+        }).filter(function (obj) {
+            return obj;
+        });
+    }
+
+    triton('package list -j', function (err, pkgJson) {
+        if (err)
+            return cb(err);
+
+        // pick the smallest package (ram-wise)
+        var pkgs = jsonToObjs(pkgJson);
+        var pkg = pkgs.sort(function (x, y) {
+            return (x.memory > y.memory) ? 1 : -1;
+        })[0];
+
+        triton('image list -j', function (err2, imgJson) {
+            if (err2)
+                return cb(err2);
+
+            // pick any smartos image
+            var imgs = jsonToObjs(imgJson);
+            var img = imgs.filter(function (i) {
+                return i.os === 'smartos';
+            })[0];
+
+            triton('instance create -w ' + img.id + ' ' + pkg.id,
+                   function (err3, stdout) {
+                if (err3)
+                    return cb(err3);
+
+                var match = stdout.match(/Created .+? \((.+)\)/);
+                var inst = match[1];
+                cb(null, inst);
+            });
+        });
+    });
+}
+
+
 // --- exports
 
 module.exports = {
@@ -179,5 +229,6 @@ module.exports = {
     triton: triton,
     safeTriton: safeTriton,
     createClient: createClient,
+    createMachine: createMachine,
     ifErr: testcommon.ifErr
 };

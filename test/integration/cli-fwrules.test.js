@@ -23,6 +23,7 @@ var RULE = 'FROM any TO vm $id ALLOW tcp PORT 80';
 var RULE2 = 'FROM any TO vm $id BLOCK tcp port 25';
 var INST;
 var ID;
+var FAKE_INST_UUID = '89bcb9de-f174-4f20-bfa8-27d9749e6a2c';
 
 // --- Tests
 
@@ -33,11 +34,17 @@ test('triton fwrule', function (tt) {
                 return t.end();
 
             var rows = stdout.split('\n');
-            INST = JSON.parse(rows[0]).id;
-            t.ok(INST);
-
-            RULE = RULE.replace('$id', INST);
-            RULE2 = RULE2.replace('$id', INST);
+            try {
+                INST = JSON.parse(rows[0]).id;
+                RULE = RULE.replace('$id', INST);
+                RULE2 = RULE2.replace('$id', INST);
+            } catch (e) {
+                // if we don't have a VM already running to test with, we'll
+                // run most tests with a fake UUID, and skip any tests that
+                // require an actual machine UUID
+                RULE = RULE.replace('$id', FAKE_INST_UUID);
+                RULE2 = RULE2.replace('$id', FAKE_INST_UUID);
+            }
 
             t.end();
         });
@@ -147,6 +154,9 @@ test('triton fwrule', function (tt) {
             });
             t.ok(machines[0].match(/ID\s+NAME\s+IMG\s+BRAND/));
             machines.shift();
+
+            if (!INST)
+                return t.end();
 
             t.equal(machines.length, 1, 'triton fwrule instances expected ' +
                     'num machines');

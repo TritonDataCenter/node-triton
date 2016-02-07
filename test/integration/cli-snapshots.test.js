@@ -19,6 +19,7 @@ var test = require('tape');
 
 var SNAP_NAME = 'test-snapshot';
 var INST;
+var DESTROY_INST = false;
 
 // --- Tests
 
@@ -29,10 +30,21 @@ test('triton snapshot', function (tt) {
                 return t.end();
 
             var rows = stdout.split('\n');
-            INST = JSON.parse(rows[0]).id;
-            t.ok(INST);
 
-            t.end();
+            try {
+                INST = JSON.parse(rows[0]).id;
+                return t.end();
+            } catch (e) {
+                h.createMachine(function onCreate(err2, instId) {
+                    if (h.ifErr(t, err2, 'triton instance create'))
+                        return t.end();
+
+                    INST = instId;
+                    DESTROY_INST = true;
+
+                    t.end();
+                });
+            }
         });
     });
 
@@ -110,6 +122,15 @@ test('triton snapshot', function (tt) {
             t.ok(stdout.match('Deleted snapshot "' + SNAP_NAME + '" in \\d+s',
                  'deleted snapshot'));
 
+            t.end();
+        });
+    });
+
+    tt.test('teardown', function (t) {
+        if (!DESTROY_INST)
+            return t.end();
+
+        h.triton('instance delete ' + INST, function () {
             t.end();
         });
     });
