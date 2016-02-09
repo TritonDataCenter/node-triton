@@ -16,6 +16,7 @@ var error = console.error;
 var assert = require('assert-plus');
 var f = require('util').format;
 var path = require('path');
+var tabula = require('tabula');
 
 var common = require('../../lib/common');
 var mod_triton = require('../../');
@@ -122,29 +123,28 @@ function triton(args, opts, cb) {
 }
 
 /*
- * triton wrapper that:
- * - tests no error is present
- * - tests stdout is not empty
+ * `triton ...` wrapper that:
+ * - tests non-error exit
  * - tests stderr is empty
  *
- * In the event that any of the above is false, this function will NOT
- * fire the callback, which will result in the early terminate of these
- * tests as `t.end()` will never be called.
- *
  * @param {Tape} t - tape test object
- * @param {Object|Array} opts - options object
- * @param {Function} cb - callback called like "cb(stdout)"
+ * @param {Object|Array} opts - options object, or just the `triton` args
+ * @param {Function} cb - `function (err, stdout)`
  */
 function safeTriton(t, opts, cb) {
+    assert.object(t, 't');
     if (Array.isArray(opts)) {
         opts = {args: opts};
     }
+    assert.object(opts, 'opts');
+    assert.arrayOfString(opts.args, 'opts.args');
+    assert.optionalBool(opts.json, 'opts.json');
+    assert.func(cb, 'cb');
+
     t.comment(f('running: triton %s', opts.args.join(' ')));
     triton(opts.args, function (err, stdout, stderr) {
         t.error(err, 'no error running child process');
         t.equal(stderr, '', 'no stderr produced');
-        t.notEqual(stdout, '', 'stdout produced');
-
         if (opts.json) {
             try {
                 stdout = JSON.parse(stdout);
@@ -153,10 +153,93 @@ function safeTriton(t, opts, cb) {
                 return;
             }
         }
-
-        if (!err && stdout && !stderr)
-            cb(stdout);
+        cb(err, stdout);
     });
+}
+
+
+/*
+ * Find and return an image that can be used for test provisions. We look
+ * for an available base or minimal image.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, imgId)`
+ *      where `imgId` is an image identifier (an image name, shortid, or id).
+ */
+function getTestImg(t, cb) {
+    if (CONFIG.image) {
+        t.ok(CONFIG.image, 'image from config: ' + CONFIG.image);
+        cb(null, CONFIG.image);
+        return;
+    }
+
+    var candidateImageNames = {
+        'base-64-lts': true,
+        'base-64': true,
+        'minimal-64': true,
+        'base-32-lts': true,
+        'base-32': true,
+        'minimal-32': true,
+        'base': true
+    };
+    safeTriton(t, ['img', 'ls', '-j'], function (err, stdout) {
+        var imgId;
+        var imgs = jsonStreamParse(stdout);
+        // Newest images first.
+        tabula.sortArrayOfObjects(imgs, ['-published_at']);
+        var imgRepr;
+        for (var i = 0; i < imgs.length; i++) {
+            var img = imgs[i];
+            if (candidateImageNames[img.name]) {
+                imgId = img.id;
+                imgRepr = f('%s@%s', img.name, img.version);
+                break;
+            }
+        }
+
+        t.ok(imgId, f('latest available base/minimal image: %s (%s)',
+            imgId, imgRepr));
+        cb(err, imgId);
+    });
+}
+
+
+/*
+ * Find and return an package that can be used for test provisions.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, pkgId)`
+ *      where `pkgId` is an package identifier (a name, shortid, or id).
+ */
+function getTestPkg(t, cb) {
+    if (CONFIG.package) {
+        t.ok(CONFIG.package, 'package from config: ' + CONFIG.package);
+        cb(null, CONFIG.package);
+        return;
+    }
+
+    safeTriton(t, ['pkg', 'ls', '-j'], function (err, stdout) {
+        var pkgs = jsonStreamParse(stdout);
+        // Smallest RAM first.
+        tabula.sortArrayOfObjects(pkgs, ['memory']);
+        var pkgId = pkgs[0].id;
+        t.ok(pkgId, f('smallest (RAM) available package: %s (%s)',
+            pkgId, pkgs[0].name));
+        cb(null, pkgId);
+    });
+}
+
+
+function jsonStreamParse(s) {
+    var results = [];
+    var lines = s.trim().split('\n');
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (line) {
+            results.push(JSON.parse(line));
+        }
+    }
+    return results;
 }
 
 
@@ -179,5 +262,9 @@ module.exports = {
     triton: triton,
     safeTriton: safeTriton,
     createClient: createClient,
+    getTestImg: getTestImg,
+    getTestPkg: getTestPkg,
+    jsonStreamParse: jsonStreamParse,
+
     ifErr: testcommon.ifErr
 };

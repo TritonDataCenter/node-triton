@@ -9,7 +9,7 @@
  */
 
 /*
- * Unit tests for `tagsFromOpts()` used by `triton create ...`.
+ * Unit tests for `tagsFromCreateOpts()` used by `triton create ...`.
  */
 
 var assert = require('assert-plus');
@@ -17,7 +17,8 @@ var cmdln = require('cmdln');
 var format = require('util').format;
 var test = require('tape');
 
-var tagsFromOpts = require('../../lib/metadataandtags').tagsFromOpts;
+var tagsFromCreateOpts
+    = require('../../lib/metadataandtags').tagsFromCreateOpts;
 
 
 // ---- globals
@@ -140,7 +141,7 @@ var cases = [
 
 // ---- test driver
 
-test('tagsFromOpts', function (tt) {
+test('tagsFromCreateOpts', function (tt) {
     cases.forEach(function (c, num) {
         var testName = format('case %d: %s', num, c.argv.join(' '));
         tt.test(testName, function (t) {
@@ -157,7 +158,7 @@ test('tagsFromOpts', function (tt) {
                 stderrChunks.push(s);
             };
 
-            tagsFromOpts(opts, log, function (err, tags) {
+            tagsFromCreateOpts(opts, log, function (err, tags) {
                 // Restore stderr.
                 process.stderr.write = _oldStderrWrite;
                 var stderr = stderrChunks.join('');

@@ -14,7 +14,6 @@
 
 var f = require('util').format;
 var os = require('os');
-var tabula = require('tabula');
 var test = require('tape');
 var vasync = require('vasync');
 
@@ -24,7 +23,7 @@ var h = require('./helpers');
 
 // --- globals
 
-var INST_ALIAS = f('node-triton-test-%s-vm1', os.hostname());
+var INST_ALIAS = f('nodetritontest-managewf-%s', os.hostname());
 
 var opts = {
     skip: !h.CONFIG.allowWriteActions
@@ -32,21 +31,6 @@ var opts = {
 
 // global variable to hold vm instance JSON
 var instance;
-
-
-// --- internal support stuff
-
-function _jsonStreamParse(s) {
-    var results = [];
-    var lines = s.split('\n');
-    for (var i = 0; i < lines.length; i++) {
-        var line = lines[i].trim();
-        if (line) {
-            results.push(JSON.parse(line));
-        }
-    }
-    return results;
-}
 
 
 // --- Tests
@@ -75,7 +59,7 @@ test('triton manage workflow', opts, function (tt) {
                 }
             } else {
                 var inst = JSON.parse(stdout);
-                h.safeTriton(t, ['delete', '-w', inst.id], function () {
+                h.safeTriton(t, ['inst', 'rm', '-w', inst.id], function () {
                     t.ok(true, 'deleted inst ' + inst.id);
                     t.end();
                 });
@@ -84,65 +68,25 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     var imgId;
-    tt.test('  find image to use', function (t) {
-        if (h.CONFIG.image) {
-            imgId = h.CONFIG.image;
-            t.ok(imgId, 'image from config: ' + imgId);
-            t.end();
-            return;
-        }
-
-        var candidateImageNames = {
-            'base-64-lts': true,
-            'base-64': true,
-            'minimal-64': true,
-            'base-32-lts': true,
-            'base-32': true,
-            'minimal-32': true,
-            'base': true
-        };
-        h.safeTriton(t, ['img', 'ls', '-j'], function (stdout) {
-            var imgs = _jsonStreamParse(stdout);
-            // Newest images first.
-            tabula.sortArrayOfObjects(imgs, ['-published_at']);
-            var imgRepr;
-            for (var i = 0; i < imgs.length; i++) {
-                var img = imgs[i];
-                if (candidateImageNames[img.name]) {
-                    imgId = img.id;
-                    imgRepr = f('%s@%s', img.name, img.version);
-                    break;
-                }
-            }
-
-            t.ok(imgId, f('latest available base/minimal image: %s (%s)',
-                imgId, imgRepr));
+    tt.test('  setup: find test image', function (t) {
+        h.getTestImg(t, function (err, imgId_) {
+            t.ifError(err, 'getTestImg' + (err ? ': ' + err : ''));
+            imgId = imgId_;
             t.end();
         });
     });
 
     var pkgId;
-    tt.test('  find package to use', function (t) {
-        if (h.CONFIG.package) {
-            pkgId = h.CONFIG.package;
-            t.ok(pkgId, 'package from config: ' + pkgId);
-            t.end();
-            return;
-        }
-
-        h.safeTriton(t, ['pkg', 'list', '-j'], function (stdout) {
-            var pkgs = _jsonStreamParse(stdout);
-            // Smallest RAM first.
-            tabula.sortArrayOfObjects(pkgs, ['memory']);
-            pkgId = pkgs[0].id;
-            t.ok(pkgId, f('smallest (RAM) available package: %s (%s)',
-                pkgId, pkgs[0].name));
+    tt.test('  setup: find test package', function (t) {
+        h.getTestPkg(t, function (err, pkgId_) {
+            t.ifError(err, 'getTestPkg' + (err ? ': ' + err : ''));
+            pkgId = pkgId_;
             t.end();
         });
     });
 
     // create a test machine (blocking) and output JSON
-    tt.test('  triton create', function (t) {
+    tt.test('  setup: triton create', function (t) {
         var argv = [
             'create',
             '-wj',
@@ -153,19 +97,8 @@ test('triton manage workflow', opts, function (tt) {
             imgId, pkgId
         ];
 
-        h.safeTriton(t, argv, function (stdout) {
-            // parse JSON response
-            var lines = stdout.trim().split('\n');
-            t.equal(lines.length, 2, 'correct number of JSON lines');
-            try {
-                lines = lines.map(function (line) {
-                    return JSON.parse(line);
-                });
-            } catch (e) {
-                t.fail('failed to parse JSON');
-                t.end();
-            }
-
+        h.safeTriton(t, argv, function (err, stdout) {
+            var lines = h.jsonStreamParse(stdout);
             instance = lines[1];
             t.equal(lines[0].id, lines[1].id, 'correct UUID given');
             t.equal(lines[0].metadata.foo, 'bar', 'foo metadata set');
@@ -184,22 +117,13 @@ test('triton manage workflow', opts, function (tt) {
         vasync.parallel({
             funcs: [
                 function (cb) {
-                    h.safeTriton(t, ['instance', 'get', '-j', INST_ALIAS],
-                        function (stdout) {
-                        cb(null, stdout);
-                    });
+                    h.safeTriton(t, ['instance', 'get', '-j', INST_ALIAS], cb);
                 },
                 function (cb) {
-                    h.safeTriton(t, ['instance', 'get', '-j', uuid],
-                        function (stdout) {
-                        cb(null, stdout);
-                    });
+                    h.safeTriton(t, ['instance', 'get', '-j', uuid], cb);
                 },
                 function (cb) {
-                    h.safeTriton(t, ['instance', 'get', '-j', shortId],
-                        function (stdout) {
-                        cb(null, stdout);
-                    });
+                    h.safeTriton(t, ['instance', 'get', '-j', shortId], cb);
                 }
             ]
         }, function (err, results) {
@@ -229,7 +153,7 @@ test('triton manage workflow', opts, function (tt) {
     // have a way to know if the attempt failed or if it is just taking a
     // really long time.
     tt.test('  triton delete', {timeout: 10 * 60 * 1000}, function (t) {
-        h.safeTriton(t, ['delete', '-w', instance.id], function (stdout) {
+        h.safeTriton(t, ['delete', '-w', instance.id], function () {
             t.end();
         });
     });
@@ -240,7 +164,7 @@ test('triton manage workflow', opts, function (tt) {
     // create a test machine (non-blocking)
     tt.test('  triton create', function (t) {
         h.safeTriton(t, ['create', '-jn', INST_ALIAS, imgId, pkgId],
-            function (stdout) {
+            function (err, stdout) {
 
             // parse JSON response
             var lines = stdout.trim().split('\n');
@@ -263,7 +187,7 @@ test('triton manage workflow', opts, function (tt) {
     // wait for the machine to start
     tt.test('  triton inst wait', function (t) {
         h.safeTriton(t, ['inst', 'wait', instance.id],
-            function (stdout) {
+            function (err, stdout) {
 
             // parse JSON response
             var lines = stdout.trim().split('\n');
@@ -280,8 +204,7 @@ test('triton manage workflow', opts, function (tt) {
 
     // stop the machine
     tt.test('  triton stop', function (t) {
-        h.safeTriton(t, ['stop', '-w', INST_ALIAS],
-            function (stdout) {
+        h.safeTriton(t, ['stop', '-w', INST_ALIAS], function (err, stdout) {
             t.ok(stdout.match(/^Stop instance/, 'correct stdout'));
             t.end();
         });
@@ -290,11 +213,9 @@ test('triton manage workflow', opts, function (tt) {
     // wait for the machine to stop
     tt.test('  triton confirm stopped', function (t) {
         h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
-            function (d) {
+                function (err, d) {
             instance = d;
-
             t.equal(d.state, 'stopped', 'machine stopped');
-
             t.end();
         });
     });
@@ -302,7 +223,7 @@ test('triton manage workflow', opts, function (tt) {
     // start the machine
     tt.test('  triton start', function (t) {
         h.safeTriton(t, ['start', '-w', INST_ALIAS],
-            function (stdout) {
+                function (err, stdout) {
             t.ok(stdout.match(/^Start instance/, 'correct stdout'));
             t.end();
         });
@@ -311,7 +232,7 @@ test('triton manage workflow', opts, function (tt) {
     // wait for the machine to start
     tt.test('  confirm running', function (t) {
         h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
-                function (d) {
+                function (err, d) {
             instance = d;
             t.equal(d.state, 'running', 'machine running');
             t.end();
@@ -320,7 +241,7 @@ test('triton manage workflow', opts, function (tt) {
 
     // remove test instance
     tt.test('  cleanup (triton delete)', function (t) {
-        h.safeTriton(t, ['delete', '-w', instance.id], function (stdout) {
+        h.safeTriton(t, ['delete', '-w', instance.id], function () {
             t.end();
         });
     });
