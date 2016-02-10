@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.4.4 (not yet released)
+## 4.4.4
 
 - #90 Update sshpk and smartdc-auth to attempt to deal with multiple package
   inter-deps.
