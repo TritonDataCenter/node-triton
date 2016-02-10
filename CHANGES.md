@@ -2,7 +2,8 @@
 
 ## 4.4.4 (not yet released)
 
-(nothing yet)
+- #90 Update sshpk and smartdc-auth to attempt to deal with multiple package
+  inter-deps.
 
 
 ## 4.4.3
