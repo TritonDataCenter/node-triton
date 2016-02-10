@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.4.5 (not yet released)
+
+(nothing yet)
+
+
 ## 4.4.4
 
 - #90 Update sshpk and smartdc-auth to attempt to deal with multiple package
