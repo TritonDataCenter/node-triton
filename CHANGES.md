@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.5.0 (not yet released)
+## 4.5.0
 
 - #88 'triton inst tag ...' for managing instance tags.
 
