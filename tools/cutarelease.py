@@ -26,6 +26,7 @@ import codecs
 import logging
 import optparse
 import json
+import time
 
 
 
@@ -159,7 +160,8 @@ def cutarelease(project_name, version_files, dry_run=False):
     curr_tags = set(t for t in _capture_stdout(["git", "tag", "-l"]).split('\n') if t)
     if not dry_run and version not in curr_tags:
         log.info("tag the release")
-        run('git tag -a "%s" -m "version %s"' % (version, version))
+        date = time.strftime("%Y-%m-%d")
+        run('git tag -a "%s" -m "version %s (%s)"' % (version, version, date))
         run('git push --tags')
 
     # Optionally release.
