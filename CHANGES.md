@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.5.1 (not yet released)
+## 4.5.1
 
 - #92 `triton` CLI should summarize `err.body.errors` from CloudAPI
   Per <https://github.com/joyent/eng/blob/master/docs/index.md#error-handling>,
