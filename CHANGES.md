@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.5.2 (not yet released)
+
+(nothing yet)
+
+
 ## 4.5.1
 
 - #92 `triton` CLI should summarize `err.body.errors` from CloudAPI
