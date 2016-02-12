@@ -1,7 +1,7 @@
 {
   "name": "triton",
   "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
-  "version": "4.4.2",
+  "version": "4.5.1",
   "author": "Joyent (joyent.com)",
   "dependencies": {
     "assert-plus": "0.2.0",
@@ -18,8 +18,8 @@
     "restify-clients": "1.1.0",
     "restify-errors": "3.0.0",
     "rimraf": "2.4.4",
-    "sshpk": "1.6.x >=1.6.2",
-    "smartdc-auth": "2.2.3",
+    "sshpk": "1.7.x",
+    "smartdc-auth": "2.3.1",
     "strsplit": "1.0.0",
     "tabula": "1.7.0",
     "vasync": "1.6.3",

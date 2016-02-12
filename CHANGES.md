@@ -1,8 +1,32 @@
 # node-triton changelog
 
-## 4.4.2 (not yet released)
+## 4.5.1 (not yet released)
 
 (nothing yet)
+
+
+## 4.5.0
+
+- #88 'triton inst tag ...' for managing instance tags.
+
+
+## 4.4.4
+
+- #90 Update sshpk and smartdc-auth to attempt to deal with multiple package
+  inter-deps.
+
+
+## 4.4.3
+
+- #86 Ensure `triton profile ls` and `triton profile set-current` work
+  when there is no current profile.
+
+
+## 4.4.2
+
+- Support `triton.createClient(...)` creation without requiring a
+  `configDir`. Basically this then fallsback to a `TritonApi` with the default
+  config.
 
 
 ## 4.4.1

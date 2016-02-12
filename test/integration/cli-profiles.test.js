@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2016, Joyent, Inc.
  */
 
 /*
@@ -36,7 +36,7 @@ if (opts.skip) {
 test('triton profiles (read only)', function (tt) {
     tt.test('  triton profile get env', function (t) {
         h.safeTriton(t, {json: true, args: ['profile', 'get', '-j', 'env']},
-            function (p) {
+            function (err, p) {
 
             t.equal(p.account, h.CONFIG.profile.account,
                 'env account correct');
@@ -55,8 +55,7 @@ test('triton profiles (read only)', function (tt) {
 test('triton profiles (read/write)', opts, function (tt) {
     tt.test('  triton profile create', function (t) {
         h.safeTriton(t, ['profile', 'create', '-f', PROFILE_FILE],
-            function (stdout) {
-
+            function (err, stdout) {
             t.ok(stdout.match(/^Saved profile/), 'stdout correct');
             t.end();
         });
@@ -65,17 +64,16 @@ test('triton profiles (read/write)', opts, function (tt) {
     tt.test('  triton profile get', function (t) {
         h.safeTriton(t,
             {json: true, args: ['profile', 'get', '-j', PROFILE_DATA.name]},
-            function (p) {
+            function (err, p) {
 
             t.deepEqual(p, PROFILE_DATA, 'profile matched');
-
             t.end();
         });
     });
 
     tt.test('  triton profile delete', function (t) {
         h.safeTriton(t, ['profile', 'delete', '-f', PROFILE_DATA.name],
-            function (stdout) {
+            function (err, stdout) {
 
             t.ok(stdout.match(/^Deleted profile/), 'stdout correct');
             t.end();
