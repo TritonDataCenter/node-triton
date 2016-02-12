@@ -2,7 +2,9 @@
 
 ## 4.5.1 (not yet released)
 
-(nothing yet)
+- #92 `triton` CLI should summarize `err.body.errors` from CloudAPI
+  Per <https://github.com/joyent/eng/blob/master/docs/index.md#error-handling>,
+  CloudAPI error response will sometimes have extra error details to show.
 
 
 ## 4.5.0
