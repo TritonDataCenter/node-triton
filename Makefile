@@ -35,6 +35,11 @@ test-unit:
 test-integration:
 	NODE_NDEBUG= ./node_modules/.bin/tape test/integration/*.test.js
 
+.PHONY: test-in-parallel
+test-in-parallel:
+	NODE_NDEBUG= prove -j15 -e ./node_modules/.bin/tape \
+		test/unit/*.test.js test/integration/*.test.js
+
 .PHONY: clean
 clean::
 	rm -f triton-*.tgz
