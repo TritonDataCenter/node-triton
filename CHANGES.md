@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.5.2 (not yet released)
+## 4.5.2
 
 - #95 Fix breakage of `triton image create` in v4.5.0. (By Kris Shannon.)
 - #94, #93 `triton inst create ...` is broken if "images.json" cache file
