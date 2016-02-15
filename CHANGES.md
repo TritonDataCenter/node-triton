@@ -2,7 +2,9 @@
 
 ## 4.5.2 (not yet released)
 
-- #95 Fix breakage of `triton image create` in version 4.5.0. (By Kris Shannon.)
+- #95 Fix breakage of `triton image create` in v4.5.0. (By Kris Shannon.)
+- #94, #93 `triton inst create ...` is broken if "images.json" cache file
+  is missing. (By Kris Shannon.)
 
 
 ## 4.5.1
