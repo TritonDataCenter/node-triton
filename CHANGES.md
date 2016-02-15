@@ -2,7 +2,7 @@
 
 ## 4.5.2 (not yet released)
 
-(nothing yet)
+- #95 Fix breakage of `triton image create` in version 4.5.0. (By Kris Shannon.)
 
 
 ## 4.5.1

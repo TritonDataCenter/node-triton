@@ -141,10 +141,10 @@ function safeTriton(t, opts, cb) {
     assert.optionalBool(opts.json, 'opts.json');
     assert.func(cb, 'cb');
 
-    t.comment(f('running: triton %s', opts.args.join(' ')));
+    // t.comment(f('running: triton %s', opts.args.join(' ')));
     triton(opts.args, function (err, stdout, stderr) {
-        t.error(err, 'no error running child process');
-        t.equal(stderr, '', 'no stderr produced');
+        t.error(err, f('ran "triton %s", err=%s', opts.args.join(' '), err));
+        t.equal(stderr, '', 'empty stderr');
         if (opts.json) {
             try {
                 stdout = JSON.parse(stdout);
