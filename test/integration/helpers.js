@@ -258,49 +258,63 @@ function createClient() {
 
 
 /*
- * Create a small instance.
+ * Create a small test instance.
  */
-function createMachine(cb) {
-    function jsonToObjs(jsons) {
-        return jsons.split('\n').map(function (json) {
-            try {
-                return JSON.parse(json);
-            } catch (e) {}
-        }).filter(function (obj) {
-            return obj;
-        });
-    }
+function createTestInst(t, name, cb) {
+    getTestPkg(t, function (err, pkgId) {
+        t.ifErr(err);
 
-    triton('package list -j', function (err, pkgJson) {
-        if (err)
-            return cb(err);
+        getTestImg(t, function (err2, imgId) {
+            t.ifErr(err2);
 
-        // pick the smallest package (ram-wise)
-        var pkgs = jsonToObjs(pkgJson);
-        var pkg = pkgs.sort(function (x, y) {
-            return (x.memory > y.memory) ? 1 : -1;
-        })[0];
-
-        triton('image list -j', function (err2, imgJson) {
-            if (err2)
-                return cb(err2);
-
-            // pick any smartos image
-            var imgs = jsonToObjs(imgJson);
-            var img = imgs.filter(function (i) {
-                return i.os === 'smartos';
-            })[0];
-
-            triton('instance create -w ' + img.id + ' ' + pkg.id,
-                   function (err3, stdout) {
-                if (err3)
-                    return cb(err3);
+            var cmd = f('instance create -w -n %s %s %s', name, imgId, pkgId);
+            triton(cmd, function (err3, stdout) {
+                t.ifErr(err3, 'create test instance');
 
                 var match = stdout.match(/Created .+? \((.+)\)/);
                 var inst = match[1];
+
                 cb(null, inst);
             });
         });
+    });
+}
+
+
+/*
+ * Remove test instance, if exists.
+ */
+function deleteTestInst(t, name, cb) {
+    triton(['inst', 'get', '-j', name], function (err, stdout, stderr) {
+        if (err) {
+            if (err.code === 3) {  // `triton` code for ResourceNotFound
+                t.ok(true, 'no pre-existing alias in the way');
+            } else {
+                t.ifErr(err);
+            }
+
+            return cb();
+        }
+
+        var oldInst = JSON.parse(stdout);
+
+        safeTriton(t, ['delete', '-w', oldInst.id], function (dErr) {
+            t.ifError(dErr, 'deleted old inst ' + oldInst.id);
+            cb();
+        });
+    });
+}
+
+
+/*
+ * Print out a listing of the test config.json values.
+ */
+function printConfig(t) {
+    t.comment('Test config:');
+
+    Object.keys(CONFIG).forEach(function (key) {
+        var value = CONFIG[key];
+        t.comment(f('- %s: %j', key, value));
     });
 }
 
@@ -312,10 +326,12 @@ module.exports = {
     triton: triton,
     safeTriton: safeTriton,
     createClient: createClient,
-    createMachine: createMachine,
+    createTestInst: createTestInst,
+    deleteTestInst: deleteTestInst,
     getTestImg: getTestImg,
     getTestPkg: getTestPkg,
     jsonStreamParse: jsonStreamParse,
+    printConfig: printConfig,
 
     ifErr: testcommon.ifErr
 };

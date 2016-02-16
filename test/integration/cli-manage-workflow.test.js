@@ -40,30 +40,12 @@ if (opts.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 test('triton manage workflow', opts, function (tt) {
-    tt.comment('Test config:');
-    Object.keys(h.CONFIG).forEach(function (key) {
-        var value = h.CONFIG[key];
-        tt.comment(f('- %s: %j', key, value));
-    });
+    h.printConfig(tt);
 
     tt.test('  cleanup existing inst with alias ' + INST_ALIAS, function (t) {
-        h.triton(['inst', 'get', '-j', INST_ALIAS],
-                function (err, stdout, stderr) {
-            if (err) {
-                if (err.code === 3) {  // `triton` code for ResourceNotFound
-                    t.ok(true, 'no pre-existing alias in the way');
-                    t.end();
-                } else {
-                    t.ifErr(err, err);
-                    t.end();
-                }
-            } else {
-                var inst = JSON.parse(stdout);
-                h.safeTriton(t, ['inst', 'rm', '-w', inst.id], function () {
-                    t.ok(true, 'deleted inst ' + inst.id);
-                    t.end();
-                });
-            }
+        h.deleteTestInst(t, INST_ALIAS, function (err) {
+            t.ifErr(err);
+            t.end();
         });
     });
 

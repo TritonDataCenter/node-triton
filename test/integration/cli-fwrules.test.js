@@ -13,7 +13,8 @@
  */
 
 var h = require('./helpers');
-var format = require('util').format;
+var f = require('util').format;
+var os = require('os');
 var test = require('tape');
 
 // --- Globals
@@ -23,35 +24,43 @@ var RULE = 'FROM any TO vm $id ALLOW tcp PORT 80';
 var RULE2 = 'FROM any TO vm $id BLOCK tcp port 25';
 var INST;
 var ID;
-var FAKE_INST_UUID = '89bcb9de-f174-4f20-bfa8-27d9749e6a2c';
+var INST_ALIAS = f('nodetritontest-fwrules-%s', os.hostname());
+var OPTS = {
+    skip: !h.CONFIG.allowWriteActions
+};
 
 // --- Tests
 
-test('triton fwrule', function (tt) {
-    tt.test('setup', function (t) {
-        h.triton('insts -j', function (err, stdout, stderr) {
-            if (h.ifErr(t, err, 'triton insts'))
+if (OPTS.skip) {
+    console.error('** skipping %s tests', __filename);
+    console.error('** set "allowWriteActions" in test config to enable');
+}
+
+test('triton fwrule', OPTS, function (tt) {
+    h.printConfig(tt);
+
+    tt.test('  cleanup existing inst with alias ' + INST_ALIAS, function (t) {
+        h.deleteTestInst(t, INST_ALIAS, function (err) {
+            t.ifErr(err);
+            t.end();
+        });
+    });
+
+    tt.test('  setup: triton create', function (t) {
+        h.createTestInst(t, INST_ALIAS, function onInst(err2, instId) {
+            if (h.ifErr(t, err2, 'triton instance create'))
                 return t.end();
 
-            var rows = stdout.split('\n');
-            try {
-                INST = JSON.parse(rows[0]).id;
-                RULE = RULE.replace('$id', INST);
-                RULE2 = RULE2.replace('$id', INST);
-            } catch (e) {
-                // if we don't have a VM already running to test with, we'll
-                // run most tests with a fake UUID, and skip any tests that
-                // require an actual machine UUID
-                RULE = RULE.replace('$id', FAKE_INST_UUID);
-                RULE2 = RULE2.replace('$id', FAKE_INST_UUID);
-            }
+            INST = instId;
+            RULE = RULE.replace('$id', INST);
+            RULE2 = RULE2.replace('$id', INST);
 
             t.end();
         });
     });
 
-    tt.test(' triton fwrule create', function (t) {
-        var cmd = format('fwrule create -d "%s" "%s"', DESC, RULE);
+    tt.test('  triton fwrule create', function (t) {
+        var cmd = f('fwrule create -d "%s" "%s"', DESC, RULE);
 
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule create'))
@@ -60,14 +69,15 @@ test('triton fwrule', function (tt) {
             var match = stdout.match('Created firewall rule (.+)');
             t.ok(match, 'fwrule made');
 
-            ID = match[1];
-            t.ok(ID);
+            var id = match[1];
+            t.ok(id);
+            ID = id.match(/^(.+?)-/)[1]; // convert to short ID
 
             t.end();
         });
     });
 
-    tt.test(' triton fwrule get', function (t) {
+    tt.test('  triton fwrule get', function (t) {
         var cmd = 'fwrule get ' + ID;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -83,7 +93,7 @@ test('triton fwrule', function (tt) {
         });
     });
 
-    tt.test(' triton fwrule enable', function (t) {
+    tt.test('  triton fwrule enable', function (t) {
         var cmd = 'fwrule enable ' + ID;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -96,7 +106,7 @@ test('triton fwrule', function (tt) {
         });
     });
 
-    tt.test(' triton fwrule disable', function (t) {
+    tt.test('  triton fwrule disable', function (t) {
         var cmd = 'fwrule disable ' + ID;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -109,7 +119,7 @@ test('triton fwrule', function (tt) {
         });
     });
 
-    tt.test(' triton fwrule update', function (t) {
+    tt.test('  triton fwrule update', function (t) {
         var cmd = 'fwrule update rule="' + RULE2 + '" ' + ID;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -123,7 +133,7 @@ test('triton fwrule', function (tt) {
         });
     });
 
-    tt.test(' triton fwrule list', function (t) {
+    tt.test('  triton fwrule list', function (t) {
         h.triton('fwrule list -l', function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule list'))
                 return t.end();
@@ -144,7 +154,7 @@ test('triton fwrule', function (tt) {
         });
     });
 
-    tt.test(' triton fwrule instances', function (t) {
+    tt.test('  triton fwrule instances', function (t) {
         h.triton('fwrule instances -l ' + ID, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule instances'))
                 return t.end();
@@ -172,8 +182,8 @@ test('triton fwrule', function (tt) {
         });
     });
 
-    tt.test(' triton instance fwrules', function (t) {
-        h.triton('instance fwrules -l ' + ID, function (err, stdout, stderr) {
+    tt.test('  triton instance fwrules', function (t) {
+        h.triton('instance fwrules -l ' + INST, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule list'))
                 return t.end();
 
@@ -193,7 +203,7 @@ test('triton fwrule', function (tt) {
         });
     });
 
-    tt.test(' triton fwrule delete', function (t) {
+    tt.test('  triton fwrule delete', function (t) {
         var cmd = 'fwrule delete ' + ID + ' --force';
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule delete'))
@@ -201,6 +211,17 @@ test('triton fwrule', function (tt) {
 
             t.ok(stdout.match('Deleted rule ' + ID + ''), 'rule deleted');
 
+            t.end();
+        });
+    });
+
+    /*
+     * Use a timeout, because '-w' on delete doesn't have a way to know if the
+     * attempt failed or if it is just taking a really long time.
+     */
+    tt.test('  cleanup: triton rm INST', {timeout: 10 * 60 * 1000},
+            function (t) {
+        h.deleteTestInst(t, INST_ALIAS, function () {
             t.end();
         });
     });

@@ -39,32 +39,14 @@ if (opts.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 test('triton inst tag ...', opts, function (tt) {
-    tt.comment('Test config:');
-    Object.keys(h.CONFIG).forEach(function (key) {
-        var value = h.CONFIG[key];
-        tt.comment(f('- %s: %j', key, value));
-    });
+    h.printConfig(tt);
 
     var inst;
 
     tt.test('  cleanup: rm inst ' + INST_ALIAS + ' if exists', function (t) {
-        h.triton(['inst', 'get', '-j', INST_ALIAS],
-                function (err, stdout, stderr) {
-            if (err) {
-                if (err.code === 3) {  // `triton` code for ResourceNotFound
-                    t.ok(true, 'no pre-existing alias in the way');
-                    t.end();
-                } else {
-                    t.ifErr(err);
-                    t.end();
-                }
-            } else {
-                var oldInst = JSON.parse(stdout);
-                h.safeTriton(t, ['delete', '-w', oldInst.id], function (dErr) {
-                    t.ifError(dErr, 'deleted old inst ' + oldInst.id);
-                    t.end();
-                });
-            }
+        h.deleteTestInst(t, INST_ALIAS, function (err) {
+            t.ifErr(err);
+            t.end();
         });
     });
 
