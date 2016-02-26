@@ -2,7 +2,7 @@
 
 ## 4.5.3 (not yet released)
 
-(nothing yet)
+- #52 Fix 'triton ssh ...' stdout/stderr to fully flush with node >= 4.x.
 
 
 ## 4.5.2
