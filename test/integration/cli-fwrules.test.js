@@ -59,15 +59,49 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
+    tt.test('  triton fwrule create --disabled', function (t) {
+        var cmd = f('fwrule create -d "%s"', RULE);
+        h.triton(cmd, function (err, stdout, stderr) {
+            if (h.ifErr(t, err, 'triton fwrule create --disabled'))
+                return t.end();
+            /* JSSTYLED */
+            var expected = /^Created firewall rule ([a-f0-9-]{36}) \(disabled\)$/m;
+            var match = expected.exec(stdout);
+            t.ok(match, f('stdout matches %s: %j', expected, stdout));
+
+            var id = match[1];
+            t.ok(id);
+            ID = id.match(/^(.+?)-/)[1]; // convert to short ID
+
+            t.end();
+        });
+    });
+
+    tt.test('  triton fwrule get (disabled)', function (t) {
+        var cmd = 'fwrule get ' + ID;
+
+        h.triton(cmd, function (err, stdout, stderr) {
+            if (h.ifErr(t, err, 'triton fwrule get'))
+                return t.end();
+
+            var obj = JSON.parse(stdout);
+            t.equal(obj.rule, RULE, 'fwrule rule is correct');
+            t.equal(obj.enabled, false, 'fwrule is disabled');
+            t.end();
+        });
+    });
+
     tt.test('  triton fwrule create', function (t) {
-        var cmd = f('fwrule create -d "%s" "%s"', DESC, RULE);
+        var cmd = f('fwrule create -D "%s" "%s"', DESC, RULE);
 
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule create'))
                 return t.end();
 
-            var match = stdout.match('Created firewall rule (.+)');
-            t.ok(match, 'fwrule made');
+            /* JSSTYLED */
+            var expected = /^Created firewall rule ([a-f0-9-]{36})$/m;
+            var match = expected.exec(stdout);
+            t.ok(match, f('stdout matches %s: %j', expected, stdout));
 
             var id = match[1];
             t.ok(id);
@@ -87,8 +121,7 @@ test('triton fwrule', OPTS, function (tt) {
             var obj = JSON.parse(stdout);
             t.equal(obj.rule, RULE, 'fwrule rule is correct');
             t.equal(obj.description, DESC, 'fwrule was properly created');
-            t.equal(obj.enabled, false, 'fwrule enabled defaults to false');
-
+            t.equal(obj.enabled, true, 'fwrule enabled defaults to true');
             t.end();
         });
     });
@@ -120,10 +153,10 @@ test('triton fwrule', OPTS, function (tt) {
     });
 
     tt.test('  triton fwrule update', function (t) {
-        var cmd = 'fwrule update rule="' + RULE2 + '" ' + ID;
+        var cmd = 'fwrule update ' + ID + ' rule="' + RULE2 + '"';
 
         h.triton(cmd, function (err, stdout, stderr) {
-            if (h.ifErr(t, err, 'triton fwrule disable'))
+            if (h.ifErr(t, err, 'triton fwrule update'))
                 return t.end();
 
             t.ok(stdout.match('Updated firewall rule ' + ID +

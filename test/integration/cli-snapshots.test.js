@@ -20,7 +20,7 @@ var test = require('tape');
 // --- Globals
 
 var SNAP_NAME = 'test-snapshot';
-var INST_ALIAS = f('nodetritontest-fwrules-%s', os.hostname());
+var INST_ALIAS = f('nodetritontest-snapshots-%s', os.hostname());
 var INST;
 var OPTS = {
     skip: !h.CONFIG.allowWriteActions
