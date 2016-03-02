@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.6.0 (not yet released)
+## 4.6.0
 
 - #98 `triton inst get ID` for a deleted instance will now emit the instance
   object and error less obtusely. This adds a new `InstanceDeleted` error code
