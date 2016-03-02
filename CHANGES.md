@@ -2,6 +2,9 @@
 
 ## 4.6.0 (not yet released)
 
+- #98 `triton inst get ID` for a deleted instance will now emit the instance
+  object and error less obtusely. This adds a new `InstanceDeleted` error code
+  from `TritonApi`.
 - PUBAPI-1233 firewalls: `triton fwrule ...`
 - PUBAPI-1234 instance snapshots: `triton inst snapshot ...`
 - #52 Fix 'triton ssh ...' stdout/stderr to fully flush with node >= 4.x.

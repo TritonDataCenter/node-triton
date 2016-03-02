@@ -140,6 +140,21 @@ test('triton manage workflow', opts, function (tt) {
         });
     });
 
+    // Test the '410 Gone' handling from CloudAPI GetMachine.
+    tt.test('  triton inst get (deleted)', function (t) {
+        h.triton(['inst', 'get', instance.id], function (err, stdout, stderr) {
+            t.ok(err, 'got err: ' + err);
+            t.equal(err.code, 3, 'exit status of 3');
+            var errCodeRe = /InstanceDeleted/;
+            t.ok(errCodeRe.exec(stderr),
+                f('stderr matched %s: %j', errCodeRe, stderr));
+            t.ok(stdout, 'still got stdout');
+            var inst = JSON.parse(stdout);
+            t.equal(inst.state, 'deleted', 'instance state is "deleted"');
+            t.end();
+        });
+    });
+
     // TODO: would be nice to have a `triton ssh cat /var/log/boot.log` to
     //      verify the user-script worked.
 
