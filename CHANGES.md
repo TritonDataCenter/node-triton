@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.6.1 (not yet released)
+
+(nothing yet)
+
+
 ## 4.6.0
 
 - #98 `triton inst get ID` for a deleted instance will now emit the instance
