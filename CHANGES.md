@@ -2,7 +2,7 @@
 
 ## 4.6.1 (not yet released)
 
-(nothing yet)
+- #99 `triton profile set ...` alias for `set-current`
 
 
 ## 4.6.0
