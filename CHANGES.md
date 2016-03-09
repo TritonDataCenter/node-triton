@@ -1,7 +1,14 @@
 # node-triton changelog
 
-## 4.6.1 (not yet released)
+## 4.7.0 (not yet released)
 
+- #101 Bash completion for server-side data: instances, images, etc.
+  Bash completion on TAB should now work for things like the following:
+  `triton create <TAB to complete images> <TAB to complete packages`,
+  `triton inst tag ls <TAB to complete instances>`. Cached (with a 5 minute
+  TTL) completions for the following data are supported: instances, images,
+  packages, networks, fwrules, account keys.
+  See `triton completion --help` for adding/updating Bash completion.
 - #99 `triton profile set ...` alias for `set-current`
 
 
