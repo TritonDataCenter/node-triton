@@ -1,6 +1,6 @@
 # node-triton changelog
 
-## 4.7.0 (not yet released)
+## 4.7.0
 
 - #101 Bash completion for server-side data: instances, images, etc.
   Bash completion on TAB should now work for things like the following:
