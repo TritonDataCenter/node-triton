@@ -1,5 +1,10 @@
 # node-triton changelog
 
+## 4.7.1 (not yet released)
+
+(nothing yet)
+
+
 ## 4.7.0
 
 - #101 Bash completion for server-side data: instances, images, etc.
