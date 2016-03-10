@@ -2,7 +2,7 @@
 
 ## 4.7.1 (not yet released)
 
-(nothing yet)
+- #97 `triton profile set -` to set the *last* profile as current.
 
 
 ## 4.7.0
