@@ -1,12 +1,24 @@
 # node-triton changelog
 
+Known issues:
+
+- `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
+
+
 ## 4.7.1 (not yet released)
 
+- #52 Workaround for `triton ssh ...`. In version 4.6.0, `triton ssh ...`
+  interactive sessions were broken. This version reverts that change and adds
+  a workaround for #52 (by disabling ControlMaster when spawning `ssh`).
+  See <https://github.com/joyent/node-triton/issues/52> for details.
 - #97 `triton profile set -` to set the *last* profile as current.
 - PUBAPI-1266 Added `instance enable-firewall` and `instance disable-firewall`
 
 
 ## 4.7.0
+
+**Known issue: `triton ssh` interactive sessions are broken.
+Upgrade to v4.7.1.**
 
 - #101 Bash completion for server-side data: instances, images, etc.
   Bash completion on TAB should now work for things like the following:
@@ -19,6 +31,9 @@
 
 
 ## 4.6.0
+
+**Known issue: `triton ssh` interactive sessions are broken.
+Upgrade to v4.7.1.**
 
 - #98 `triton inst get ID` for a deleted instance will now emit the instance
   object and error less obtusely. This adds a new `InstanceDeleted` error code
