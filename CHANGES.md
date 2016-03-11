@@ -5,7 +5,7 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.7.1 (not yet released)
+## 4.8.0 (not yet released)
 
 - #103 `triton ip <inst>` to output the instance's primaryIp
 - #52 Workaround for `triton ssh ...`. In version 4.6.0, `triton ssh ...`
