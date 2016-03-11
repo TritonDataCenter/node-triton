@@ -249,7 +249,7 @@ test('triton fwrule', OPTS, function (tt) {
     });
 
     tt.test('  triton instance enable-firewall', function (t) {
-        var cmd = 'instance enable-firewall ' + INST + ' -fw';
+        var cmd = 'instance enable-firewall ' + INST + ' -w';
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton instance enable-firewall'))
                 return t.end();
@@ -270,7 +270,7 @@ test('triton fwrule', OPTS, function (tt) {
     });
 
     tt.test('  triton instance disable-firewall', function (t) {
-        var cmd = 'instance disable-firewall ' + INST + ' -fw';
+        var cmd = 'instance disable-firewall ' + INST + ' -w';
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton instance disable-firewall'))
                 return t.end();
