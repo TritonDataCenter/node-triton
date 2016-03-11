@@ -41,6 +41,8 @@ var subs = [
     ['instance stop', 'stop'],
     ['instance reboot', 'reboot'],
     ['instance delete', 'instance rm', 'delete', 'rm'],
+    ['instance enable-firewall'],
+    ['instance disable-firewall'],
     ['instance wait'],
     ['instance audit'],
     ['instance fwrules'],

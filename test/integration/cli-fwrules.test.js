@@ -248,6 +248,48 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
+    tt.test('  triton instance enable-firewall', function (t) {
+        var cmd = 'instance enable-firewall ' + INST + ' -fw';
+        h.triton(cmd, function (err, stdout, stderr) {
+            if (h.ifErr(t, err, 'triton instance enable-firewall'))
+                return t.end();
+
+            t.ok(stdout.match('Enabled firewall for instance "' + INST + '"'),
+                 'firewall enabled');
+
+            h.triton('instance get -j ' + INST, function (err2, stdout2) {
+                if (h.ifErr(t, err2, 'triton instance get'))
+                    return t.end();
+
+                var inst = JSON.parse(stdout2);
+                t.equal(inst.firewall_enabled, true);
+
+                t.end();
+            });
+        });
+    });
+
+    tt.test('  triton instance disable-firewall', function (t) {
+        var cmd = 'instance disable-firewall ' + INST + ' -fw';
+        h.triton(cmd, function (err, stdout, stderr) {
+            if (h.ifErr(t, err, 'triton instance disable-firewall'))
+                return t.end();
+
+            t.ok(stdout.match('Disabled firewall for instance "' + INST + '"'),
+                 'firewall disabled');
+
+            h.triton('instance get -j ' + INST, function (err2, stdout2) {
+                if (h.ifErr(t, err2, 'triton instance get'))
+                    return t.end();
+
+                var inst = JSON.parse(stdout2);
+                t.equal(inst.firewall_enabled, false);
+
+                t.end();
+            });
+        });
+    });
+
     /*
      * Use a timeout, because '-w' on delete doesn't have a way to know if the
      * attempt failed or if it is just taking a really long time.

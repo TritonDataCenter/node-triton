@@ -3,6 +3,7 @@
 ## 4.7.1 (not yet released)
 
 - #97 `triton profile set -` to set the *last* profile as current.
+- PUBAPI-1266 Added `instance enable-firewall` and `instance disable-firewall`
 
 
 ## 4.7.0
