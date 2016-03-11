@@ -7,6 +7,7 @@ Known issues:
 
 ## 4.7.1 (not yet released)
 
+- #103 `triton ip <inst>` to output the instance's primaryIp
 - #52 Workaround for `triton ssh ...`. In version 4.6.0, `triton ssh ...`
   interactive sessions were broken. This version reverts that change and adds
   a workaround for #52 (by disabling ControlMaster when spawning `ssh`).
