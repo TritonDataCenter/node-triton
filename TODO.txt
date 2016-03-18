@@ -9,9 +9,6 @@ note in README that full UUIDs is much faster in the API
 
 *type*: cloudapi changes to clarify: LX, docker, smartos, kvm instances
 
-bash completion: exclude '-J', better top/bottom comment boilerplate,
-put the CLI's version in the top comment, ISO date format
-
 # maybe next
 
 PUBAPI-1117 triton create -c|--count N
@@ -31,3 +28,33 @@ triton images
 triton config get|set|list    # see 'npm config'
 
 triton --shell   # or whatever, repl
+
+    $ triton shell
+    $profile> cd inst
+    $profile inst> ls
+    ...
+    $profile inst> cd vm0
+    $profile inst/vm0> get
+    ...
+    $profile inst/vm0> cd snapshot
+    $profile inst/vm0/snapshot> ls
+    ...
+
+extensible triton commands:
+    ~/.triton/plugins.d/$plugin.json
+
+    Would be nice to not have to read/parse all these files for every run,
+    i.e. lazily. Is that a problem for `triton` showing commands list?
+
+    How do plugins in other node projects work? Is there an npm special thing
+    that would work?
+
+    Should plugins just be commands? Perhaps for starters, but don't hardcode
+    that.
+
+    $ cat build.json
+    {
+        "cmd": "build",
+        "desc": "Build a Triton image from a Tritonfile"
+        "require": "triton-plugin-build"
+    }
