@@ -7,7 +7,7 @@ Known issues:
 
 ## 4.9.0 (not yet released)
 
-- #46 Initial support for `triton` helping setup and manage configuration for
+- [#46] Initial support for `triton` helping setup and manage configuration for
   using `docker` against a Triton datacenter. Triton datacenters can provide
   a Docker Remote API endpoint against which you can run the normal `docker`
   client. See <https://www.joyent.com/triton> for and overview and
