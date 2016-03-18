@@ -5,9 +5,34 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.8.1 (not yet released)
+## 4.9.0 (not yet released)
 
-(nothing yet)
+- #46 Initial support for `triton` helping setup and manage configuration for
+  using `docker` against a Triton datacenter. Triton datacenters can provide
+  a Docker Remote API endpoint against which you can run the normal `docker`
+  client. See <https://www.joyent.com/triton> for and overview and
+  <https://github.com/joyent/sdc-docker> for developer details.
+
+  - `triton profile create` will now setup the profile for running Docker,
+    if the Triton datacenter provides a docker endpoint. The typical flow
+    would be:
+
+        $ triton profile create
+        name: foo
+        ...
+        $ triton profile set foo            # make foo my default profile
+        $ eval "$(triton env --docker)"     # set 'DOCKER_' envvars
+        $ docker info
+
+  - For existing Triton CLI profiles, there is a new `triton profile
+    docker-setup [PROFILE]`.
+
+        $ triton profile docker-setup
+        $ eval "$(triton env --docker)"
+        $ docker info
+
+  - `triton env` will now emit commands to setup `DOCKER_` envvars. That
+    can be limited to just the Docker-relevant env via `triton env --docker`.
 
 
 ## 4.8.0

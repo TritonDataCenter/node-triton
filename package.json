@@ -1,7 +1,7 @@
 {
   "name": "triton",
   "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
-  "version": "4.8.1",
+  "version": "4.9.0",
   "author": "Joyent (joyent.com)",
   "dependencies": {
     "assert-plus": "0.2.0",
@@ -18,12 +18,14 @@
     "restify-clients": "1.1.0",
     "restify-errors": "3.0.0",
     "rimraf": "2.4.4",
+    "semver": "5.1.0",
+    "smartdc-auth": "git+https://github.com/joyent/node-smartdc-auth.git#05d9077",
     "sshpk": "1.7.x",
-    "smartdc-auth": "2.3.1",
     "strsplit": "1.0.0",
     "tabula": "1.7.0",
     "vasync": "1.6.3",
     "verror": "1.6.0",
+    "which": "1.2.4",
     "wordwrap": "1.0.0"
   },
   "devDependencies": {
