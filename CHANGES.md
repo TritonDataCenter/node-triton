@@ -5,6 +5,11 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
+## 4.9.1 (not yet released)
+
+(nothing yet)
+
+
 ## 4.9.0
 
 - [#46] Initial support for `triton` helping setup and manage configuration for
