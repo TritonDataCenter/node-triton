@@ -24,6 +24,11 @@ Known issues:
         $ eval "$(triton env --docker)"     # set 'DOCKER_' envvars
         $ docker info
 
+    This profile setup for Docker requires making requests to the
+    CloudAPI endpoint which can fail (e.g. if CloudAPI is down, credentials
+    are invalid, etc.). You can use the `--no-docker` option to skip
+    the Docker setup part of profile creation.
+
   - For existing Triton CLI profiles, there is a new `triton profile
     docker-setup [PROFILE]`.
 
