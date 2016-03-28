@@ -25,7 +25,7 @@ var opts = {
     skip: !h.CONFIG.allowWriteActions
 };
 
-//
+
 // --- Tests
 
 if (opts.skip) {
@@ -54,7 +54,14 @@ test('triton profiles (read only)', function (tt) {
 
 test('triton profiles (read/write)', opts, function (tt) {
     tt.test('  triton profile create', function (t) {
-        h.safeTriton(t, ['profile', 'create', '-f', PROFILE_FILE],
+        /*
+         * We need to skip the Docker setup with '--no-docker' because we are
+         * using a bogus keyId and CloudAPI url. The Docker setup requires real
+         * values because it makes requests to CloudAPI (e.g. ListServices to
+         * find the Docker endpoint).
+         */
+        h.safeTriton(t, ['profile', 'create', '--no-docker',
+                '-f', PROFILE_FILE],
             function (err, stdout) {
             t.ok(stdout.match(/^Saved profile/), 'stdout correct');
             t.end();
