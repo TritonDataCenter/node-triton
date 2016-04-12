@@ -5,10 +5,28 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.9.1 (not yet released)
+## 4.10.0 (not yet released)
 
-(nothing yet)
+- [#82] Affinity (a.k.a. locality hints) support for instance creation, e.g.:
 
+        # Use same server as instance 'db0':
+        triton create -a instance==db0 ...
+        triton create -a db0 ...           # shortcut for same thing
+
+        # Use different server than instance 'db0':
+        triton create -a 'instance!=db0' ...
+
+        # *Attempt* to use same server as instance 'db0', but don't fail
+        # if cannot. This is called a "non-strict" or "soft" rule.
+        triton create -a instance==~db0 ...
+
+        # *Attempt* to use a different server than instance 'db0':
+        triton create -a 'instance!=~db0' ...
+
+  "Affinity" here refers to providing rules for deciding on which server
+  a new instance should by provisioned. Rules are in terms of existing
+  instances. As a shortcut, 'inst' can be used in place of 'instance'
+  above (e.g. `triton create -a 'inst!=db0' ...`).
 
 ## 4.9.0
 

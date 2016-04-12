@@ -1,7 +1,7 @@
 {
   "name": "triton",
   "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
-  "version": "4.9.1",
+  "version": "4.10.0",
   "author": "Joyent (joyent.com)",
   "dependencies": {
     "assert-plus": "0.2.0",

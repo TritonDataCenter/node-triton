@@ -29,7 +29,7 @@ function complete_tritonprofile {
 # The next choice is to (a) use the special `TRITON_COMPLETE` handling to
 # fetch data from the server and write out a cache file, but (b) attempt to
 # find and use that cache file without calling node.js code. The win is
-# (at least in my usage) faster response time to a <TAB>. The cost is doing
+# (at least in my usage) faster response time to a <TAB>. The cost is
 # reproducing (imperfectly) in Bash the logic for determining the Triton profile
 # info to find the cache.
 #
@@ -143,6 +143,28 @@ function complete_tritonkey {
     local word="$1"
     candidates=$(_complete_tritondata keys)
     compgen $compgen_opts -W "$candidates" -- "$word"
+}
+
+function complete_tritonaffinityrule {
+    local word="$1"
+    candidates=$(_complete_tritondata affinityrules)
+
+    # Triton affinity rules typically have '=' in them, e.g.:
+    #       triton create -a inst==db0 ...
+    # This means we run afoul of the '=' in COMP_WORDBREAKS which results in
+    #       triton create -a inst=<TAB>
+    # leading to:
+    #       triton create -a inst=inst==
+    # The answer is to strip off at the last '=' in the returned completions.
+    if [[ "$word" == *"="* ]]; then
+        local uptolastequal
+        uptolastequal="${word%=*}="
+        compgen $compgen_opts -W "$candidates" -- "$word" \
+            | cut -c$(( ${#uptolastequal} + 1 ))-
+    else
+        compgen $compgen_opts -W "$candidates" -- "$word"
+    fi
+
 }
 
 
