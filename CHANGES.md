@@ -5,7 +5,7 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.10.0 (not yet released)
+## 4.10.0
 
 - [#82] Affinity (a.k.a. locality hints) support for instance creation, e.g.:
 
