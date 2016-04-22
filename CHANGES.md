@@ -7,6 +7,7 @@ Known issues:
 
 ## 4.11.0 (not yet released)
 
+- [#112] Fix `triton completion`, broke a while back.
 - [#111] `triton env --unset,-u` option to emit environment commands to *unset*
   relevant envvars.
 - Unhide `triton env` from `triton --help` output.
