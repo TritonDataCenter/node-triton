@@ -28,6 +28,8 @@ var subs = [
     ['profile create'],
     ['profile edit'],
     ['profile delete', 'profile rm'],
+    ['env'],
+    ['completion'],
     ['account'],
     ['account get'],
     ['account update'],

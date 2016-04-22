@@ -5,9 +5,11 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.10.1 (not yet released)
+## 4.11.0 (not yet released)
 
-(nothing yet)
+- [#111] `triton env --unset,-u` option to emit environment commands to *unset*
+  relevant envvars.
+- Unhide `triton env` from `triton --help` output.
 
 
 ## 4.10.0
