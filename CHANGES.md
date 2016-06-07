@@ -5,7 +5,7 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.12.0 (not yet released)
+## 4.12.0
 
 - [#120] `triton -r,--role ROLE ...` option to take up an RBAC role(s).
 
