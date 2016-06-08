@@ -5,7 +5,7 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.13.0 (not yet released)
+## 4.13.0
 
 - [#120] Don't fail `triton instance list` if the retrieval of *image* info
   (retrieved to get image name and version, as a bonus) fails with an
