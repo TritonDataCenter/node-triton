@@ -1,14 +1,14 @@
 {
   "name": "triton",
   "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
-  "version": "4.12.1",
+  "version": "4.13.0",
   "author": "Joyent (joyent.com)",
   "dependencies": {
     "assert-plus": "0.2.0",
     "backoff": "2.4.1",
     "bigspinner": "3.1.0",
     "bunyan": "1.5.1",
-    "cmdln": "3.5.4",
+    "cmdln": "4.1.1",
     "extsprintf": "1.0.2",
     "lomstream": "1.1.0",
     "mkdirp": "0.5.1",

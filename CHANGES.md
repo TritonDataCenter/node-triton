@@ -5,9 +5,31 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.12.1 (not yet released)
+## 4.13.0 (not yet released)
 
-(nothing yet)
+- [#113] *Usage* errors now some "error help", including option or command
+  synopses. Some examples (the new thing is marked with `>`):
+
+  - Command synopses when argument errors:
+
+            $ triton create
+            triton instance create: error (Usage): incorrect number of args
+        >   usage: triton instance create [OPTIONS] IMAGE PACKAGE
+
+  - Option synopsis with option errors:
+
+            $ triton image ls --bogus
+            triton image ls: error (Option): unknown option: "--bogus"
+        >   usage: triton image ls [ --help | -h ] [ --all | -a ] [ -H ] [ -o field1,... ]
+        >       [ --long | -l ] [ -s field1,... ] [ --json | -j ] ...
+
+  - Suggested command name misspellings:
+
+            $ triton in
+            triton: error (UnknownCommand): unknown command: "in"
+        >   Did you mean this?
+        >       info
+        >       inst
 
 
 ## 4.12.0
