@@ -22,24 +22,30 @@ Known issues:
 
   - Command synopses when argument errors:
 
-            $ triton create
-            triton instance create: error (Usage): incorrect number of args
-        >   usage: triton instance create [OPTIONS] IMAGE PACKAGE
+    ```
+        $ triton create
+        triton instance create: error (Usage): incorrect number of args
+    >   usage: triton instance create [OPTIONS] IMAGE PACKAGE
+    ```
 
   - Option synopsis with option errors:
 
-            $ triton image ls --bogus
-            triton image ls: error (Option): unknown option: "--bogus"
-        >   usage: triton image ls [ --help | -h ] [ --all | -a ] [ -H ] [ -o field1,... ]
-        >       [ --long | -l ] [ -s field1,... ] [ --json | -j ] ...
+    ```
+        $ triton image ls --bogus
+        triton image ls: error (Option): unknown option: "--bogus"
+    >   usage: triton image ls [ --help | -h ] [ --all | -a ] [ -H ] [ -o field1,... ]
+    >       [ --long | -l ] [ -s field1,... ] [ --json | -j ] ...
+    ```
 
   - Suggested command name misspellings:
 
-            $ triton in
-            triton: error (UnknownCommand): unknown command: "in"
-        >   Did you mean this?
-        >       info
-        >       inst
+    ```
+        $ triton in
+        triton: error (UnknownCommand): unknown command: "in"
+    >   Did you mean this?
+    >       info
+    >       inst
+    ```
 
 
 ## 4.12.0
