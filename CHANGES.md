@@ -7,6 +7,11 @@ Known issues:
 
 ## 4.13.0 (not yet released)
 
+- [#120] Don't fail `triton instance list` if the retrieval of *image* info
+  (retrieved to get image name and version, as a bonus) fails with an
+  authorization error -- in case it is an RBAC failure where a subuser can
+  ListMachines, but not ListImages.
+
 - [#113] *Usage* errors now some "error help", including option or command
   synopses. Some examples (the new thing is marked with `>`):
 

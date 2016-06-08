@@ -1,3 +1,8 @@
+- The 'shortcut' commands use `handlerFromSubcmd(...).dispatch`. That
+  doesn't run the subcmd class's `.init()` method. node-cmdln should provide
+  a way to do this. ... basically want to call the *main()* but with preparsed
+  options. Perhaps the init/fini should move into dispatch?
+
 triton create affinity support for tag matching, globs, regex
 
 note in README that full UUIDs is much faster in the API
