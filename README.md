@@ -2,6 +2,11 @@
 
 # node-triton
 
+This repository is part of the Joyent Triton project. See the [contribution
+guidelines](https://github.com/joyent/triton/blob/master/CONTRIBUTING.md) --
+*Triton does not use GitHub PRs* -- and general documentation at the main
+[Triton project](https://github.com/joyent/triton) page.
+
 `triton` is a CLI tool for working with the CloudAPI for Joyent's Triton [Public Cloud]
 (https://docs.joyent.com/public-cloud) and [Private Cloud] (https://docs.joyent.com/private-cloud).
 CloudAPI is a RESTful API for end users of the cloud to manage their accounts, instances,
@@ -14,13 +19,11 @@ for CloudAPI. `node-smartdc` CLI works off the 32-character object UUID to uniqu
 identify object instances in API requests, and returns response payload in JSON format.
 The CLI covers both basic and advanced usage of [CloudAPI](https://apidocs.joyent.com/cloudapi/).
 
-As a lightweight programmable interface for CloudAPI, the `triton` CLI supports both name or
-UUID identification of object instances and the use of short ID, as well as the choice
-between concise tabular responses and full JSON responses.
-
-**The `triton` CLI is currently in beta and will be expanded over time to
-support all CloudAPI commands, eventually replacing `node-smartdc` as both the
-API client library for Triton cloud and the command line tool.**
+**The `triton` CLI is currently in beta (effectively because it does not yet
+have *complete* coverage of all commands from node-smartdc) and will be
+expanded over time to support all CloudAPI commands, eventually replacing
+`node-smartdc` as both the API client library for Triton cloud and the command
+line tool.**
 
 ## Setup
 
