@@ -5,7 +5,10 @@ Known issues:
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
 
-## 4.14.0 (not yet released)
+## not yet released
+
+
+## 4.14.0
 
 - [#130] Include disabled images when using an image cache (e.g. for filling in
   image name and version details in `triton ls` output.

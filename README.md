@@ -351,6 +351,33 @@ where "coal" here refers to a development Triton (a.k.a SDC) ["Cloud On A
 Laptop"](https://github.com/joyent/sdc#getting-started) standup.
 
 
+## Release process
+
+Here is how to cut a release:
+
+1. Make a commit to set the intended version in "package.json#version" and changing `## not yet released` at the top of "CHANGES.md" to:
+
+    ```
+    ## not yet released
+
+
+    ## $version
+    ```
+
+2. Get that commit approved and merged via <https://cr.joyent.us>, as with all
+   commits to this repo. See the discussion of contribution at the top of this
+   readme.
+
+3. Once that is merged and you've updated your local copy, run:
+
+    ```
+    make cutarelease
+    ```
+
+   This will run a couple checks (clean working copy, versions in package.json
+   and CHANGES.md match), then will git tag and npm publish.
+
+
 ## License
 
 MPL 2.0
