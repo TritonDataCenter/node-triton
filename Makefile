@@ -69,7 +69,7 @@ cutarelease: versioncheck
 	    date=$(shell date -u "+%Y-%m-%d") && \
 	    git tag -a "$$ver" -m "version $$ver ($$date)" && \
 	    git push --tags origin && \
-	    npm publish $$name
+	    npm publish
 
 .PHONY: git-hooks
 git-hooks:
