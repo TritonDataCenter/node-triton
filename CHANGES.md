@@ -7,6 +7,7 @@ Known issues:
 
 ## not yet released
 
+- [#136] bash completion for `triton profile create --copy <TAB>`
 
 ## 4.14.0
 
