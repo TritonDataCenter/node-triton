@@ -7,6 +7,11 @@ Known issues:
 
 ## not yet released
 
+## 4.14.1
+
+- TOOLS-1587 'triton profile docker-setup' fails when path to 'docker' has
+  spaces. This can help on Windows where Docker Toolbox installs docker.exe
+  to "C:\Program Files\Docker Toolbox".
 - [#136] bash completion for `triton profile create --copy <TAB>`
 
 ## 4.14.0
