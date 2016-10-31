@@ -7,6 +7,11 @@ Known issues:
 
 ## not yet released
 
+## 4.14.2
+
+- TOOLS-1592 First workaround for a possible BadDigestError when using
+  node v6.
+
 ## 4.14.1
 
 - TOOLS-1587 'triton profile docker-setup' fails when path to 'docker' has
