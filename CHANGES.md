@@ -7,6 +7,16 @@ Known issues:
 
 ## not yet released
 
+- [trentm/node-dashdash#30] Change the output used by Bash completion support to
+  indicate "there are no completions for this argument" to cope with different
+  sorting rules on different Bash/platforms. For example:
+
+        $ triton -p test2 package get <TAB>          # before
+        ##-no -tritonpackage- completions-##
+
+        $ triton -p test2 package get <TAB>          # after
+        ##-no-completion- -results-##
+
 ## 4.14.2
 
 - TOOLS-1592 First workaround for a possible BadDigestError when using
