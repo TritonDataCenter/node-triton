@@ -7,9 +7,16 @@ Known issues:
 
 ## not yet released
 
-- [trentm/node-dashdash#30] Change the output used by Bash completion support to
-  indicate "there are no completions for this argument" to cope with different
-  sorting rules on different Bash/platforms. For example:
+(nothing yet)
+
+## 4.15.0
+
+- [joyent/node-triton#64] Support 'triton instance rename ...' (by
+  github.com/YangYong3).
+- [trentm/node-dashdash#30, joyent/node-triton#144] Change the output used by
+  Bash completion support to indicate "there are no completions for this
+  argument" to cope with different sorting rules on different Bash/platforms.
+  For example:
 
         $ triton -p test2 package get <TAB>          # before
         ##-no -tritonpackage- completions-##
