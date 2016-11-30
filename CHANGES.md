@@ -7,7 +7,7 @@ Known issues:
 
 ## not yet released
 
-(nothing yet)
+- [joyent/node-triton#143] Fix duplicate output from 'triton rbac key ...'.
 
 ## 4.15.0
 
