@@ -12,20 +12,22 @@ var bunyan = require('bunyan');
 var cloudapi = require('../lib/cloudapi2');
 
 var log = bunyan.createLogger({
-    name: 'test-get-account',
+    name: 'example-get-account',
     level: 'trace'
 })
 
-var USER = process.env.SDC_USER || process.env.SDC_ACCOUNT || 'bob';
+var ACCOUNT = process.env.SDC_ACCOUNT || 'bob';
+var USER = process.env.SDC_USER;
 var KEY_ID = process.env.SDC_KEY_ID || 'b4:f0:b4:6c:18:3b:44:63:b4:4e:58:22:74:43:d4:bc';
 
 var sign = auth.cliSigner({
     keyId: KEY_ID,
-    user: USER,
+    user: ACCOUNT,
     log: log
 });
 var client = cloudapi.createClient({
     url: 'https://us-sw-1.api.joyent.com',
+    account: ACCOUNT,
     user: USER,
     version: '*',
     sign: sign,
