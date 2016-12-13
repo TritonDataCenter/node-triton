@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2016 Joyent, Inc.
  */
 
 /*
@@ -15,11 +15,8 @@
 var h = require('./helpers');
 var test = require('tape');
 
-var common = require('../../lib/common');
-
 
 // --- Globals
-
 
 var CLIENT;
 var INST;
@@ -27,12 +24,17 @@ var INST;
 
 // --- Tests
 
-
 test('TritonApi packages', function (tt) {
-    tt.test(' setup', function (t) {
-        CLIENT = h.createClient();
-        t.ok(CLIENT, 'client');
 
+    tt.test(' setup', function (t) {
+        h.createClient(function (err, client_) {
+            t.error(err);
+            CLIENT = client_;
+            t.end();
+        });
+    });
+
+    tt.test(' setup: inst', function (t) {
         CLIENT.cloudapi.listMachines(function (err, insts) {
             if (h.ifErr(t, err))
                 return t.end();

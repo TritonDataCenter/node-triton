@@ -248,12 +248,14 @@ function jsonStreamParse(s) {
 /*
  * Create a TritonApi client using the CLI.
  */
-function createClient() {
-    return mod_triton.createClient({
+function createClient(cb) {
+    assert.func(cb, 'cb');
+
+    mod_triton.createClient({
         log: LOG,
         profile: CONFIG.profile,
         configDir: '~/.triton'   // piggy-back on Triton CLI config dir
-    });
+    }, cb);
 }
 
 

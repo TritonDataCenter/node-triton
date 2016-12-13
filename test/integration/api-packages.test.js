@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2016 Joyent, Inc.
  */
 
 /*
@@ -30,9 +30,14 @@ var PKG;
 
 test('TritonApi packages', function (tt) {
     tt.test(' setup', function (t) {
-        CLIENT = h.createClient();
-        t.ok(CLIENT, 'client');
+        h.createClient(function (err, client_) {
+            t.error(err);
+            CLIENT = client_;
+            t.end();
+        });
+    });
 
+    tt.test(' setup: pkg', function (t) {
         CLIENT.cloudapi.listPackages(function (err, pkgs) {
             if (h.ifErr(t, err))
                 return t.end();

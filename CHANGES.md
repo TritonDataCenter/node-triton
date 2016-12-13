@@ -7,6 +7,83 @@ Known issues:
 
 ## not yet released
 
+- **BREAKING CHANGE for module usage of node-triton.**
+  To implement joyent/node-triton#108, the way a TritonApi client is
+  setup for use has changed from being (unrealistically) sync to async.
+
+  Client preparation is now a multi-step process:
+
+  1. create the client object;
+  2. initialize it (mainly involves finding the SSH key identified by the
+     `keyId`); and,
+  3. optionally unlock the SSH key (if it is passphrase-protected and not in
+     an ssh-agent).
+
+  `createClient` has changed to take a callback argument. It will create and
+  init the client (steps 1 and 2) and takes an optional `unlockKeyFn` parameter
+  to handle step 3. A new `mod_triton.promptPassphraseUnlockKey` export can be
+  used for `unlockKeyFn` for command-line tools to handle prompting for a
+  passphrase on stdin, if required. Therefore what used to be:
+
+        var mod_triton = require('triton');
+        try {
+            var client = mod_triton.createClient({      # No longer works.
+                profileName: 'env'
+            });
+        } catch (initErr) {
+            // handle err
+        }
+
+        // use `client`
+
+  is now:
+
+        var mod_triton = require('triton');
+        mod_triton.createClient({
+            profileName: 'env',
+            unlockKeyFn: triton.promptPassphraseUnlockKey
+        }, function (err, client) {
+            if (err) {
+                // handle err
+            }
+
+            // use `client`
+        });
+
+  See [the examples/ directory](examples/) for more complete examples.
+
+  Low-level/raw handling of the three steps above is possible as follows
+  (error handling is elided):
+
+        var mod_bunyan = require('bunyan');
+        var mod_triton = require('triton');
+
+        // 1. create
+        var client = mod_triton.createTritonApiClient({
+            log: mod_bunyan.createLogger({name: 'my-tool'}),
+            config: {},
+            profile: mod_triton.loadProfile('env')
+        });
+
+        // 2. init
+        client.init(function (initErr) {
+            // 3. unlock key
+            // See top-comment in "lib/tritonapi.js".
+        });
+
+- [joyent/node-triton#108] Support for passphrase-protected private keys.
+  Before this work, an encrypted private SSH key (i.e. protected by a
+  passphrase) would have to be loaded in an ssh-agent for the `triton`
+  CLI to use it. Now `triton` will prompt for the passphrase to unlock
+  the private key (in memory), if needed. For example:
+
+        $ triton package list
+        Enter passphrase for id_rsa:
+        SHORTID   NAME             MEMORY  SWAP  DISK  VCPUS
+        14ad9d54  g4-highcpu-128M    128M  512M    3G      -
+        14ae2634  g4-highcpu-256M    256M    1G    5G      -
+        ...
+
 - [joyent/node-triton#143] Fix duplicate output from 'triton rbac key ...'.
 
 ## 4.15.0

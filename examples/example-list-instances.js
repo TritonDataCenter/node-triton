@@ -1,46 +1,46 @@
 #!/usr/bin/env node
 /**
- * Example using cloudapi2.js to call cloudapi's ListMachines endpoint.
+ * Example creating a Triton API client and using it to list instances.
  *
  * Usage:
- *      ./example-list-images.js | bunyan
+ *      ./example-list-instances.js
+ *
+ *      # With trace-level logging
+ *      LOG_LEVEL=trace ./example-list-instances.js 2>&1 | bunyan
  */
 
-var p = console.log;
 var bunyan = require('bunyan');
+var path = require('path');
 var triton = require('../'); // typically `require('triton');`
 
-
-var URL = process.env.SDC_URL || 'https://us-sw-1.api.joyent.com';
-var ACCOUNT = process.env.SDC_ACCOUNT || 'bob';
-var KEY_ID = process.env.SDC_KEY_ID || 'b4:f0:b4:6c:18:3b:44:63:b4:4e:58:22:74:43:d4:bc';
-
-
 var log = bunyan.createLogger({
-    name: 'test-list-instances',
-    level: process.env.LOG_LEVEL || 'trace'
+    name: path.basename(__filename),
+    level: process.env.LOG_LEVEL || 'info',
+    stream: process.stderr
 });
 
-/*
- * More details on `createClient` options here:
- *      https://github.com/joyent/node-triton/blob/master/lib/index.js#L18-L61
- * For example, if you want to use an existing `triton` CLI profile, you can
- * pass that profile name in.
- */
-var client = triton.createClient({
+triton.createClient({
     log: log,
-    profile: {
-        url: URL,
-        account: ACCOUNT,
-        keyId: KEY_ID
-    }
-});
-// TODO: Eventually the top-level TritonApi will have `.listInstances()` to use.
-client.cloudapi.listMachines(function (err, insts) {
-    client.close();   // Remember to close the client to close TCP conn.
+    // Use 'env' to pick up 'TRITON_/SDC_' env vars. Or manually specify a
+    // `profile` object.
+    profileName: 'env',
+    unlockKeyFn: triton.promptPassphraseUnlockKey
+}, function createdClient(err, client) {
     if (err) {
-        console.error('listInstances err:', err);
-    } else {
-        console.log(JSON.stringify(insts, null, 4));
+        console.error('error creating Triton client: %s\n%s', err, err.stack);
+        process.exitStatus = 1;
+        return;
     }
+
+    // TODO: Eventually the top-level TritonApi will have `.listInstances()`.
+    client.cloudapi.listMachines(function (err, insts) {
+        client.close(); // Remember to close the client to close TCP conn.
+
+        if (err) {
+            console.error('listInstances error: %s\n%s', err, err.stack);
+            process.exitStatus = 1;
+        } else {
+            console.log(JSON.stringify(insts, null, 4));
+        }
+    });
 });

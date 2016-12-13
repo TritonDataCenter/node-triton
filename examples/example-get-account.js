@@ -1,42 +1,45 @@
 #!/usr/bin/env node
 /**
- * Example using cloudapi2.js to call cloudapi's GetAccount endpoint.
+ * Example creating a Triton API client and using it to get account info.
  *
  * Usage:
- *      ./example-get-account.js | bunyan
+ *      ./example-get-account.js
+ *
+ *      # With trace-level logging
+ *      LOG_LEVEL=trace ./example-get-account.js 2>&1 | bunyan
  */
 
-var p = console.log;
-var auth = require('smartdc-auth');
 var bunyan = require('bunyan');
-var cloudapi = require('../lib/cloudapi2');
+var path = require('path');
+var triton = require('../'); // typically `require('triton');`
 
 var log = bunyan.createLogger({
-    name: 'example-get-account',
-    level: 'trace'
-})
-
-var ACCOUNT = process.env.SDC_ACCOUNT || 'bob';
-var USER = process.env.SDC_USER;
-var KEY_ID = process.env.SDC_KEY_ID || 'b4:f0:b4:6c:18:3b:44:63:b4:4e:58:22:74:43:d4:bc';
-
-var sign = auth.cliSigner({
-    keyId: KEY_ID,
-    user: ACCOUNT,
-    log: log
-});
-var client = cloudapi.createClient({
-    url: 'https://us-sw-1.api.joyent.com',
-    account: ACCOUNT,
-    user: USER,
-    version: '*',
-    sign: sign,
-    agent: false, // don't want KeepAlive
-    log: log
+    name: path.basename(__filename),
+    level: process.env.LOG_LEVEL || 'info',
+    stream: process.stderr
 });
 
-log.info('start')
-client.getAccount(function (err, account) {
-    p('getAccount: err', err)
-    p('getAccount: account', account)
+triton.createClient({
+    log: log,
+    // Use 'env' to pick up 'TRITON_/SDC_' env vars. Or manually specify a
+    // `profile` object.
+    profileName: 'env',
+    unlockKeyFn: triton.promptPassphraseUnlockKey
+}, function createdClient(err, client) {
+    if (err) {
+        console.error('error creating Triton client: %s\n%s', err, err.stack);
+        process.exitStatus = 1;
+        return;
+    }
+
+    // TODO: Eventually the top-level TritonApi will have `.getAccount()`.
+    client.cloudapi.getAccount(function (err, account) {
+        client.close(); // Remember to close the client to close TCP conn.
+        if (err) {
+            console.error('getAccount error: %s\n%s', err, err.stack);
+            process.exitStatus = 1;
+        } else {
+            console.log(JSON.stringify(account, null, 4));
+        }
+    });
 });

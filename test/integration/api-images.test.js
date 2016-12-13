@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2016 Joyent, Inc.
  */
 
 /*
@@ -29,9 +29,11 @@ test('TritonApi images', function (tt) {
 
     var client;
     tt.test(' setup: client', function (t) {
-        client = h.createClient();
-        t.ok(client, 'client');
-        t.end();
+        h.createClient(function (err, client_) {
+            t.error(err);
+            client = client_;
+            t.end();
+        });
     });
 
     var testOpts = {};

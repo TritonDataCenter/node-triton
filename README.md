@@ -234,19 +234,27 @@ documentation](https://apidocs.joyent.com/docker) for more information.)
 ## `TritonApi` Module Usage
 
 Node-triton can also be used as a node module for your own node.js tooling.
-A basic example:
+A basic example appropriate for a command-line tool is:
 
-    var triton = require('triton');
+```javascript
+var mod_bunyan = require('bunyan');
+var mod_triton = require('triton');
 
-    // See `createClient` block comment for full usage details:
-    //      https://github.com/joyent/node-triton/blob/master/lib/index.js
-    var client = triton.createClient({
-        profile: {
-            url: URL,
-            account: ACCOUNT,
-            keyId: KEY_ID
-        }
-    });
+var log = mod_bunyan.createLogger({name: 'my-tool'});
+
+// See the `createClient` block comment for full usage details:
+//      https://github.com/joyent/node-triton/blob/master/lib/index.js
+mod_triton.createClient({
+    log: log,
+    // Use 'env' to pick up 'TRITON_/SDC_' env vars. Or manually specify a
+    // `profile` object.
+    profileName: 'env',
+    unlockKeyFn: mod_triton.promptPassphraseUnlockKey
+}, function (err, client) {
+    if (err) {
+        // handle err
+    }
+
     client.listImages(function (err, images) {
         client.close();   // Remember to close the client to close TCP conn.
         if (err) {
@@ -255,7 +263,14 @@ A basic example:
             console.log(JSON.stringify(images, null, 4));
         }
     });
+});
+```
 
+See the following for more details:
+- The block-comment for `createClient` in [lib/index.js](lib/index.js).
+- Some module-usage examples in [examples/](examples/).
+- The lower-level details in the top-comment in
+  [lib/tritonapi.js](lib/tritonapi.js).
 
 
 ## Configuration
@@ -278,24 +293,6 @@ are in "etc/defaults.json" and can be overriden for the CLI in
 - Node-smartdc still has more complete coverage of the Triton
   [CloudAPI](https://apidocs.joyent.com/cloudapi/). However, `triton` is
   catching up and is much more friendly to use.
-
-
-## cloudapi2.js differences with node-smartdc/lib/cloudapi.js
-
-The old node-smartdc module included an lib for talking directly to the SDC
-Cloud API (node-smartdc/lib/cloudapi.js). Part of this module (node-triton) is a
-re-write of the Cloud API lib with some backward incompatibilities. The
-differences and backward incompatibilities are discussed here.
-
-- Currently no caching options in cloudapi2.js (this should be re-added in
-  some form). The `noCache` option to many of the cloudapi.js methods will not
-  be re-added, it was a wart.
-- The leading `account` option to each cloudapi.js method has been dropped. It
-  was redundant for the constructor `account` option.
-- "account" is now "user" in the CloudAPI constructor.
-- All (all? at least at the time of this writing) methods in cloudapi2.js have
-  a signature of `function (options, callback)` instead of the sometimes
-  haphazard extra arguments.
 
 
 ## Development Hooks

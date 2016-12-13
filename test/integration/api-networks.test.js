@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2016 Joyent, Inc.
  */
 
 /*
@@ -15,11 +15,8 @@
 var h = require('./helpers');
 var test = require('tape');
 
-var common = require('../../lib/common');
-
 
 // --- Globals
-
 
 var CLIENT;
 var NET;
@@ -27,16 +24,19 @@ var NET;
 
 // --- Tests
 
-
 test('TritonApi networks', function (tt) {
     tt.test(' setup', function (t) {
-        CLIENT = h.createClient();
-        t.ok(CLIENT, 'client');
+        h.createClient(function (err, client_) {
+            t.error(err);
+            CLIENT = client_;
+            t.end();
+        });
+    });
 
+    tt.test(' setup: net', function (t) {
         var opts = {
             account: CLIENT.profile.account
         };
-
         CLIENT.cloudapi.listNetworks(opts, function (err, nets) {
             if (h.ifErr(t, err))
                 return t.end();
