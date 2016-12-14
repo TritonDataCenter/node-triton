@@ -7,6 +7,8 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#154] Fix `triton cloudapi ...` after #108 changes.
+
 - **BREAKING CHANGE for module usage of node-triton.**
   To implement joyent/node-triton#108, the way a TritonApi client is
   setup for use has changed from being (unrealistically) sync to async.
