@@ -7,6 +7,8 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#158] tritonapi image cache never expires
+
 - [joyent/node-triton#153] Bump restify-clients dep. Thanks, github.com/tomgco.
 
 - [joyent/node-triton#154] Fix `triton cloudapi ...` after #108 changes.
