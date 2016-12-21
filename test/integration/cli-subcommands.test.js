@@ -72,6 +72,7 @@ var subs = [
     ['package', 'pkg'],
     ['package get'],
     ['package list', 'packages', 'pkgs'],
+    ['fwrules'],
     ['fwrule'],
     ['fwrule create'],
     ['fwrule list', 'fwrule ls'],

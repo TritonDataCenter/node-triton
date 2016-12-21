@@ -187,6 +187,27 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
+    tt.test('  triton fwrules', function (t) {
+        h.triton('fwrules -l', function (err, stdout, stderr) {
+            if (h.ifErr(t, err, 'triton fwrule list'))
+                return t.end();
+
+            var rules = stdout.split('\n');
+            t.ok(rules[0].match(/ID\s+ENABLED\s+GLOBAL\s+RULE\s+DESCRIPTION/));
+            rules.shift();
+
+            t.ok(rules.length >= 1, 'triton fwrule list expected fwrule num');
+
+            var testRules = rules.filter(function (rule) {
+                return rule.match(ID);
+            });
+
+            t.equal(testRules.length, 1, 'triton fwrule list test rule found');
+
+            t.end();
+        });
+    });
+
     tt.test('  triton fwrule instances', function (t) {
         h.triton('fwrule instances -l ' + ID, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule instances'))
@@ -217,6 +238,28 @@ test('triton fwrule', OPTS, function (tt) {
 
     tt.test('  triton instance fwrules', function (t) {
         h.triton('instance fwrules -l ' + INST, function (err, stdout, stderr) {
+            if (h.ifErr(t, err, 'triton fwrule list'))
+                return t.end();
+
+            var rules = stdout.split('\n');
+            t.ok(rules[0].match(/ID\s+ENABLED\s+GLOBAL\s+RULE\s+DESCRIPTION/));
+            rules.shift();
+
+            t.ok(rules.length >= 1, 'triton fwrule list expected fwrule num');
+
+            var testRules = rules.filter(function (rule) {
+                return rule.match(ID);
+            });
+
+            t.equal(testRules.length, 1, 'triton fwrule list test rule found');
+
+            t.end();
+        });
+    });
+
+    tt.test('  triton instance fwrule list', function (t) {
+        h.triton('instance fwrule list -l ' + INST,
+            function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule list'))
                 return t.end();
 
