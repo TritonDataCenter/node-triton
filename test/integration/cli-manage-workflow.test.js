@@ -24,6 +24,7 @@ var h = require('./helpers');
 // --- globals
 
 var INST_ALIAS = f('nodetritontest-managewf-%s', os.hostname());
+var INST_ALIAS_NEWNAME = INST_ALIAS + '-renamed';
 
 var opts = {
     skip: !h.CONFIG.allowWriteActions
@@ -232,6 +233,27 @@ test('triton manage workflow', opts, function (tt) {
                 function (err, d) {
             instance = d;
             t.equal(d.state, 'running', 'machine running');
+            t.end();
+        });
+    });
+
+    // rename the instance
+    tt.test('  triton inst rename', function (t) {
+        var args = ['inst', 'rename', '-w', instance.id, INST_ALIAS_NEWNAME];
+        h.safeTriton(t, args, function (err, stdout) {
+            t.ok(stdout.match(/^Renaming instance/m),
+                '"Renaming instance" in stdout');
+            t.ok(stdout.match(/^Renamed instance/m),
+                '"Renamed instance" in stdout');
+            t.end();
+        });
+    });
+
+    tt.test('  confirm renamed', function (t) {
+        h.safeTriton(t, {json: true, args: ['inst', 'get', '-j',
+            INST_ALIAS_NEWNAME]},
+                function (err, inst) {
+            t.equal(inst.name, INST_ALIAS_NEWNAME, 'instance was renamed');
             t.end();
         });
     });
