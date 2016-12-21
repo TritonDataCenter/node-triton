@@ -7,6 +7,9 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#137] Improve the handling for the getting started case
+  when a user may not have envvars or a profile setup.
+
 - [joyent/node-triton#158] tritonapi image cache never expires
 
 - [joyent/node-triton#153] Bump restify-clients dep. Thanks, github.com/tomgco.

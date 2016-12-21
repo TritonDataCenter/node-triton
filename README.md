@@ -46,20 +46,66 @@ Have the URL handy as you'll need it in the next step.
 
 ### Installation
 
-1. Install [node.js](http://nodejs.org/).
-2. `npm install -g triton`
+Install [node.js](http://nodejs.org/), then:
+
+    npm install -g triton
 
 Verify that it is installed and on your PATH:
 
     $ triton --version
-    Triton CLI 1.0.0
+    Triton CLI 4.15.0
+    https://github.com/joyent/node-triton
 
-Configure the proper environmental variables that correspond to the API endpoint and account,
-for example:
+To use `triton`, you'll need to configure it to talk to a Triton DataCenter
+API endpoint (called CloudAPI). Commonly that is done using a Triton profile:
 
-    SDC_URL=https://us-east-3b.api.joyent.com
-    SDC_ACCOUNT=dave.eddy@joyent.com
-    SDC_KEY_ID=04:0c:22:25:c9:85:d8:e4:fa:27:0d:67:94:68:9e:e9
+    $ triton profile create
+    A profile name. A short string to identify a CloudAPI endpoint to the
+    `triton` CLI.
+    name: sw1
+
+    The CloudAPI endpoint URL.
+    url: https://us-sw-1.api.joyent.com
+
+    Your account login name.
+    account: bob
+
+    Available SSH keys:
+     1. 2048-bit RSA key with fingerprint 4e:e7:56:9a:b0:91:31:3e:23:8d:f8:62:12:58:a2:ec
+      * [in homedir] bob-20160704 id_rsa
+
+    The fingerprint of the SSH key you want to use, or its index in the list
+    above. If the key you want to use is not listed, make sure it is either saved
+    in your SSH keys directory or loaded into the SSH agent.
+    keyId: 1
+
+    Saved profile "sw1".
+
+    WARNING: Docker uses TLS-based authentication with a different security model
+    from SSH keys. As a result, the Docker client cannot currently support
+    encrypted (password protected) keys or SSH agents. If you continue, the
+    Triton CLI will attempt to format a copy of your SSH *private* key as an
+    unencrypted TLS cert and place the copy in ~/.triton/docker for use by the
+    Docker client.
+    Continue? [y/n] y
+    Setting up profile "sw1" to use Docker.
+    Setup profile "sw1" to use Docker (v1.12.3). Try this:
+        eval "$(triton env --docker sw1)"
+        docker info
+
+    Set "sw1" as current profile (because it is your only profile).
+
+Or instead of using profiles, you can set the required environment variables
+(`triton` defaults to an "env" profile that uses these environment variables if
+no profile is set). For example:
+
+    TRITON_URL=https://us-sw-1.api.joyent.com
+    TRITON_ACCOUNT=bob
+    TRITON_KEY_ID=SHA256:j2WoSeOWhFy69BQ0uCR3FAySp9qCZTSCEyT2vRKcL+s
+
+For compatibility with the older [sdc-* tools from
+node-smartdc](https://github.com/joyent/node-smartdc), `triton` also supports
+`SDC_URL`, `SDC_ACCOUNT`, etc. environment variables.
 
 
 ### Bash completion
