@@ -7,6 +7,8 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#3] triton ssh command not aware of "ubuntu" login for ubuntu-certified images
+
 - [joyent/node-triton#137] Improve the handling for the getting started case
   when a user may not have envvars or a profile setup.
 
