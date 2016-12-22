@@ -7,6 +7,10 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#156] Providing all required profile options as
+  command line flags (account, url, keyId) no longer produces an
+  incomplete profile error.
+
 - PUBAPI-1171/PUBAPI-1205/PUBAPI-1351 The handling of legacy `SDC_*`
   environment variables has been cleaned up.  These environment
   variables are used for compatibility with the node-smartdc toolset.
