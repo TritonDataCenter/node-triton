@@ -9,12 +9,18 @@
         "account": "joe.blow",
         "keyId": "de:e7:73:32:b0:ab:31:cd:72:ef:9f:62:ca:58:a2:ec",
         "insecure": false
-    }
+    },
 
     // Optional. Set this to allow the parts of the test suite that create,
     // update and destroy resources: instances, images, networks, etc.
     // This is essentially the "safe" guard.
-    "allowWriteActions": true
+    "allowWriteActions": true,
+
+    // Optional. Set to 'true' to skip affinity tests. Affinity tests assume
+    // the datacenter has multiple servers to which provisions can go. So if
+    // you are testing against COAL, for example, you'll need to set this
+    // to true.
+    "skipAffinityTests": false,
 
     // The params used for test provisions. By default the tests use:
     // the smallest RAM package, the latest base* image.
