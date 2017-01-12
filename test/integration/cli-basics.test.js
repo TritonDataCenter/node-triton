@@ -29,7 +29,9 @@ test('triton (basics)', function (tt) {
         h.triton('--version', function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton --version'))
                 return t.end();
-            t.ok(/^triton \d+\.\d+\.\d+/.test(stdout));
+            t.ok(/^Triton CLI \d+\.\d+\.\d+/.test(stdout),
+                'version on first line');
+            t.ok(/^https:/m.test(stdout), 'project link in version output');
             t.end();
         });
     });
