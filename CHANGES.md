@@ -7,6 +7,9 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#133] Add `triton inst fwrule list` and `triton fwrules` shortcuts
+  for the existing `triton inst fwrules` and `triton fwrule list`, respectively.
+
 - [joyent/node-triton#3] triton ssh command not aware of "ubuntu" login for ubuntu-certified images
 
 - [joyent/node-triton#137] Improve the handling for the getting started case
