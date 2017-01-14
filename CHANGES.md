@@ -7,6 +7,8 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#146] Add `--wait` flag to `triton instance rename`.
+
 - [joyent/node-triton#133] Add `triton inst fwrule list` and `triton fwrules` shortcuts
   for the existing `triton inst fwrules` and `triton fwrule list`, respectively.
 
