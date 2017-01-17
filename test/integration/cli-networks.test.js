@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2016, Joyent, Inc.
+ * Copyright 2017 Joyent, Inc.
  */
 
 /*
@@ -62,6 +62,52 @@ test('triton networks', function (tt) {
                 return t.end();
             t.ok(/^SHORTID\b/.test(stdout));
             t.ok(/\bFABRIC\b/.test(stdout));
+            t.end();
+        });
+    });
+
+    tt.test(' triton networks public=false', function (t) {
+        h.triton('networks public=false -H -o public',
+        function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+            var results = stdout.trim().split('\n');
+            results.forEach(function (result) {
+                t.equal(false, common.boolFromString(result, null, 'public'));
+            });
+            t.end();
+        });
+    });
+
+    tt.test(' triton network list public=false', function (t) {
+        h.triton('network list public=false -H -o public',
+        function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+            var results = stdout.trim().split('\n');
+            results.forEach(function (result) {
+                t.equal(false, common.boolFromString(result, null, 'public'));
+            });
+            t.end();
+        });
+    });
+
+    tt.test(' triton network list public=true', function (t) {
+        h.triton('network list public=true -H -o public',
+        function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+            var results = stdout.trim().split('\n');
+            results.forEach(function (result) {
+                t.equal(true, common.boolFromString(result, null, 'public'));
+            });
+            t.end();
+        });
+    });
+
+    tt.test(' triton network list public=bogus', function (t) {
+        h.triton('network list public=bogus', function (err, stdout, stderr) {
+            t.ok(err, err);
             t.end();
         });
     });

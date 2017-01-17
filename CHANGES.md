@@ -7,6 +7,9 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#80] Add `triton network list public=true|false`
+  filtering. Note that this filtering is client-side.
+
 - [joyent/node-triton#146] Add `--wait` flag to `triton instance rename`.
 
 - [joyent/node-triton#133] Add `triton inst fwrule list` and `triton fwrules` shortcuts
