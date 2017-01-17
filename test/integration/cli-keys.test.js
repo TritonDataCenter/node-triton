@@ -23,7 +23,7 @@ var backoff = require('backoff');
 var KEY_PATH = __dirname + '/data/id_rsa.pub';
 var KEY_SIG  = '66:ca:1c:09:75:99:35:69:be:91:08:25:03:c0:17:c0';
 var KEY_EMAIL = 'test@localhost.local';
-var KEY_NAME = 'testkey';
+var KEY_NAME = 'nodetritontest-key1';
 var MAX_CHECK_KEY_TRIES = 10;
 
 // --- Tests

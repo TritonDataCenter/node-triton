@@ -265,13 +265,25 @@ function createClient(cb) {
 function createTestInst(t, name, cb) {
     getTestPkg(t, function (err, pkgId) {
         t.ifErr(err);
+        if (err) {
+            cb(err);
+            return;
+        }
 
         getTestImg(t, function (err2, imgId) {
             t.ifErr(err2);
+            if (err2) {
+                cb(err2);
+                return;
+            }
 
             var cmd = f('instance create -w -n %s %s %s', name, imgId, pkgId);
             triton(cmd, function (err3, stdout) {
                 t.ifErr(err3, 'create test instance');
+                if (err3) {
+                    cb(err3);
+                    return;
+                }
 
                 var match = stdout.match(/Created .+? \((.+)\)/);
                 var inst = match[1];
