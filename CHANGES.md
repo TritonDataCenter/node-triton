@@ -7,6 +7,15 @@ Known issues:
 
 ## not yet released
 
+- PUBAPI-1171/PUBAPI-1205/PUBAPI-1351 The handling of legacy `SDC_*`
+  environment variables has been cleaned up.  These environment
+  variables are used for compatibility with the node-smartdc toolset.
+   * `SDC_TESTING` is now evaluated the same way as node-smartdc.  Any
+     set value but the empty string is true.
+   * Errors on boolean environment variables will now identify the
+     variable at fault.
+   * `triton env` will emit additional comments grouping variables.
+
 - [joyent/node-triton#80] Add `triton network list public=true|false`
   filtering. Note that this filtering is client-side.
 
