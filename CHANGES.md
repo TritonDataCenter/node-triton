@@ -7,6 +7,10 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#166] Update sshpk to fix issue with the TLS client cert
+  created by `triton profile docker-setup` so that it doesn't create a cert
+  that Go's TLS library doesn't like.
+
 - [joyent/node-triton#156] Providing all required profile options as
   command line flags (account, url, keyId) no longer produces an
   incomplete profile error.
