@@ -226,8 +226,26 @@ test('triton manage workflow', opts, function (tt) {
             t.end();
         });
     });
+    tt.test('  confirm running', function (t) {
+        h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
+                function (err, d) {
+            instance = d;
+            t.equal(d.state, 'running', 'machine running');
+            t.end();
+        });
+    });
 
-    // wait for the machine to start
+    // reboot the machine
+    tt.test('  triton reboot', function (t) {
+        h.safeTriton(t, ['reboot', '-w', INST_ALIAS],
+                function (err, stdout) {
+            t.ok(stdout.match(/^Rebooting instance/),
+                '"Rebooting ..." in stdout');
+            t.ok(stdout.match(/^Rebooted instance/m),
+                '"Rebooted ..." in stdout');
+            t.end();
+        });
+    });
     tt.test('  confirm running', function (t) {
         h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
                 function (err, d) {

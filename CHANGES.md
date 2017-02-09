@@ -7,6 +7,11 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#129] Fix `triton reboot --wait` to properly wait. Before
+  it would often return immediately, before the instance started rebooting.
+  Add `--wait-timeout N` option to `triton reboot`.
+  Also add `TritonApi#rebootInstance()` api method.
+
 - [joyent/node-triton#166] Update sshpk to fix issue with the TLS client cert
   created by `triton profile docker-setup` so that it doesn't create a cert
   that Go's TLS library doesn't like.
