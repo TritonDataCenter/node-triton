@@ -8,7 +8,7 @@ Known issues:
 
 ## not yet released
 
-- No changes yet
+- [node-triton#171] Add support for instance metadata
 
 ## 7.15.5
 
