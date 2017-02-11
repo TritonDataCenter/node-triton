@@ -13,6 +13,7 @@
  */
 
 var h = require('./helpers');
+var format = require('util').format;
 var test = require('tape');
 
 
@@ -100,11 +101,13 @@ test('triton account', function (tt) {
 
     tt.test(' triton account update companyName=<oldvalue>', writeTestOpts,
             function (t) {
-        h.triton('account update companyName=' + account.companyName || '',
-                function (err, _o, _e) {
-            if (h.ifErr(t, err))
-                return t.end();
-            t.end();
-        });
+        h.triton(
+            format('account update companyName=\'%s\'',
+                account.companyName || ''),
+            function (err, _o, _e) {
+                if (h.ifErr(t, err))
+                    return t.end();
+                t.end();
+            });
     });
 });
