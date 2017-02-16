@@ -34,6 +34,7 @@ var subs = [
     ['account get'],
     ['account update'],
     ['services'],
+    ['datacenter'],
     ['datacenters'],
     ['instance', 'inst'],
     ['instance list', 'instance ls', 'instances', 'insts', 'ls'],
