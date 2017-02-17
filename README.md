@@ -368,7 +368,8 @@ test-integration`). Integration tests require a config file, by default at
         "profileName": "east3b",
         "allowWriteActions": true,
         "image": "minimal-64",
-        "package": "t4-standard-128M"
+        "package": "g4-highcpu-128M",
+        "resizePackage": "g4-highcpu-256M"
     }
 
 See "test/config.json.sample" for a description of all config vars. Minimally

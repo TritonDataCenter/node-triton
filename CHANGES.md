@@ -7,6 +7,9 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#157] Add `triton instance resize ...` command and 
+  `TritonApi.resizeInstance` method.
+
 - [joyent/node-triton#129] Fix `triton reboot --wait` to properly wait. Before
   it would often return immediately, before the instance started rebooting.
   Add `--wait-timeout N` option to `triton reboot`.

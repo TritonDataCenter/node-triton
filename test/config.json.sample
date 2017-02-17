@@ -25,5 +25,6 @@
     // The params used for test provisions. By default the tests use:
     // the smallest RAM package, the latest base* image.
     "package": "<package name or uuid>",
+    "resizePackage": "<package name>",
     "image": "<image uuid, name or name@version>"
 }

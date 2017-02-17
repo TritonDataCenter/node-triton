@@ -231,6 +231,33 @@ function getTestPkg(t, cb) {
     });
 }
 
+/*
+ * Find and return second smallest package name that can be used for
+ * test provisions.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, {pkgs})`
+ *      where `pkgs` is an Array of 2 test packages to use.
+ */
+function getResizeTestPkg(t, cb) {
+    if (CONFIG.resizePackage) {
+        t.ok(CONFIG.resizePackage, 'resizePackage from config: ' +
+          CONFIG.resizePackage);
+        cb(null, CONFIG.resizePackage);
+        return;
+    }
+
+    safeTriton(t, ['pkg', 'ls', '-j'], function (err, stdout) {
+        var pkgs = jsonStreamParse(stdout);
+        // Smallest RAM first.
+        tabula.sortArrayOfObjects(pkgs, ['memory']);
+        var pkg = pkgs[1];
+        t.ok(pkg.name, f('second smallest (RAM) available package: %s (%s)',
+          pkg.id, pkg.name));
+        cb(null, pkg.name);
+    });
+}
+
 
 function jsonStreamParse(s) {
     var results = [];
@@ -344,6 +371,7 @@ module.exports = {
     deleteTestInst: deleteTestInst,
     getTestImg: getTestImg,
     getTestPkg: getTestPkg,
+    getResizeTestPkg: getResizeTestPkg,
     jsonStreamParse: jsonStreamParse,
     printConfig: printConfig,
 

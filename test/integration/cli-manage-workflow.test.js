@@ -68,6 +68,15 @@ test('triton manage workflow', opts, function (tt) {
         });
     });
 
+    var resizePkgName;
+    tt.test('  setup: find resize test package', function (t) {
+        h.getResizeTestPkg(t, function (err, pkgName_) {
+            t.ifError(err, 'getResizeTestPkg' + (err ? ': ' + err : ''));
+            resizePkgName = pkgName_;
+            t.end();
+        });
+    });
+
     // create a test machine (blocking) and output JSON
     tt.test('  setup: triton create', function (t) {
         var argv = [
@@ -253,6 +262,27 @@ test('triton manage workflow', opts, function (tt) {
             t.equal(d.state, 'running', 'machine running');
             t.end();
         });
+    });
+
+    // resize the instance
+    tt.test('  triton inst resize', function (t) {
+        var args = ['inst', 'resize', '-w', instance.id, resizePkgName];
+        h.safeTriton(t, args, function (err, stdout) {
+            t.ok(stdout.match(/^Resizing instance/m),
+              '"Resizing instance" in stdout');
+            t.ok(stdout.match(/^Resized instance/m),
+              '"Resized instance" in stdout');
+            t.end();
+        });
+    });
+
+    tt.test('  confirm resized', function (t) {
+        h.safeTriton(t, {json: true, args: ['inst', 'get', '-j',
+              INST_ALIAS]},
+          function (err, inst) {
+              t.equal(inst.package, resizePkgName, 'instance was resized');
+              t.end();
+          });
     });
 
     // rename the instance
