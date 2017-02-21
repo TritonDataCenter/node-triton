@@ -97,7 +97,12 @@ var subs = [
     ['rbac image-role-tags'],
     ['rbac network-role-tags'],
     ['rbac package-role-tags'],
-    ['rbac role-tags']
+    ['rbac role-tags'],
+    ['volume', 'vol'],
+    ['volume list', 'volume ls', 'volumes', 'vols'],
+    ['volume delete', 'volume rm'],
+    ['volume create'],
+    ['volume get']
 ];
 
 // --- Tests

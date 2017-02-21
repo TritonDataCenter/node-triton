@@ -133,6 +133,12 @@ function complete_tritonnetwork {
     compgen $compgen_opts -W "$candidates" -- "$word"
 }
 
+function complete_tritonvolume {
+    local word="$1"
+    candidates=$(_complete_tritondata volumes)
+    compgen $compgen_opts -W "$candidates" -- "$word"
+}
+
 function complete_tritonfwrule {
     local word="$1"
     candidates=$(_complete_tritondata fwrules)

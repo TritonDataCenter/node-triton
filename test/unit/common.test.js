@@ -116,7 +116,7 @@ test('jsonStream', function (t) {
     t.end();
 });
 
-test('kvToObj', function (t) {
+test('objFromKeyValueArgs', function (t) {
     var arr = ['foo=1', 'bar=2', 'baz=3'];
     var o = {
         foo: '1',
@@ -126,17 +126,73 @@ test('kvToObj', function (t) {
     var kv;
 
     // no valid parameter
-    kv = common.kvToObj(arr);
+    kv = common.objFromKeyValueArgs(arr, {
+        disableDotted: true,
+        disableTypeConversions: true
+    });
+
     t.deepEqual(kv, o);
 
     // valid parameters
-    kv = common.kvToObj(arr, ['foo', 'bar', 'baz']);
+    kv = common.objFromKeyValueArgs(arr, {
+        validKeys: ['foo', 'bar', 'baz'],
+        disableDotted: true,
+        disableTypeConversions: true
+    });
+
     t.deepEqual(kv, o);
 
     // invalid parameters
     t.throws(function () {
-        common.kvToObj(arr, ['uh-oh']);
+        common.objFromKeyValueArgs(arr, {
+            validKeys: ['uh-oh'],
+            disableDotted: true,
+            disableTypeConversions: true
+        });
     });
+
+    t.end();
+});
+
+test('objFromKeyValueArgs failOnEmptyValue', function (t) {
+    var arr = ['foo='];
+    var err;
+
+    try {
+        common.objFromKeyValueArgs(arr, {
+            failOnEmptyValue: true
+        });
+    } catch (e) {
+        err = e;
+    }
+
+    t.ok(err);
+
+    /*
+     * By default, failOnEmptyValue is not set, so the following should not
+     * throw an error.
+     */
+    err = null;
+    try {
+        common.objFromKeyValueArgs(arr);
+    } catch (e) {
+        err = e;
+    }
+    t.equal(err, null);
+
+    /*
+     * Explicitly setting failOnEmptyValue to false should not throw an error
+     * when passing a key/value with an empty value.
+     */
+    err = null;
+    try {
+        common.objFromKeyValueArgs(arr, {
+            failOnEmptyValue: false
+        });
+    } catch (e) {
+        err = e;
+    }
+    t.equal(err, null);
 
     t.end();
 });
