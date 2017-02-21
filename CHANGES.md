@@ -7,6 +7,12 @@ Known issues:
 
 ## not yet released
 
+## 5.2.0
+
+- [joyent/mode-triton#173] Add support for listing and getting triton nfs
+  volumes.
+- [joyent/mode-triton#174] Add support for creating triton nfs volumes.
+- [joyent/mode-triton#175] Add support for deleting triton nfs volumes.
 - [joyent/node-triton#183] `triton profile create` will no longer use ANSI
   codes for styling if stdout isn't a TTY.
 

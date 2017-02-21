@@ -12,9 +12,10 @@
  * Test helpers for the integration tests
  */
 
-var error = console.error;
 var assert = require('assert-plus');
+var error = console.error;
 var f = require('util').format;
+var os = require('os');
 var path = require('path');
 var tabula = require('tabula');
 
@@ -359,6 +360,14 @@ function printConfig(t) {
     });
 }
 
+/*
+ * Returns a string that represents a unique resource name for the host on which
+ * this function is called.
+ */
+function makeResourceName(prefix) {
+    assert.string(prefix, 'prefix');
+    return prefix + '-' + os.hostname();
+}
 
 // --- exports
 
@@ -373,6 +382,7 @@ module.exports = {
     getTestPkg: getTestPkg,
     getResizeTestPkg: getResizeTestPkg,
     jsonStreamParse: jsonStreamParse,
+    makeResourceName: makeResourceName,
     printConfig: printConfig,
 
     ifErr: testcommon.ifErr
