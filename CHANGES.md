@@ -7,7 +7,19 @@ Known issues:
 
 ## not yet released
 
-(nothing yet)
+- [joyent/node-triton#173], [joyent/node-triton#174] and
+  [joyent/node-triton#175] Add support for creating and managing NFS shared
+  volumes. New `triton volume` commands are available:
+
+  * `triton volume create` to create NFS shared volumes
+  * `triton volume list` to list existing volumes
+  * `triton volume get` to get information about a given volume
+  * `triton volume delete` to delete one or more volumes
+
+  Use `triton volume --help` to get help on all of these commands.
+
+  Note that these commands are hidden for now. They will be made visible by
+  default once the server-side support for volumes is shipped in Triton.
 
 ## 5.2.1
 
