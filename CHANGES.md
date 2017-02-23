@@ -7,49 +7,21 @@ Known issues:
 
 ## not yet released
 
-- [joyent/node-triton#157] Add `triton instance resize ...` command and 
-  `TritonApi.resizeInstance` method.
 
-- [joyent/node-triton#129] Fix `triton reboot --wait` to properly wait. Before
-  it would often return immediately, before the instance started rebooting.
-  Add `--wait-timeout N` option to `triton reboot`.
-  Also add `TritonApi#rebootInstance()` api method.
+## 5.0.0
 
-- [joyent/node-triton#166] Update sshpk to fix issue with the TLS client cert
-  created by `triton profile docker-setup` so that it doesn't create a cert
-  that Go's TLS library doesn't like.
+- [joyent/node-triton#108] Support for passphrase-protected private keys.
+  Before this work, an encrypted private SSH key (i.e. protected by a
+  passphrase) would have to be loaded in an ssh-agent for the `triton`
+  CLI to use it. Now `triton` will prompt for the passphrase to unlock
+  the private key (in memory), if needed. For example:
 
-- [joyent/node-triton#156] Providing all required profile options as
-  command line flags (account, url, keyId) no longer produces an
-  incomplete profile error.
-
-- PUBAPI-1171/PUBAPI-1205/PUBAPI-1351 The handling of legacy `SDC_*`
-  environment variables has been cleaned up.  These environment
-  variables are used for compatibility with the node-smartdc toolset.
-   * `SDC_TESTING` is now evaluated the same way as node-smartdc.  Any
-     set value but the empty string is true.
-   * Errors on boolean environment variables will now identify the
-     variable at fault.
-   * `triton env` will emit additional comments grouping variables.
-
-- [joyent/node-triton#80] Add `triton network list public=true|false`
-  filtering. Note that this filtering is client-side.
-
-- [joyent/node-triton#146] Add `--wait` flag to `triton instance rename`.
-
-- [joyent/node-triton#133] Add `triton inst fwrule list` and `triton fwrules` shortcuts
-  for the existing `triton inst fwrules` and `triton fwrule list`, respectively.
-
-- [joyent/node-triton#3] triton ssh command not aware of "ubuntu" login for ubuntu-certified images
-
-- [joyent/node-triton#137] Improve the handling for the getting started case
-  when a user may not have envvars or a profile setup.
-
-- [joyent/node-triton#158] tritonapi image cache never expires
-
-- [joyent/node-triton#153] Bump restify-clients dep. Thanks, github.com/tomgco.
-
-- [joyent/node-triton#154] Fix `triton cloudapi ...` after #108 changes.
+        $ triton package list
+        Enter passphrase for id_rsa: <passphrase entered interactively here>
+        SHORTID   NAME             MEMORY  SWAP  DISK  VCPUS
+        14ad9d54  g4-highcpu-128M    128M  512M    3G      -
+        14ae2634  g4-highcpu-256M    256M    1G    5G      -
+        ...
 
 - **BREAKING CHANGE for module usage of node-triton.**
   To implement joyent/node-triton#108, the way a TritonApi client is
@@ -85,7 +57,7 @@ Known issues:
         var mod_triton = require('triton');
         mod_triton.createClient({
             profileName: 'env',
-            unlockKeyFn: triton.promptPassphraseUnlockKey
+            unlockKeyFn: mod_triton.promptPassphraseUnlockKey
         }, function (err, client) {
             if (err) {
                 // handle err
@@ -115,20 +87,52 @@ Known issues:
             // See top-comment in "lib/tritonapi.js".
         });
 
-- [joyent/node-triton#108] Support for passphrase-protected private keys.
-  Before this work, an encrypted private SSH key (i.e. protected by a
-  passphrase) would have to be loaded in an ssh-agent for the `triton`
-  CLI to use it. Now `triton` will prompt for the passphrase to unlock
-  the private key (in memory), if needed. For example:
-
-        $ triton package list
-        Enter passphrase for id_rsa:
-        SHORTID   NAME             MEMORY  SWAP  DISK  VCPUS
-        14ad9d54  g4-highcpu-128M    128M  512M    3G      -
-        14ae2634  g4-highcpu-256M    256M    1G    5G      -
-        ...
-
 - [joyent/node-triton#143] Fix duplicate output from 'triton rbac key ...'.
+
+- [joyent/node-triton#157] Add `triton instance resize ...` command and
+  `TritonApi.resizeInstance` method.
+
+- [joyent/node-triton#129] Fix `triton reboot --wait` to properly wait. Before
+  it would often return immediately, before the instance started rebooting.
+  Add `--wait-timeout N` option to `triton reboot`.
+  Also add `TritonApi#rebootInstance()` api method.
+
+- [joyent/node-triton#166] Update sshpk to fix issue with the TLS client cert
+  created by `triton profile docker-setup` so that it doesn't create a cert that
+  Go's TLS library doesn't like.
+
+- [joyent/node-triton#156] Providing all required profile options as command
+  line flags (account, url, keyId) no longer produces an incomplete profile
+  error.
+
+- PUBAPI-1171/PUBAPI-1205/PUBAPI-1351 The handling of legacy `SDC_*`
+  environment variables has been cleaned up.  These environment
+  variables are used for compatibility with the node-smartdc toolset.
+   * `SDC_TESTING` is now evaluated the same way as node-smartdc.  Any
+     set value but the empty string is true.
+   * Errors on boolean environment variables will now identify the
+     variable at fault.
+   * `triton env` will emit additional comments grouping variables.
+
+- [joyent/node-triton#80] Add `triton network list public=true|false`
+  filtering. Note that this filtering is client-side.
+
+- [joyent/node-triton#146] Add `--wait` flag to `triton instance rename`.
+
+- [joyent/node-triton#133] Add `triton inst fwrule list` and `triton fwrules`
+  shortcuts for the existing `triton inst fwrules` and `triton fwrule list`,
+  respectively.
+
+- [joyent/node-triton#3] triton ssh command not aware of "ubuntu" login for
+  ubuntu-certified images.
+
+- [joyent/node-triton#137] Improve the handling for the getting started case
+  when a user may not have envvars or a profile setup.
+
+- [joyent/node-triton#158] tritonapi image cache never expires
+
+- [joyent/node-triton#153] Bump restify-clients dep. Thanks, github.com/tomgco.
+
 
 ## 4.15.0
 
