@@ -7,6 +7,10 @@ Known issues:
 
 ## not yet released
 
+## 5.1.0
+
+- [joyent/node-triton#182] Add `-y, --yes` options to `triton profile create`
+  and `triton profile docker-setup` to allow non-interactive setup.
 
 ## 5.0.0
 
