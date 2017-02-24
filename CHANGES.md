@@ -7,6 +7,9 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#183] `triton profile create` will no longer use ANSI
+  codes for styling if stdout isn't a TTY.
+
 ## 5.1.0
 
 - [joyent/node-triton#182] Add `-y, --yes` options to `triton profile create`
