@@ -7,6 +7,8 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#148] Fix `triton profile edit ...` to work with an
+  "EDITOR" environment variable with quotes and spaces.
 - [joyent/node-triton#183] `triton profile create` will no longer use ANSI
   codes for styling if stdout isn't a TTY.
 
