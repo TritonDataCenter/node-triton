@@ -7,6 +7,10 @@ Known issues:
 
 ## not yet released
 
+## 5.1.1
+
+- [joyent/node-triton#190] Fix `triton profile create|docker-setup` breakage
+  with latest "17.03.*" versions of `docker` installed.
 - [joyent/node-triton#148] Fix `triton profile edit ...` to work with an
   "EDITOR" environment variable with quotes and spaces.
 - [joyent/node-triton#183] `triton profile create` will no longer use ANSI
