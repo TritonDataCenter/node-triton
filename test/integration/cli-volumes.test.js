@@ -62,8 +62,8 @@ test('triton volume create ...', testOpts, function (tt) {
 
     tt.test('  triton volume create with invalid size', function (t) {
         var invalidSize = 'foobar';
-        var expectedErrMsg = 'triton volume create: error (InvalidArgument): ' +
-            'Error: Invalid volume size: ' + invalidSize;
+        var expectedErrMsg = 'triton volume create: error: size "' +
+            invalidSize + '" is not a valid volume size';
         var volumeName =
             h.makeResourceName('node-triton-test-volume-create-invalid-size');
 
