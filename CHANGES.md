@@ -9,10 +9,16 @@ Known issues:
 
 ## 5.2.0
 
-- [joyent/mode-triton#173] Add support for listing and getting triton nfs
-  volumes.
-- [joyent/mode-triton#174] Add support for creating triton nfs volumes.
-- [joyent/mode-triton#175] Add support for deleting triton nfs volumes.
+- Add support for creating and managing NFS shared volumes. New `triton volume`
+  commands are available:
+
+  * `triton volume create` to create NFS shared volumes
+  * `triton volume list` to list existing volumes
+  * `triton volume get` to get information about a given volume
+  * `triton volume delete` to delete one or more volumes
+
+  Use `triton volume --help` to get help on all of these commands.
+
 - [joyent/node-triton#183] `triton profile create` will no longer use ANSI
   codes for styling if stdout isn't a TTY.
 
