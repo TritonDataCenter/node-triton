@@ -35,7 +35,7 @@ test('triton volume create ...', testOpts, function (tt) {
     });
 
     tt.test('  cleanup leftover resources', function (t) {
-        h.triton(['volume', 'delete', '-w', validVolumeName].join(' '),
+        h.triton(['volume', 'delete', '-y', '-w', validVolumeName].join(' '),
             function onDelVolume(delVolErr, stdout, stderr) {
                 t.end();
             });
@@ -149,7 +149,7 @@ test('triton volume create ...', testOpts, function (tt) {
     });
 
     tt.test('  delete volume', function (t) {
-        h.triton(['volume', 'delete', '-w', validVolumeName].join(' '),
+        h.triton(['volume', 'delete', '-y', '-w', validVolumeName].join(' '),
             function onDelVolume(delVolErr, stdout, stderr) {
                 t.equal(delVolErr, null,
                     'Deleting volume should not error');
