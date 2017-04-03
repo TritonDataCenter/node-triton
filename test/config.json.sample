@@ -22,9 +22,19 @@
     // to true.
     "skipAffinityTests": false,
 
+    // Optional. Set to 'true' to skip testing of KVM things. Some DCs might
+    // not support KVM (no KVM packages or images available).
+    "skipKvmTests": false,
+
     // The params used for test provisions. By default the tests use:
     // the smallest RAM package, the latest base* image.
     "package": "<package name or uuid>",
     "resizePackage": "<package name>",
     "image": "<image uuid, name or name@version>"
+
+    // The params used for test *KVM* provisions. By default the tests use:
+    // the smallest RAM package with "kvm" in the name, the latest
+    // ubuntu-certified image.
+    "kvmPackage": "<package name or uuid>",
+    "kvmImage": "<image uuid, name or name@version>"
 }

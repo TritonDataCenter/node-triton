@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2017 Joyent, Inc.
  */
 
 /*
@@ -132,6 +132,9 @@ function triton(args, opts, cb) {
  * @param {Tape} t - tape test object
  * @param {Object|Array} opts - options object, or just the `triton` args
  * @param {Function} cb - `function (err, stdout)`
+ *      Note that `err` will already have been tested to be falsey via
+ *      `t.error(err, ...)`, so it may be fine for the calling test case
+ *      to ignore `err`.
  */
 function safeTriton(t, opts, cb) {
     assert.object(t, 't');
@@ -158,6 +161,7 @@ function safeTriton(t, opts, cb) {
         cb(err, stdout);
     });
 }
+
 
 
 /*
@@ -207,6 +211,47 @@ function getTestImg(t, cb) {
 
 
 /*
+ * Find and return an image that can be used for test *KVM* provisions.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, imgId)`
+ *      where `imgId` is an image identifier (an image name, shortid, or id).
+ */
+function getTestKvmImg(t, cb) {
+    if (CONFIG.kvmImage) {
+        assert.string(CONFIG.kvmPackage, 'CONFIG.kvmPackage');
+        t.ok(CONFIG.kvmImage, 'kvmImage from config: ' + CONFIG.kvmImage);
+        cb(null, CONFIG.kvmImage);
+        return;
+    }
+
+    var candidateImageNames = {
+        'ubuntu-certified-16.04': true
+    };
+    safeTriton(t, ['img', 'ls', '-j'], function (err, stdout) {
+        var imgId;
+        var imgs = jsonStreamParse(stdout);
+        // Newest images first.
+        tabula.sortArrayOfObjects(imgs, ['-published_at']);
+        var imgRepr;
+        for (var i = 0; i < imgs.length; i++) {
+            var img = imgs[i];
+            if (candidateImageNames[img.name]) {
+                imgId = img.id;
+                imgRepr = f('%s@%s', img.name, img.version);
+                break;
+            }
+        }
+
+        t.ok(imgId,
+            f('latest KVM image (using subset of supported names): %s (%s)',
+            imgId, imgRepr));
+        cb(err, imgId);
+    });
+}
+
+
+/*
  * Find and return an package that can be used for test provisions.
  *
  * @param {Tape} t - tape test object
@@ -222,10 +267,44 @@ function getTestPkg(t, cb) {
 
     safeTriton(t, ['pkg', 'ls', '-j'], function (err, stdout) {
         var pkgs = jsonStreamParse(stdout);
+        // Filter out those with 'kvm' in the name.
+        pkgs = pkgs.filter(function (pkg) {
+            return pkg.name.indexOf('kvm') == -1;
+        });
         // Smallest RAM first.
         tabula.sortArrayOfObjects(pkgs, ['memory']);
         var pkgId = pkgs[0].id;
         t.ok(pkgId, f('smallest (RAM) available package: %s (%s)',
+            pkgId, pkgs[0].name));
+        cb(null, pkgId);
+    });
+}
+
+/*
+ * Find and return an package that can be used for *KVM* test provisions.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, pkgId)`
+ *      where `pkgId` is an package identifier (a name, shortid, or id).
+ */
+function getTestKvmPkg(t, cb) {
+    if (CONFIG.kvmPackage) {
+        assert.string(CONFIG.kvmPackage, 'CONFIG.kvmPackage');
+        t.ok(CONFIG.kvmPackage, 'kvmPackage from config: ' + CONFIG.kvmPackage);
+        cb(null, CONFIG.kvmPackage);
+        return;
+    }
+
+    safeTriton(t, ['pkg', 'ls', '-j'], function (err, stdout) {
+        var pkgs = jsonStreamParse(stdout);
+        // Filter on those with 'kvm' in the name.
+        pkgs = pkgs.filter(function (pkg) {
+            return pkg.name.indexOf('kvm') !== -1;
+        });
+        // Smallest RAM first.
+        tabula.sortArrayOfObjects(pkgs, ['memory']);
+        var pkgId = pkgs[0].id;
+        t.ok(pkgId, f('smallest (RAM) available KVM package: %s (%s)',
             pkgId, pkgs[0].name));
         cb(null, pkgId);
     });
@@ -323,26 +402,76 @@ function createTestInst(t, name, cb) {
 
 
 /*
- * Remove test instance, if exists.
+ * Delete the given test instance (by name or id). It is not an error for the
+ * instance to not exist. I.e. this is somewhat like `rm -f FILE`.
+ *
+ * Once we've validated that the inst exists, it *is* an error if the delete
+ * fails. This function checks that with `t.ifErr`.
+ *
+ * @param {Tape} t - Tape test object on which to assert details.
+ * @param {String} instNameOrId - The instance name or id to delete.
+ * @param {Function} cb - `function ()`. A deletion error is NOT returned
+ *      currently, because it is checked via `t.ifErr`.
  */
-function deleteTestInst(t, name, cb) {
-    triton(['inst', 'get', '-j', name], function (err, stdout, stderr) {
+function deleteTestInst(t, instNameOrId, cb) {
+    assert.object(t, 't');
+    assert.string(instNameOrId, 'instNameOrId');
+    assert.func(cb, 'cb');
+
+    triton(['inst', 'get', '-j', instNameOrId],
+            function onInstGet(err, stdout, _) {
         if (err) {
             if (err.code === 3) {  // `triton` code for ResourceNotFound
-                t.ok(true, 'no pre-existing alias in the way');
+                t.ok(true, 'no existing inst ' + instNameOrId);
+                cb();
             } else {
-                t.ifErr(err);
+                t.ifErr(err, err);
+                cb();
             }
-
-            return cb();
+        } else {
+            var instToRm = JSON.parse(stdout);
+            safeTriton(t, ['inst', 'rm', '-w', instToRm.id], function onRm() {
+                t.ok(true, 'deleted inst ' + instToRm.id);
+                cb();
+            });
         }
+    });
+}
 
-        var oldInst = JSON.parse(stdout);
+/*
+ * Delete the given test image (by name or id). It is not an error for the
+ * image to not exist. I.e. this is somewhat like `rm -f FILE`.
+ *
+ * Once we've validated that the image exists, it *is* an error if the delete
+ * fails. This function checks that with `t.ifErr`.
+ *
+ * @param {Tape} t - Tape test object on which to assert details.
+ * @param {String} imgNameOrId - The image name or id to delete.
+ * @param {Function} cb - `function ()`. A deletion error is NOT returned
+ *      currently, because it is checked via `t.ifErr`.
+ */
+function deleteTestImg(t, imgNameOrId, cb) {
+    assert.object(t, 't');
+    assert.string(imgNameOrId, 'imgNameOrId');
+    assert.func(cb, 'cb');
 
-        safeTriton(t, ['delete', '-w', oldInst.id], function (dErr) {
-            t.ifError(dErr, 'deleted old inst ' + oldInst.id);
-            cb();
-        });
+    triton(['img', 'get', '-j', imgNameOrId],
+            function onImgGet(err, stdout, _) {
+        if (err) {
+            if (err.code === 3) {  // `triton` code for ResourceNotFound
+                t.ok(true, 'no existing img ' + imgNameOrId);
+                cb();
+            } else {
+                t.ifErr(err, err);
+                cb();
+            }
+        } else {
+            var imgToRm = JSON.parse(stdout);
+            safeTriton(t, ['img', 'rm', '-w', imgToRm.id], function onRm() {
+                t.ok(true, 'deleted img ' + imgToRm.id);
+                cb();
+            });
+        }
     });
 }
 
@@ -366,12 +495,18 @@ module.exports = {
     CONFIG: CONFIG,
     triton: triton,
     safeTriton: safeTriton,
+
     createClient: createClient,
     createTestInst: createTestInst,
     deleteTestInst: deleteTestInst,
+    deleteTestImg: deleteTestImg,
+
     getTestImg: getTestImg,
+    getTestKvmImg: getTestKvmImg,
     getTestPkg: getTestPkg,
+    getTestKvmPkg: getTestKvmPkg,
     getResizeTestPkg: getResizeTestPkg,
+
     jsonStreamParse: jsonStreamParse,
     printConfig: printConfig,
 
