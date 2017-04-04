@@ -19,6 +19,9 @@ Known issues:
 
   Use `triton volume --help` to get help on all of these commands.
 
+  Note that these commands are hidden for now. They will be made visible by
+  default once the server-side support for volumes is shipped in Triton.
+
 - [joyent/node-triton#183] `triton profile create` will no longer use ANSI
   codes for styling if stdout isn't a TTY.
 
