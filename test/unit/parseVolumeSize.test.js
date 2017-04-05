@@ -63,7 +63,6 @@ test('parseVolumeSize', function (tt) {
 
     tt.test('parsing valid sizes', function (t) {
         var validVolumeSizes = [
-            {input: '42', expectedOutput: 42},
             {input: '42m', expectedOutput: 42},
             {input: '42M', expectedOutput: 42},
             {input: '42g', expectedOutput: 42 * 1024},
