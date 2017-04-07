@@ -7,6 +7,10 @@ Known issues:
 
 ## not yet released
 
+## 5.2.0
+
+- [joyent/node-triton#197] Create triton image export command
+
 ## 5.1.1
 
 - [joyent/node-triton#190] Fix `triton profile create|docker-setup` breakage
