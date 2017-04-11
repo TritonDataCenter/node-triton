@@ -7,6 +7,9 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#193] Fix possible CLI crash with `triton ssh ...` if the
+  instance's image doesn't have any tags.
+
 ## 5.2.0
 
 - [joyent/node-triton#197] Create triton image export command
