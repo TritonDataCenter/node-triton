@@ -71,10 +71,13 @@ test('triton networks', function (tt) {
         function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
-            var results = stdout.trim().split('\n');
-            results.forEach(function (result) {
-                t.equal(false, common.boolFromString(result, null, 'public'));
-            });
+            if (stdout.trim()) {
+                var results = stdout.trim().split('\n');
+                results.forEach(function (result) {
+                    t.equal(false,
+                        common.boolFromString(result, null, 'public'));
+                });
+            }
             t.end();
         });
     });
@@ -84,10 +87,13 @@ test('triton networks', function (tt) {
         function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
-            var results = stdout.trim().split('\n');
-            results.forEach(function (result) {
-                t.equal(false, common.boolFromString(result, null, 'public'));
-            });
+            if (stdout.trim()) {
+                var results = stdout.trim().split('\n');
+                results.forEach(function (result) {
+                    t.equal(false,
+                        common.boolFromString(result, null, 'public'));
+                });
+            }
             t.end();
         });
     });
