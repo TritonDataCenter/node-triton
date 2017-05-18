@@ -212,6 +212,8 @@ test('triton volume create ...', testOpts, function (tt) {
         h.triton([
             'volume',
             'create',
+            '--name',
+            'node-triton-test-volume-create-fabric-network',
             '--network',
             FABRIC_NETWORKS[0].id,
             '-w'
