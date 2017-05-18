@@ -20,11 +20,15 @@ var vasync = require('vasync');
 var common = require('../../lib/common');
 var h = require('./helpers');
 
+var FABRIC_NETWORKS = [];
+
 var testOpts = {
     skip: !h.CONFIG.allowWriteActions
 };
 
+
 test('triton volume create ...', testOpts, function (tt) {
+    var currentVolume;
     var validVolumeName =
             h.makeResourceName('node-triton-test-volume-create-default');
 
@@ -37,6 +41,8 @@ test('triton volume create ...', testOpts, function (tt) {
     tt.test('  cleanup leftover resources', function (t) {
         h.triton(['volume', 'delete', '-y', '-w', validVolumeName].join(' '),
             function onDelVolume(delVolErr, stdout, stderr) {
+                // If there was nothing to delete, this will fail so that's the
+                // normal case. Too bad we don't have a --force option.
                 t.end();
             });
     });
@@ -54,6 +60,8 @@ test('triton volume create ...', testOpts, function (tt) {
             '--name',
             invalidVolumeName
         ].join(' '), function (volCreateErr, stdout, stderr) {
+            t.ok(volCreateErr, 'create should have failed' +
+                (volCreateErr ? '' : ', but succeeded'));
             t.equal(stderr.indexOf(expectedErrMsg), 0,
                 'stderr should include error message: ' + expectedErrMsg);
             t.end();
@@ -165,6 +173,75 @@ test('triton volume create ...', testOpts, function (tt) {
                         'should errorr');
                 t.notEqual(stderr.indexOf('ResourceNotFound'), -1,
                     'Getting volume ' + validVolumeName + 'should not find it');
+                t.end();
+            });
+    });
+
+    // Test that we can create a volume with a valid fabric network and the
+    // volume ends up on that network.
+
+    tt.test('  find fabric network', function (t) {
+        h.triton(['network', 'list', '-j'].join(' '),
+            function onGetNetworks(getNetworksErr, stdout, stderr) {
+                var resultsObj;
+
+                t.ifErr(getNetworksErr, 'should succeed getting network list');
+
+                // turn the JSON lines into a JSON object
+                resultsObj = JSON.parse('[' + stdout.trim().replace(/\n/g, ',')
+                    + ']');
+
+                t.ok(resultsObj.length > 0,
+                    'should find at least 1 network, found '
+                    + resultsObj.length);
+
+                FABRIC_NETWORKS = resultsObj.filter(function fabricFilter(net) {
+                    // keep only those networks that are marked as fabric=true
+                    return (net.fabric === true);
+                });
+
+                t.ok(FABRIC_NETWORKS.length > 0,
+                    'should find at least 1 fabric network, found '
+                    + FABRIC_NETWORKS.length);
+
+                t.end();
+            });
+    });
+
+    tt.test('  triton volume on fabric network', function (t) {
+        h.triton([
+            'volume',
+            'create',
+            '--network',
+            FABRIC_NETWORKS[0].id,
+            '-w'
+        ].join(' '), function (volCreateErr, stdout, stderr) {
+            t.ifErr(volCreateErr, 'volume creation should succeed');
+
+            currentVolume = JSON.parse(stdout);
+            t.end();
+        });
+    });
+
+    tt.test('  check volume was created', function (t) {
+        h.safeTriton(t, ['volume', 'get', currentVolume.name],
+            function onGetVolume(getVolErr, stdout) {
+                var volumeObj;
+
+                t.ifError(getVolErr, 'getting volume should succeed');
+
+                volumeObj = JSON.parse(stdout);
+                t.equal(volumeObj.networks[0], FABRIC_NETWORKS[0].id,
+                    'expect network to match fabric we passed');
+
+                t.end();
+            });
+    });
+
+    tt.test('  delete volume', function (t) {
+        h.triton(['volume', 'delete', '-y', '-w', currentVolume.name].join(' '),
+            function onDelVolume(delVolErr, stdout, stderr) {
+                t.ifError(delVolErr, 'deleting volume should succeed');
                 t.end();
             });
     });
