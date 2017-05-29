@@ -170,7 +170,7 @@ test('triton volume create ...', testOpts, function (tt) {
             function onGetVolume(getVolErr, stdout, stderr) {
                 t.ok(getVolErr,
                     'Getting volume ' + validVolumeName + 'after deleting it ' +
-                        'should errorr');
+                        'should error');
                 t.notEqual(stderr.indexOf('ResourceNotFound'), -1,
                     'Getting volume ' + validVolumeName + 'should not find it');
                 t.end();
