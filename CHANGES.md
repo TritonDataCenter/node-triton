@@ -9,6 +9,9 @@ Known issues:
 
 - [joyent/node-triton#193] Fix possible CLI crash with `triton ssh ...` if the
   instance's image doesn't have any tags.
+- [joyent/node-triton#213] commands fail unhelpfully when `cliSetupTritonApi`
+  returns error (this includes e.g. supplying an incorrect key fingerprint,
+  which no longer results in a cryptic stack trace and crash)
 
 ## 5.2.0
 
