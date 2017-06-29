@@ -7,6 +7,10 @@ Known issues:
 
 ## not yet released
 
+(nothing yet)
+
+## 5.2.1
+
 - [joyent/node-triton#193] Fix possible CLI crash with `triton ssh ...` if the
   instance's image doesn't have any tags.
 - [joyent/node-triton#213] commands fail unhelpfully when `cliSetupTritonApi`
