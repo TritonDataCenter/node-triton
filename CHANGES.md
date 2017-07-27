@@ -7,7 +7,8 @@ Known issues:
 
 ## not yet released
 
-(nothing yet)
+- [joyent/node-triton#217] `triton volume ls -l` should output a `RESOURCE`
+  column.
 
 ## 5.3.0
 
