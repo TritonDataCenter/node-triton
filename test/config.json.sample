@@ -16,6 +16,10 @@
     // This is essentially the "safe" guard.
     "allowWriteActions": true,
 
+    // While volumes support is still experimental (and not deployed everywhere)
+    // volumes test are skipped by default. Set this to true to run them.
+    "allowVolumesTests": true,
+
     // Optional. Set to 'true' to skip affinity tests. Affinity tests assume
     // the datacenter has multiple servers to which provisions can go. So if
     // you are testing against COAL, for example, you'll need to set this

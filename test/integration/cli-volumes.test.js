@@ -23,8 +23,14 @@ var h = require('./helpers');
 var FABRIC_NETWORKS = [];
 
 var testOpts = {
-    skip: !h.CONFIG.allowWriteActions
+    skip: !(h.CONFIG.allowWriteActions && h.CONFIG.allowVolumesTests)
 };
+if (testOpts.skip) {
+    console.error('** skipping %s tests', __filename);
+    console.error('** set "allowWriteActions" and "allowVolumesTests" '
+        + 'in test config to enable');
+}
+
 test('triton volume create ...', testOpts, function (tt) {
     var currentVolume;
     var validVolumeName =
