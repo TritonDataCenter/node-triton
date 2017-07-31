@@ -7,6 +7,10 @@ Known issues:
 
 ## not yet released
 
+(nothing yet)
+
+## 5.3.0
+
 - [joyent/node-triton#173], [joyent/node-triton#174] and
   [joyent/node-triton#175] Add support for creating and managing NFS shared
   volumes. New `triton volume` commands are available:
