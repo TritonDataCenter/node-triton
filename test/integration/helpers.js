@@ -468,7 +468,7 @@ function deleteTestImg(t, imgNameOrId, cb) {
             }
         } else {
             var imgToRm = JSON.parse(stdout);
-            safeTriton(t, ['img', 'rm', '-w', imgToRm.id], function onRm() {
+            safeTriton(t, ['img', 'rm', '-f', imgToRm.id], function onRm() {
                 t.ok(true, 'deleted img ' + imgToRm.id);
                 cb();
             });
