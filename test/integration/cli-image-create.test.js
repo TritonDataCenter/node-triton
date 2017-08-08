@@ -165,28 +165,38 @@ test('triton image ...', testOpts, function (tt) {
         var argv = ['image', 'create', '-j', '-w', '-t', 'foo=bar',
             originInst.id, IMAGE_DATA.name, IMAGE_DATA.version];
         h.safeTriton(t, argv, function (err, stdout) {
-            var lines = h.jsonStreamParse(stdout);
-            img = lines[1];
-            t.ok(img, 'created image, id=' + img.id);
-            t.equal(img.name, IMAGE_DATA.name, 'img.name');
-            t.equal(img.version, IMAGE_DATA.version, 'img.version');
-            t.equal(img.public, false, 'img.public is false');
-            t.equal(img.state, 'active', 'img.state is active');
-            t.equal(img.origin, originInst.image, 'img.origin');
+            if (!err) {
+                var lines = h.jsonStreamParse(stdout);
+                img = lines[1];
+                t.ok(img, 'created image, id=' + img.id);
+                t.equal(img.name, IMAGE_DATA.name, 'img.name');
+                t.equal(img.version, IMAGE_DATA.version, 'img.version');
+                t.equal(img.public, false, 'img.public is false');
+                t.equal(img.state, 'active', 'img.state is active');
+                t.equal(img.origin, originInst.image, 'img.origin');
+            }
             t.end();
         });
     });
 
     var derivedInst;
     tt.test('  triton create ... -n ' + DERIVED_ALIAS, function (t) {
-        var argv = ['create', '-wj', '-n', DERIVED_ALIAS, img.id, pkgId];
-        h.safeTriton(t, argv, function (err, stdout) {
-            var lines = h.jsonStreamParse(stdout);
-            derivedInst = lines[1];
-            t.ok(derivedInst.id, 'derivedInst.id: ' + derivedInst.id);
-            t.equal(lines[1].state, 'running', 'derivedInst is running');
+        t.ok(img, 'have an img to test');
+        if (img) {
+            var argv = ['create', '-wj', '-n', DERIVED_ALIAS, img.id, pkgId];
+            h.safeTriton(t, argv, function (err, stdout) {
+                if (!err) {
+                    var lines = h.jsonStreamParse(stdout);
+                    derivedInst = lines[1];
+                    t.ok(derivedInst.id, 'derivedInst.id: ' + derivedInst.id);
+                    t.equal(lines[1].state, 'running',
+                        'derivedInst is running');
+                }
+                t.end();
+            });
+        } else {
             t.end();
-        });
+        }
     });
 
     // TODO: Once have `triton ssh ...` working in test suite without hangs,
@@ -196,6 +206,10 @@ test('triton image ...', testOpts, function (tt) {
     // have a way to know if the attempt failed or if it is just taking a
     // really long time.
     tt.test('  cleanup: triton rm', {timeout: 10 * 60 * 1000}, function (t) {
+        if (!originInst || !derivedInst) {
+            t.end();
+            return;
+        }
         h.safeTriton(t, ['rm', '-w', originInst.id, derivedInst.id],
                 function () {
             t.end();
@@ -203,6 +217,10 @@ test('triton image ...', testOpts, function (tt) {
     });
 
     tt.test('  cleanup: triton image rm', function (t) {
+        if (!img) {
+            t.end();
+            return;
+        }
         h.safeTriton(t, ['image', 'rm', '-f', img.id], function () {
             t.end();
         });
