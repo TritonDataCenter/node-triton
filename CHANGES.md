@@ -7,8 +7,12 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#201] Fix `triton -r,--role ROLE ...` option for taking up
+  an RBAC role. This was introduced in v4.12.0 and was accidentally broken
+  in v5.0.0.
 - [joyent/node-triton#217] `triton volume ls -l` should output a `RESOURCE`
   column.
+
 
 ## 5.3.0
 
