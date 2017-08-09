@@ -7,6 +7,10 @@ Known issues:
 
 ## not yet released
 
+(nothing yet)
+
+## 5.3.1
+
 - [joyent/node-triton#222] Fix the matching environment variable for the
   `triton -r,--role ROLE ...` option to be `TRITON_ROLE` instead of
   `MANTA_ROLE`.
@@ -15,7 +19,6 @@ Known issues:
   in v5.0.0.
 - [joyent/node-triton#217] `triton volume ls -l` should output a `RESOURCE`
   column.
-
 
 ## 5.3.0
 
@@ -48,7 +51,7 @@ Known issues:
 ## 5.1.1
 
 - [joyent/node-triton#190] Fix `triton profile create|docker-setup` breakage
-  with latest "17.03.*" versions of `docker` installed.
+  with latest "17.03.\*" versions of `docker` installed.
 - [joyent/node-triton#148] Fix `triton profile edit ...` to work with an
   "EDITOR" environment variable with quotes and spaces.
 - [joyent/node-triton#183] `triton profile create` will no longer use ANSI
