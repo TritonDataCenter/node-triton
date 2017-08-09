@@ -37,8 +37,9 @@ test-integration:
 
 .PHONY: test-in-parallel
 test-in-parallel:
-	NODE_NDEBUG= prove -j15 -e ./node_modules/.bin/tape \
-		test/unit/*.test.js test/integration/*.test.js
+	ls test/unit/*.test.js test/integration/*.test.js \
+	    | parallel ./node_modules/.bin/tape \
+	    | ./node_modules/.bin/tap-summary --no-ansi --no-progress
 
 .PHONY: clean
 clean::
