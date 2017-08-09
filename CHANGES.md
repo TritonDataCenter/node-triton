@@ -7,6 +7,9 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#222] Fix the matching environment variable for the
+  `triton -r,--role ROLE ...` option to be `TRITON_ROLE` instead of
+  `MANTA_ROLE`.
 - [joyent/node-triton#201] Fix `triton -r,--role ROLE ...` option for taking up
   an RBAC role. This was introduced in v4.12.0 and was accidentally broken
   in v5.0.0.
