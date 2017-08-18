@@ -7,7 +7,7 @@ Known issues:
 
 ## not yet released
 
-(nothing yet)
+- [joyent/node-triton#226] added new `triton volume sizes` subcommand.
 
 ## 5.3.1
 

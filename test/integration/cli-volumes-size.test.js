@@ -19,8 +19,10 @@ var vasync = require('vasync');
 
 var common = require('../../lib/common');
 var h = require('./helpers');
+var mod_volumes = require('../../lib/volumes');
 
 var FABRIC_NETWORKS = [];
+var MIBS_IN_GIB = 1024;
 
 var testOpts = {
     skip: !(h.CONFIG.allowWriteActions && h.CONFIG.allowVolumesTests)
@@ -35,7 +37,7 @@ test('triton volume create with non-default size...', testOpts, function (tt) {
     var validVolumeName =
             h.makeResourceName('node-triton-test-volume-create-non-default-' +
                 'size');
-    var validVolumeSize = '20g';
+    var validVolumeSize = '20G';
     var validVolumeSizeInMib = 20 * 1024;
 
     tt.comment('Test config:');
@@ -106,4 +108,82 @@ test('triton volume create with non-default size...', testOpts, function (tt) {
                 t.end();
             });
     });
+});
+
+test('triton volume create with unavailable size...', testOpts, function (tt) {
+    var validVolumeName =
+            h.makeResourceName('node-triton-test-volume-create-unavailable-' +
+                'size');
+
+    tt.test('  triton volume create volume with unavailable size',
+        function (t) {
+
+            vasync.pipeline({arg: {}, funcs: [
+                function getVolumeSizes(ctx, next) {
+                    h.triton(['volume', 'sizes', '-j'],
+                        function onVolSizesListed(volSizesListErr, sizes) {
+                            var largestSizeInMib;
+
+                            t.notOk(volSizesListErr,
+                                    'listing volume sizes should not error');
+                            if (volSizesListErr) {
+                                next(volSizesListErr);
+                                return;
+                            }
+
+                            t.ok(typeof (sizes) === 'string',
+                                'sizes should be a string');
+
+                            sizes = sizes.trim().split('\n');
+                            t.ok(sizes.length > 0,
+                                'there should be at least one available ' +
+                                    'volume size');
+
+                            if (sizes.length === 0) {
+                                next(new Error('no volume size available'));
+                                return;
+                            }
+
+                            largestSizeInMib =
+                                JSON.parse(sizes[sizes.length - 1]).size;
+
+                            ctx.unavailableVolumeSize =
+                                (largestSizeInMib / MIBS_IN_GIB + 1) + 'G';
+
+                            next();
+                        });
+                },
+                function createVolWithUnavailableSize(ctx, next) {
+                    h.triton([
+                        'volume',
+                        'create',
+                        '--name',
+                        validVolumeName,
+                        '--size',
+                        ctx.unavailableVolumeSize,
+                        '-w'
+                    ].join(' '), function (volCreateErr, stdout, stderr) {
+                        var actualErrMsg;
+                        var expectedErrMsg = 'volume size not available';
+
+                        t.ok(volCreateErr,
+                                'volume creation with unavailable size ' +
+                                    ctx.unavailableVolumeSize +
+                                    ' should error');
+
+                        if (volCreateErr) {
+                            actualErrMsg = stderr;
+                            t.notEqual(actualErrMsg.indexOf(expectedErrMsg), -1,
+                                'error message should include: ' +
+                                    expectedErrMsg + ' and got: ' +
+                                    actualErrMsg);
+                        }
+
+                        next();
+                    });
+                }
+            ]}, function onTestDone(err) {
+                t.end();
+            });
+        });
 });
