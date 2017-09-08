@@ -3,3 +3,4 @@
 /test/*.json
 /npm-debug.log
 /triton-*.tgz
+*.swp

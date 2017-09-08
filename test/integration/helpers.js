@@ -183,6 +183,7 @@ function getTestImg(t, cb) {
     var candidateImageNames = {
         'base-64-lts': true,
         'base-64': true,
+        'minimal-64-lts': true,
         'minimal-64': true,
         'base-32-lts': true,
         'base-32': true,

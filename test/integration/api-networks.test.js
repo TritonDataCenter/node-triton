@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016 Joyent, Inc.
+ * Copyright 2017 Joyent, Inc.
  */
 
 /*
@@ -17,6 +17,8 @@ var test = require('tape');
 
 
 // --- Globals
+
+var NET_NAME = 'node-triton-testnet967';
 
 var CLIENT;
 var NET;
@@ -33,11 +35,14 @@ test('TritonApi networks', function (tt) {
         });
     });
 
+    tt.test('  cleanup: rm network ' + NET_NAME + ' if exists', function (t) {
+        CLIENT.deleteFabricNetwork({id: NET_NAME}, function () {
+            t.end();
+        });
+    });
+
     tt.test(' setup: net', function (t) {
-        var opts = {
-            account: CLIENT.profile.account
-        };
-        CLIENT.cloudapi.listNetworks(opts, function (err, nets) {
+        CLIENT.cloudapi.listNetworks({}, function (err, nets) {
             if (h.ifErr(t, err))
                 return t.end();
 
@@ -76,6 +81,51 @@ test('TritonApi networks', function (tt) {
             });
         });
     });
+
+
+    tt.test(' TritonApi deleteFabricNetwork', function (t) {
+        function check(genId, idType, vlanId, cb) {
+            CLIENT.cloudapi.createFabricNetwork({
+                name: NET_NAME,
+                subnet: '192.168.97.0/24',
+                provision_start_ip: '192.168.97.1',
+                provision_end_ip: '192.168.97.254',
+                vlan_id: vlanId
+            }, function (err, net) {
+                if (h.ifErr(t, err, 'Error creating network'))
+                    return t.end();
+
+                var id = genId(net);
+                CLIENT.deleteFabricNetwork({id: id}, function (err2) {
+                    if (h.ifErr(t, err, 'Error deleting network by ' + idType))
+                        return t.end();
+
+                    CLIENT.cloudapi.getNetwork(net.id, function (err3) {
+                        t.ok(err3, 'Network should be gone');
+                        cb();
+                    });
+                });
+            });
+        }
+
+        CLIENT.cloudapi.listFabricVlans({}, function (err, vlans) {
+            if (vlans.length === 0)
+                return t.end();
+
+            var vlanId = +vlans[0].vlan_id;
+
+            check(function (net) { return net.id; }, 'id', vlanId, function () {
+                check(function (net) { return net.name; }, 'name', vlanId,
+                      function () {
+                    check(function (net) { return net.id.split('-')[0]; },
+                          'shortId', vlanId, function () {
+                        t.end();
+                    });
+                });
+            });
+        });
+    });
+
 
 
     tt.test(' teardown: client', function (t) {

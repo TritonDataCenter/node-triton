@@ -12,20 +12,45 @@
  * Integration tests for `triton network(s)`
  */
 
-var h = require('./helpers');
+var f = require('util').format;
+var os = require('os');
 var test = require('tape');
+var h = require('./helpers');
 
 var common = require('../../lib/common');
 
 
 // --- Globals
 
+var NET_NAME = f('nodetritontest-network-%s', os.hostname());
+
 var networks;
+var vlan;
+
+var OPTS = {
+    skip: !h.CONFIG.allowWriteActions
+};
 
 
 // --- Tests
 
+if (OPTS.skip) {
+    console.error('** skipping some %s tests', __filename);
+    console.error('** set "allowWriteActions" in test config to enable');
+}
+
 test('triton networks', function (tt) {
+
+    tt.test('  setup: find a test VLAN', function (t) {
+        h.triton('vlan list -j', function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+
+            vlan = JSON.parse(stdout.trim().split('\n')[0]);
+            t.ok(vlan, 'vlan for testing found');
+            t.end();
+        });
+    });
 
     tt.test(' triton network list -h', function (t) {
         h.triton('networks -h', function (err, stdout, stderr) {
@@ -205,6 +230,138 @@ test('triton network get', function (tt) {
             var network = JSON.parse(stdout);
             t.equal(network.id, networks[0].id);
             t.end();
+        });
+    });
+
+});
+
+
+test('triton network create', OPTS, function (tt) {
+
+    tt.test('  cleanup: rm network ' + NET_NAME + ' if exists', function (t) {
+        h.triton('network delete ' + NET_NAME, function (err, stdout) {
+            t.end();
+        });
+    });
+
+    tt.test(' triton network create -h', function (t) {
+        h.triton('network create -h', function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+            t.ok(/Usage:\s+triton network\b/.test(stdout));
+            t.end();
+        });
+    });
+
+    tt.test(' triton network help create', function (t) {
+        h.triton('network help create', function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+            t.ok(/Usage:\s+triton network create\b/.test(stdout));
+            t.end();
+        });
+    });
+
+    tt.test(' triton network create', function (t) {
+        h.triton('network create', function (err, stdout, stderr) {
+            t.ok(err);
+            t.ok(/error \(Usage\)/.test(stderr));
+            t.end();
+        });
+    });
+
+    tt.test(' triton network create VLAN', function (t) {
+        h.triton('network create --name=' + NET_NAME +
+                 ' --subnet=192.168.97.0/24 --start_ip=192.168.97.1' +
+                 ' --end_ip=192.168.97.254 -j ' + vlan.vlan_id,
+                 function (err, stdout) {
+            if (h.ifErr(t, err))
+                return t.end();
+
+            var network = JSON.parse(stdout.trim().split('\n')[0]);
+
+            t.equal(network.name, NET_NAME);
+            t.equal(network.subnet, '192.168.97.0/24');
+            t.equal(network.provision_start_ip, '192.168.97.1');
+            t.equal(network.provision_end_ip, '192.168.97.254');
+            t.equal(network.vlan_id, vlan.vlan_id);
+
+            h.triton('network delete ' + network.id, function (err2) {
+                h.ifErr(t, err2);
+                t.end();
+            });
+        });
+    });
+
+});
+
+
+test('triton network delete', OPTS, function (tt) {
+
+    tt.test(' triton network delete -h', function (t) {
+        h.triton('network delete -h', function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+            t.ok(/Usage:\s+triton network\b/.test(stdout));
+            t.end();
+        });
+    });
+
+    tt.test(' triton network help delete', function (t) {
+        h.triton('network help delete', function (err, stdout, stderr) {
+            if (h.ifErr(t, err))
+                return t.end();
+            t.ok(/Usage:\s+triton network delete\b/.test(stdout));
+            t.end();
+        });
+    });
+
+    tt.test(' triton network delete', function (t) {
+        h.triton('network delete', function (err, stdout, stderr) {
+            t.ok(err);
+            t.ok(/error \(Usage\)/.test(stderr));
+            t.end();
+        });
+    });
+
+    function deleteNetworkTester(t, deleter) {
+        h.triton('network create --name=' + NET_NAME +
+                 ' --subnet=192.168.97.0/24 --start_ip=192.168.97.1' +
+                 ' --end_ip=192.168.97.254 -j ' + vlan.vlan_id,
+                 function (err, stdout) {
+            if (h.ifErr(t, err, 'create test network'))
+                return t.end();
+
+            var network = JSON.parse(stdout.trim().split('\n')[0]);
+
+            deleter(null, network, function (err2) {
+                if (h.ifErr(t, err2, 'deleting test network'))
+                    return t.end();
+
+                h.triton('network get ' + network.id, function (err3) {
+                    t.ok(err3, 'network should be gone');
+                    t.end();
+                });
+            });
+        });
+    }
+
+    tt.test(' triton network delete ID', function (t) {
+        deleteNetworkTester(t, function (err, network, cb) {
+            h.triton('network delete ' + network.id, cb);
+        });
+    });
+
+    tt.test(' triton network delete NAME', function (t) {
+        deleteNetworkTester(t, function (err, network, cb) {
+            h.triton('network delete ' + network.name, cb);
+        });
+    });
+
+    tt.test(' triton network delete SHORTID', function (t) {
+        deleteNetworkTester(t, function (err, network, cb) {
+            var shortid = network.id.split('-')[0];
+            h.triton('network delete ' + shortid, cb);
         });
     });
 

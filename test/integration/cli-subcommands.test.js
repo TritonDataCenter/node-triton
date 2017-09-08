@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright (c) 2017, Joyent, Inc.
  */
 
 /*
@@ -56,11 +56,25 @@ var subs = [
     ['instance snapshot list', 'instance snapshot ls', 'instance snapshots'],
     ['instance snapshot get'],
     ['instance snapshot delete', 'instance snapshot rm'],
+    ['instance nic create'],
+    ['instance nic list', 'instance nic ls'],
+    ['instance nic get'],
+    ['instance nic delete', 'instance nic rm'],
     ['ip'],
     ['ssh'],
     ['network'],
-    ['network list', 'networks'],
+    ['network create'],
+    ['network list', 'network ls', 'networks'],
     ['network get'],
+    ['network get-default'],
+    ['network set-default'],
+    ['network delete', 'network rm'],
+    ['vlan'],
+    ['vlan create'],
+    ['vlan list', 'vlan ls'],
+    ['vlan get'],
+    ['vlan update'],
+    ['vlan delete', 'vlan rm'],
     ['key'],
     ['key add'],
     ['key list', 'key ls', 'keys'],
