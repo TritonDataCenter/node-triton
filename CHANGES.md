@@ -8,6 +8,8 @@ Known issues:
 ## not yet released
 
 - [joyent/node-triton#226] added new `triton volume sizes` subcommand.
+- [PUBAPI-1420] added support for mounting volumes in LX and SmartOS instances.
+  E.g., `triton instance create --volume VOLUME ...`.
 
 ## 5.3.1
 
