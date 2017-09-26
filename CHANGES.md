@@ -4,9 +4,13 @@ Known issues:
 
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
 
-
 ## not yet released
 
+(nothing yet)
+
+## 5.3.2
+
+- [joyent/node-triton#187] DTraceProviderBindings errors on FreeBSD.
 - [joyent/node-triton#226] added new `triton volume sizes` subcommand.
 - [PUBAPI-1420] added support for mounting volumes in LX and SmartOS instances.
   E.g., `triton instance create --volume VOLUME ...`.
