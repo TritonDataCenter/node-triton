@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright (c) 2017, Joyent, Inc.
  */
 
 /*
@@ -135,7 +135,9 @@ test('objFromKeyValueArgs', function (t) {
 
     // valid parameters
     kv = common.objFromKeyValueArgs(arr, {
-        validKeys: ['foo', 'bar', 'baz'],
+        // jsl:ignore
+        validKeys: ['foo', /^ba.$/],
+        // jsl:end
         disableDotted: true,
         disableTypeConversions: true
     });

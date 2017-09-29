@@ -6,7 +6,8 @@ Known issues:
 
 ## not yet released
 
-(nothing yet)
+- [joyent/node-triton#74, TOOLS-1872] Filter instance list by tag, e.g.
+  `triton instance list tag.foo=bar`.
 
 ## 5.3.2
 
