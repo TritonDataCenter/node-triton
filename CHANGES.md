@@ -8,6 +8,11 @@ Known issues:
 
 (nothing yet)
 
+## 5.6.0
+
+- [TRITON-30] Add UpdateNetworkIP to node-triton, e.g.
+  `triton network ip update`
+
 ## 5.5.0
 
 - [PUBAPI-1452] Add ip subcommand to network, e.g.
