@@ -12,6 +12,8 @@ Known issues:
 
 - [TRITON-30] Add UpdateNetworkIP to node-triton, e.g.
   `triton network ip update`
+- [TRITON-24] node-triton ListNetworkIPs has unordered results, e.g.
+  `triton network ip list NETWORK`
 
 ## 5.5.0
 

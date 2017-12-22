@@ -25,7 +25,7 @@
     "sshpk": "1.10.2",
     "sshpk-agent": "1.4.2",
     "strsplit": "1.0.0",
-    "tabula": "1.9.0",
+    "tabula": "1.10.0",
     "vasync": "1.6.3",
     "verror": "1.10.0",
     "which": "1.2.4",
