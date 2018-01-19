@@ -8,6 +8,20 @@ Known issues:
 
 (nothing yet)
 
+## 6.0.0
+
+- [TRITON-51] **BREAKING CHANGE for `triton image create` usage.**
+  By default `triton image create ...` will create a
+  *non*-incremental image. There is a `--incremental` option to get the old
+  behavior.
+
+  As of this version of node-triton, CloudAPI API version 9 is being used, if
+  available. If you use the newer node-triton v6 against a CloudAPI that
+  has not yet been upgraded to support version 9, then `triton image create`
+  without the `--incremental` option will error out. In other words,
+  node-triton v6 will ensure that `triton image create ...` *only* creates
+  an incremental image if the `--incremental` option is explicitly given.
+
 ## 5.6.0
 
 - [TRITON-30] Add UpdateNetworkIP to node-triton, e.g.
