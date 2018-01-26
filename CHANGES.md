@@ -14,6 +14,7 @@ Known issues:
   `triton network ip update`
 - [TRITON-24] node-triton ListNetworkIPs has unordered results, e.g.
   `triton network ip list NETWORK`
+- [TRITON-88] node-triton "env" doesn't call its callback
 
 ## 5.5.0
 
