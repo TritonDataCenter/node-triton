@@ -6,7 +6,10 @@ Known issues:
 
 ## not yet released
 
-(nothing yet)
+## 5.6.1
+
+- [PUBAPI-1470] volume objects should expose their creation timestamp in a
+  property named "created" instead of "create_timestamp".
 
 ## 5.6.0
 
