@@ -6,6 +6,11 @@ Known issues:
 
 ## not yet released
 
+## 5.7.0
+
+- [TRITON-116] node-triton image sharing. Adds `triton image share` and
+  `triton image unshare` commands.
+
 ## 5.6.1
 
 - [PUBAPI-1470] volume objects should expose their creation timestamp in a

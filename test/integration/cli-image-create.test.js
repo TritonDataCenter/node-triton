@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016, Joyent, Inc.
+ * Copyright (c) 2018, Joyent, Inc.
  */
 
 /*
@@ -15,6 +15,7 @@
 var format = require('util').format;
 var os = require('os');
 var test = require('tape');
+var uuid = require('uuid');
 var vasync = require('vasync');
 
 var common = require('../../lib/common');
@@ -196,6 +197,62 @@ test('triton image ...', testOpts, function (tt) {
             });
         } else {
             t.end();
+        }
+    });
+
+    tt.test('  triton image share ...', function (t) {
+        var dummyUuid = uuid.v4();
+        var argv = ['image', 'share', img.id, dummyUuid];
+        h.safeTriton(t, argv, function (err) {
+            if (err) {
+                t.end();
+                return;
+            }
+            argv = ['image', 'get', '-j', img.id];
+            h.safeTriton(t, argv, function (err2, stdout2) {
+                t.ifErr(err2, 'image get response');
+                if (err2) {
+                    t.end();
+                    return;
+                }
+                var result = JSON.parse(stdout2);
+                t.ok(result, 'image share result');
+                t.ok(result.acl, 'image share result.acl');
+                if (result.acl && Array.isArray(result.acl)) {
+                    t.notEqual(result.acl.indexOf(dummyUuid), -1,
+                        'image share result.acl contains uuid');
+                } else {
+                    t.fail('image share result does not contain acl array');
+                }
+                unshareImage();
+            });
+        });
+
+        function unshareImage() {
+            argv = ['image', 'unshare', img.id, dummyUuid];
+            h.safeTriton(t, argv, function (err) {
+                if (err) {
+                    t.end();
+                    return;
+                }
+                argv = ['image', 'get', '-j', img.id];
+                h.safeTriton(t, argv, function (err2, stdout2) {
+                    t.ifErr(err2, 'image get response');
+                    if (err2) {
+                        t.end();
+                        return;
+                    }
+                    var result = JSON.parse(stdout2);
+                    t.ok(result, 'image unshare result');
+                    if (result.acl && Array.isArray(result.acl)) {
+                        t.equal(result.acl.indexOf(dummyUuid), -1,
+                            'image unshare result.acl should not contain uuid');
+                    } else {
+                        t.equal(result.acl, undefined, 'image has no acl');
+                    }
+                    t.end();
+                });
+            });
         }
     });
 
