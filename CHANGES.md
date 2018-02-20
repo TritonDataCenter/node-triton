@@ -6,6 +6,13 @@ Known issues:
 
 ## not yet released
 
+## 5.8.0
+
+- [TRITON-124] add node-triton support for bhyve. This adds a `triton instance
+  create --brand=bhyve ...` option that can be used for zvol images that support
+  it. Note that bhyve support is alpha in TritonDC -- most datacenters won't yet
+  support this option.
+
 ## 5.7.0
 
 - [TRITON-116] node-triton image sharing. Adds `triton image share` and

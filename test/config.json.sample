@@ -26,6 +26,11 @@
     // to true.
     "skipAffinityTests": false,
 
+    // Optional. Set to 'true' to skip testing of bhyve things. Some DCs might
+    // not support bhyve (no packages or images available, and/or no CNs with
+    // bhyve compatible hardware).
+    "skipBhyveTests": false,
+
     // Optional. Set to 'true' to skip testing of KVM things. Some DCs might
     // not support KVM (no KVM packages or images available).
     "skipKvmTests": false,
@@ -35,6 +40,12 @@
     "package": "<package name or uuid>",
     "resizePackage": "<package name>",
     "image": "<image uuid, name or name@version>"
+
+    // The params used for test *bhyve* provisions. By default the tests use:
+    // the smallest RAM package with "kvm" in the name, the latest
+    // ubuntu-certified image.
+    "bhyvePackage": "<package name or uuid>",
+    "bhyveImage": "<image uuid, name or name@version>",
 
     // The params used for test *KVM* provisions. By default the tests use:
     // the smallest RAM package with "kvm" in the name, the latest

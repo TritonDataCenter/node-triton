@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2017 Joyent, Inc.
+ * Copyright 2018 Joyent, Inc.
  */
 
 /*
@@ -212,6 +212,46 @@ function getTestImg(t, cb) {
 
 
 /*
+ * Find and return an image that can be used for test *bhyve* provisions.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, imgId)`
+ *      where `imgId` is an image identifier (an image name, shortid, or id).
+ */
+function getTestBhyveImg(t, cb) {
+    if (CONFIG.bhyveImage) {
+        assert.string(CONFIG.bhyvePackage, 'CONFIG.bhyvePackage');
+        t.ok(CONFIG.bhyveImage, 'bhyveImage from config: ' + CONFIG.bhyveImage);
+        cb(null, CONFIG.bhyveImage);
+        return;
+    }
+
+    var candidateImageNames = {
+        'ubuntu-certified-16.04': true
+    };
+    safeTriton(t, ['img', 'ls', '-j'], function (err, stdout) {
+        var imgId;
+        var imgs = jsonStreamParse(stdout);
+        // Newest images first.
+        tabula.sortArrayOfObjects(imgs, ['-published_at']);
+        var imgRepr;
+        for (var i = 0; i < imgs.length; i++) {
+            var img = imgs[i];
+            if (candidateImageNames[img.name]) {
+                imgId = img.id;
+                imgRepr = f('%s@%s', img.name, img.version);
+                break;
+            }
+        }
+
+        t.ok(imgId,
+            f('latest bhyve image (using subset of supported names): %s (%s)',
+            imgId, imgRepr));
+        cb(err, imgId);
+    });
+}
+
+/*
  * Find and return an image that can be used for test *KVM* provisions.
  *
  * @param {Tape} t - tape test object
@@ -276,6 +316,38 @@ function getTestPkg(t, cb) {
         tabula.sortArrayOfObjects(pkgs, ['memory']);
         var pkgId = pkgs[0].id;
         t.ok(pkgId, f('smallest (RAM) available package: %s (%s)',
+            pkgId, pkgs[0].name));
+        cb(null, pkgId);
+    });
+}
+
+/*
+ * Find and return an package that can be used for *bhyve* test provisions.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, pkgId)`
+ *      where `pkgId` is an package identifier (a name, shortid, or id).
+ */
+function getTestBhyvePkg(t, cb) {
+    if (CONFIG.bhyvePackage) {
+        assert.string(CONFIG.bhyvePackage, 'CONFIG.bhyvePackage');
+        t.ok(CONFIG.bhyvePackage, 'bhyvePackage from config: ' +
+            CONFIG.bhyvePackage);
+        cb(null, CONFIG.bhyvePackage);
+        return;
+    }
+
+    // bhyve uses the same packages as kvm
+    safeTriton(t, ['pkg', 'ls', '-j'], function (err, stdout) {
+        var pkgs = jsonStreamParse(stdout);
+        // Filter on those with 'kvm' in the name.
+        pkgs = pkgs.filter(function (pkg) {
+            return pkg.name.indexOf('kvm') !== -1;
+        });
+        // Smallest RAM first.
+        tabula.sortArrayOfObjects(pkgs, ['memory']);
+        var pkgId = pkgs[0].id;
+        t.ok(pkgId, f('smallest (RAM) available kvm package: %s (%s)',
             pkgId, pkgs[0].name));
         cb(null, pkgId);
     });
@@ -511,8 +583,10 @@ module.exports = {
     deleteTestImg: deleteTestImg,
 
     getTestImg: getTestImg,
+    getTestBhyveImg: getTestBhyveImg,
     getTestKvmImg: getTestKvmImg,
     getTestPkg: getTestPkg,
+    getTestBhyvePkg: getTestBhyvePkg,
     getTestKvmPkg: getTestKvmPkg,
     getResizeTestPkg: getResizeTestPkg,
 
