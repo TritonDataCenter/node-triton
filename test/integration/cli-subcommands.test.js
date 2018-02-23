@@ -45,6 +45,8 @@ var subs = [
     ['instance delete', 'instance rm', 'delete', 'rm'],
     ['instance enable-firewall'],
     ['instance disable-firewall'],
+    ['instance enable-deletion-protection'],
+    ['instance disable-deletion-protection'],
     ['instance rename'],
     ['instance ssh'],
     ['instance ip'],

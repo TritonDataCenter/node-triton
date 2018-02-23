@@ -6,6 +6,14 @@ Known issues:
 
 ## not yet released
 
+- [TRITON-19] add support for deletion protection on instances. An instance with
+  the deletion protection flag set true cannot be destroyed until the flag is
+  set false. It is exposed through
+  `triton instance create --deletion-protection ...`,
+  `triton instance enable-deletion-protection ...`, and
+  `triton instance disable-deletion-protection ...`. This flag is only supported
+  on cloudapi versions 8.7.0 or above.
+
 ## 5.9.0
 
 - [TRITON-190] remove support for `triton instance create --brand=bhyve ...`.

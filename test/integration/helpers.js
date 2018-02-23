@@ -369,7 +369,13 @@ function createClient(cb) {
 /*
  * Create a small test instance.
  */
-function createTestInst(t, name, cb) {
+function createTestInst(t, name, opts, cb) {
+    assert.object(t, 't');
+    assert.string(name, 'name');
+    assert.object(opts, 'opts');
+    assert.optionalArrayOfString(opts.extraFlags, 'opts.extraFlags');
+    assert.func(cb, 'cb');
+
     getTestPkg(t, function (err, pkgId) {
         t.ifErr(err);
         if (err) {
@@ -385,6 +391,10 @@ function createTestInst(t, name, cb) {
             }
 
             var cmd = f('instance create -w -n %s %s %s', name, imgId, pkgId);
+            if (opts.extraFlags) {
+                cmd += ' ' + opts.extraFlags.join(' ');
+            }
+
             triton(cmd, function (err3, stdout) {
                 t.ifErr(err3, 'create test instance');
                 if (err3) {

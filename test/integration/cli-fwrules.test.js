@@ -47,7 +47,7 @@ test('triton fwrule', OPTS, function (tt) {
     });
 
     tt.test('  setup: triton create', function (t) {
-        h.createTestInst(t, INST_ALIAS, function onInst(err2, instId) {
+        h.createTestInst(t, INST_ALIAS, {}, function onInst(err2, instId) {
             if (h.ifErr(t, err2, 'triton instance create'))
                 return t.end();
 

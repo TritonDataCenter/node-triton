@@ -48,7 +48,7 @@ test('triton instance nics', OPTS, function (tt) {
     });
 
     tt.test('  setup: triton instance create', function (t) {
-        h.createTestInst(t, INST_ALIAS, function onInst(err, instId) {
+        h.createTestInst(t, INST_ALIAS, {}, function onInst(err, instId) {
             if (h.ifErr(t, err, 'triton instance create'))
                 return t.end();
 
