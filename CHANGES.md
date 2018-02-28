@@ -6,6 +6,12 @@ Known issues:
 
 ## not yet released
 
+## 5.9.0
+
+- [TRITON-190] remove support for `triton instance create --brand=bhyve ...`.
+  The rest of bhyve support will remain, but selection of bhyve brand will
+  happen via images or packages that are bhyve-specific.
+
 ## 5.8.0
 
 - [TRITON-124] add node-triton support for bhyve. This adds a `triton instance
