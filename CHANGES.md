@@ -8,6 +8,35 @@ Known issues:
 
 (nothing yet)
 
+## 6.0.0
+
+This release containes some breaking changes with the --affinity flag to
+`triton instance create`. It also does not work with cloudapi endpoints older
+than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
+
+- [TRITON-167, TRITON-168] update support for
+  `triton instance create --affinity=...`. It now fully supports regular
+  expressions, tags and globs, and works across a wider variety of situations.
+
+  An example of regular expressions:
+  triton instance create --affinity='instance!=/^production-db/' ...
+
+  An example of globs:
+  triton instance create --affinity='instance!=production-db*' ...
+
+  And an example of tags:
+  triton instance create --affinity='role!=db'
+
+  See <https://apidocs.joyent.com/cloudapi/#affinity-rules> for more details
+  how affinities work.
+
+  However:
+  * Use of regular expressions requires a cloudapi version of 8.8.0 or later.
+  * 'inst' as a affinity shorthand no longer works. Use 'instance' instead.
+    E.g.: --affinity='instance==db1' instead of --affinity='inst==db1'
+  * The shorthand --affinity=<INST> no longer works. Use
+    --affinity='instance===<INST>' instead.
+
 ## 5.10.0
 
 - [TRITON-19] add support for deletion protection on instances. An instance with
