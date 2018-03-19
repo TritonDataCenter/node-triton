@@ -13,6 +13,13 @@ Known issues:
   `triton instance enable-deletion-protection ...`, and
   `triton instance disable-deletion-protection ...`. This flag is only supported
   on cloudapi versions 8.7.0 or above.
+- [TRITON-59] node-triton should support nic operations
+  `triton instance nic get ...`
+  `triton instance nic create ...`
+  `triton instance nic list ...`
+  `triton instance nic delete ...`
+- [TRITON-42] node-triton should support nics when creating an instance, e.g.
+  `triton instance create --nic <Network Object> IMAGE PACKAGE`
 
 ## 5.9.0
 
