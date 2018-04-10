@@ -6,6 +6,10 @@ Known issues:
 
 ## not yet released
 
+(nothing yet)
+
+## 5.10.0
+
 - [TRITON-19] add support for deletion protection on instances. An instance with
   the deletion protection flag set true cannot be destroyed until the flag is
   set false. It is exposed through
