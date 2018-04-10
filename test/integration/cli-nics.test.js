@@ -52,6 +52,7 @@ test('triton instance nics', OPTS, function (tt) {
             if (h.ifErr(t, err, 'triton instance create'))
                 return t.end();
 
+            t.ok(instId, 'created instance ' + instId);
             INST = instId;
 
             t.end();
@@ -78,6 +79,7 @@ test('triton instance nics', OPTS, function (tt) {
                 return t.end();
 
             NIC = JSON.parse(stdout);
+            t.ok(NIC, 'created NIC: ' + stdout.trim());
 
             t.end();
         });
