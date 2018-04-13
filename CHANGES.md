@@ -17,24 +17,27 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
 - [TRITON-167, TRITON-168] update support for
   `triton instance create --affinity=...`. It now fully supports regular
   expressions, tags and globs, and works across a wider variety of situations.
+  Examples:
 
-  An example of regular expressions:
+  ```
+  # regular expressions
   triton instance create --affinity='instance!=/^production-db/' ...
 
-  An example of globs:
+  # globs
   triton instance create --affinity='instance!=production-db*' ...
 
-  And an example of tags:
+  # tags
   triton instance create --affinity='role!=db'
+  ```
 
   See <https://apidocs.joyent.com/cloudapi/#affinity-rules> for more details
   how affinities work.
 
   However:
-  * Use of regular expressions requires a cloudapi version of 8.8.0 or later.
-  * 'inst' as a affinity shorthand no longer works. Use 'instance' instead.
+  - Use of regular expressions requires a cloudapi version of 8.8.0 or later.
+  - 'inst' as a affinity shorthand no longer works. Use 'instance' instead.
     E.g.: --affinity='instance==db1' instead of --affinity='inst==db1'
-  * The shorthand --affinity=<INST> no longer works. Use
+  - The shorthand --affinity=<INST> no longer works. Use
     --affinity='instance===<INST>' instead.
 
 ## 5.10.0
