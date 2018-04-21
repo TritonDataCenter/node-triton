@@ -6,7 +6,10 @@ Known issues:
 
 ## not yet released
 
-(nothing yet)
+- [joyent/node-triton#245] `triton profile` now generates fresh new keys during
+  Docker setup and signs them with an account key, rather than copying (and
+  decrypting) the account key itself. This makes using Docker simpler with keys
+  in an SSH Agent.
 
 ## 6.0.0
 
