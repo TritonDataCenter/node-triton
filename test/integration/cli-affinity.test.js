@@ -110,7 +110,8 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
     var db2Alias = ALIAS_PREFIX + '-db2';
     var db2;
     tt.test('  triton create -n db2 -a \'instance!=db*\'', function (t) {
-        var argv = ['create', '-wj', '-n', db2Alias, '-a', 'instance!=db*',
+        var argv = ['create', '-wj', '-n', db2Alias, '-a',
+            'instance!=' + ALIAS_PREFIX + '-db*',
             imgId, pkgId];
         h.safeTriton(t, argv, function (err, stdout) {
             var lines = h.jsonStreamParse(stdout);
