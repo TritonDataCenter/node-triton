@@ -27,6 +27,16 @@ Known issues:
   provision from a shared image (or clone the image then provision from the
   clone).
 
+## 6.1.0
+
+- [TRITON-52] x-DC image copy. A user can copy an image that they own into
+  another DC within the same cloud using the `triton image copy` cli
+  command. Example:
+
+  ```
+  triton -p us-east-1 image copy my-custom-image us-sw-1
+  ```
+
 ## 6.0.0
 
 This release containes some breaking changes with the --affinity flag to
