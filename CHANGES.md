@@ -30,7 +30,7 @@ Known issues:
 ## 6.1.0
 
 - [TRITON-52] x-DC image copy. A user can copy an image that they own into
-  another DC within the same cloud using the `triton image copy` cli
+  another datacenter within the same cloud using the `triton image copy` cli
   command. Example:
 
   ```
