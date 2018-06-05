@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright (c) 2018, Joyent, Inc.
  */
 
 /*
@@ -65,8 +65,18 @@ var subs = [
     ['ip'],
     ['ssh'],
     ['network'],
-    ['network list', 'networks'],
+    ['network create'],
+    ['network list', 'network ls', 'networks'],
     ['network get'],
+    ['network get-default'],
+    ['network set-default'],
+    ['network delete', 'network rm'],
+    ['vlan'],
+    ['vlan create'],
+    ['vlan list', 'vlan ls'],
+    ['vlan get'],
+    ['vlan update'],
+    ['vlan delete', 'vlan rm'],
     ['key'],
     ['key add'],
     ['key list', 'key ls', 'keys'],

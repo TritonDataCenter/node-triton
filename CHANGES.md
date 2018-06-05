@@ -6,6 +6,8 @@ Known issues:
 
 ## not yet released
 
+- [TRITON-401] Add `triton network` and `triton vlan` commands, for
+  creating/changing/removing network fabrics and VLANs.
 - [TRITON-524] Add `triton inst get --credentials ...` option to match
   `triton inst list --credentials ...` for including generated credentials
   in instance metadata.

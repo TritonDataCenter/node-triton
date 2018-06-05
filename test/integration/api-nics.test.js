@@ -25,9 +25,9 @@ var NIC;
 
 // --- Tests
 
-test('TritonApi networks', function (tt) {
+test('TritonApi nics', function (tt) {
     tt.test(' setup', function (t) {
-        h.createClient(function (err, client_) {
+        h.createClient(function onCreate(err, client_) {
             t.error(err);
             CLIENT = client_;
             t.end();
@@ -36,9 +36,11 @@ test('TritonApi networks', function (tt) {
 
 
     tt.test(' setup: inst', function (t) {
-        CLIENT.cloudapi.listMachines({}, function (err, vms) {
-            if (vms.length === 0)
-                return t.end();
+        CLIENT.cloudapi.listMachines({}, function onList(err, vms) {
+            if (vms.length === 0) {
+                t.end();
+                return;
+            }
 
             t.ok(Array.isArray(vms), 'vms array');
             INST = vms[0];
@@ -49,13 +51,17 @@ test('TritonApi networks', function (tt) {
 
 
     tt.test(' TritonApi listNics', function (t) {
-        if (!INST)
-            return t.end();
+        if (!INST) {
+            t.end();
+            return;
+        }
 
         function check(val, valName, next) {
-            CLIENT.listNics({id: val}, function (err, nics) {
-                if (h.ifErr(t, err, 'no err ' + valName))
-                    return t.end();
+            CLIENT.listNics({id: val}, function onList(err, nics) {
+                if (h.ifErr(t, err, 'no err ' + valName)) {
+                    t.end();
+                    return;
+                }
 
                 t.ok(Array.isArray(nics), 'nics array');
                 NIC = nics[0];
@@ -66,9 +72,9 @@ test('TritonApi networks', function (tt) {
 
         var shortId = INST.id.split('-')[0];
 
-        check(INST.id, 'id', function () {
-            check(INST.name, 'name', function () {
-                check(shortId, 'shortId', function () {
+        check(INST.id, 'id', function doId() {
+            check(INST.name, 'name', function doName() {
+                check(shortId, 'shortId', function doShort() {
                     t.end();
                 });
             });
@@ -77,13 +83,17 @@ test('TritonApi networks', function (tt) {
 
 
     tt.test(' TritonApi getNic', function (t) {
-        if (!NIC)
-            return t.end();
+        if (!NIC) {
+            t.end();
+            return;
+        }
 
         function check(inst, mac, instValName, next) {
-            CLIENT.getNic({id: inst, mac: mac}, function (err, nic) {
-                if (h.ifErr(t, err, 'no err for ' + instValName))
-                    return t.end();
+            CLIENT.getNic({id: inst, mac: mac}, function onGet(err, nic) {
+                if (h.ifErr(t, err, 'no err for ' + instValName)) {
+                    t.end();
+                    return;
+                }
 
                 t.deepEqual(nic, NIC, instValName);
 
@@ -93,9 +103,9 @@ test('TritonApi networks', function (tt) {
 
         var shortId = INST.id.split('-')[0];
 
-        check(INST.id, NIC.mac, 'id', function () {
-            check(INST.name, NIC.mac, 'name', function () {
-                check(shortId, NIC.mac, 'shortId', function () {
+        check(INST.id, NIC.mac, 'id', function doId() {
+            check(INST.name, NIC.mac, 'name', function doName() {
+                check(shortId, NIC.mac, 'shortId', function doShort() {
                     t.end();
                 });
             });

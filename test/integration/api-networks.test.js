@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016 Joyent, Inc.
+ * Copyright 2018 Joyent, Inc.
  */
 
 /*
@@ -17,6 +17,8 @@ var test = require('tape');
 
 
 // --- Globals
+
+var NET_NAME = 'node-triton-testnet967';
 
 var CLIENT;
 var NET;
@@ -33,11 +35,14 @@ test('TritonApi networks', function (tt) {
         });
     });
 
+    tt.test('  cleanup: rm network ' + NET_NAME + ' if exists', function (t) {
+        CLIENT.deleteFabricNetwork({id: NET_NAME}, function () {
+            t.end();
+        });
+    });
+
     tt.test(' setup: net', function (t) {
-        var opts = {
-            account: CLIENT.profile.account
-        };
-        CLIENT.cloudapi.listNetworks(opts, function (err, nets) {
+        CLIENT.cloudapi.listNetworks({}, function (err, nets) {
             if (h.ifErr(t, err))
                 return t.end();
 
@@ -76,6 +81,61 @@ test('TritonApi networks', function (tt) {
             });
         });
     });
+
+
+    tt.test(' TritonApi deleteFabricNetwork', function (t) {
+        function check(genId, idType, vlanId, cb) {
+            CLIENT.cloudapi.createFabricNetwork({
+                name: NET_NAME,
+                subnet: '192.168.97.0/24',
+                provision_start_ip: '192.168.97.1',
+                provision_end_ip: '192.168.97.254',
+                vlan_id: vlanId
+            }, function onCreate(err, net) {
+                if (h.ifErr(t, err, 'Error creating network')) {
+                    t.end();
+                    return;
+                }
+
+                var id = genId(net);
+                CLIENT.deleteFabricNetwork({id: id}, function onDelete(err2) {
+                    if (h.ifErr(t, err, 'Error deleting net by ' + idType)) {
+                        t.end();
+                        return;
+                    }
+
+                    CLIENT.cloudapi.getNetwork(net.id, function onGet(err3) {
+                        t.ok(err3, 'Network should be gone');
+                        cb();
+                    });
+                });
+            });
+        }
+
+        // get a VLAN, then create and delete a set of fabrics to check it's
+        // possible to delete by id, shortId and name
+        CLIENT.cloudapi.listFabricVlans({}, function onList(err, vlans) {
+            if (vlans.length === 0) {
+                t.end();
+                return;
+            }
+
+            function getId(net) { return net.id; }
+            function getName(net) { return net.name; }
+            function getShort(net) { return net.id.split('-')[0]; }
+
+            var vlanId = +vlans[0].vlan_id;
+
+            check(getId, 'id', vlanId, function onId() {
+                check(getName, 'name', vlanId, function onName() {
+                    check(getShort, 'shortId', vlanId, function onShort() {
+                        t.end();
+                    });
+                });
+            });
+        });
+    });
+
 
 
     tt.test(' teardown: client', function (t) {
