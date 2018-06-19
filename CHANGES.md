@@ -6,6 +6,9 @@ Known issues:
 
 ## not yet released
 
+- [TRITON-524] Add `triton inst get --credentials ...` option to match
+  `triton inst list --credentials ...` for including generated credentials
+  in instance metadata.
 - [joyent/node-triton#245] `triton profile` now generates fresh new keys during
   Docker setup and signs them with an account key, rather than copying (and
   decrypting) the account key itself. This makes using Docker simpler with keys
