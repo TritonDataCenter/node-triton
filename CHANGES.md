@@ -6,6 +6,8 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#250] Avoid an error from `triton profile list` if
+  only *some* of the minimal `TRITON_` or `SDC_` envvars are defined.
 - [TRITON-401] Add `triton network` and `triton vlan` commands, for
   creating/changing/removing network fabrics and VLANs.
 - [TRITON-524] Add `triton inst get --credentials ...` option to match
