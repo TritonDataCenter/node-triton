@@ -6,6 +6,8 @@ Known issues:
 
 ## not yet released
 
+## 6.1.0
+
 - [joyent/node-triton#250] Avoid an error from `triton profile list` if
   only *some* of the minimal `TRITON_` or `SDC_` envvars are defined.
 - [TRITON-401] Add `triton network` and `triton vlan` commands, for
@@ -17,6 +19,13 @@ Known issues:
   Docker setup and signs them with an account key, rather than copying (and
   decrypting) the account key itself. This makes using Docker simpler with keys
   in an SSH Agent.
+- [TRITON-53] x-account image clone. A user can make a copy of a shared image
+  using the `triton image clone` command.
+- [TRITON-53] A shared image (i.e. when the user is on the image.acl) is no
+  longer provisionable by default - you will need to explicitly add the
+  --allow-shared-images cli option when calling `triton create` command to
+  provision from a shared image (or clone the image then provision from the
+  clone).
 
 ## 6.0.0
 
