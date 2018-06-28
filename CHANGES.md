@@ -26,9 +26,6 @@ Known issues:
   --allow-shared-images cli option when calling `triton create` command to
   provision from a shared image (or clone the image then provision from the
   clone).
-
-## 6.1.0
-
 - [TRITON-52] x-DC image copy. A user can copy an image that they own into
   another datacenter within the same cloud using the `triton image copy` cli
   command. Example:
