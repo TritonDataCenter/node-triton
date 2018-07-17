@@ -6,6 +6,11 @@ Known issues:
 
 ## not yet released
 
+## 6.1.1
+
+- [TRITON-598] Fix error handling for `triton network get-default` when
+  no default network is set on the account.
+
 ## 6.1.0
 
 - [joyent/node-triton#250] Avoid an error from `triton profile list` if
