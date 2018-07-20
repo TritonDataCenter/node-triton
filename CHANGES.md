@@ -6,6 +6,11 @@ Known issues:
 
 ## not yet released
 
+## 6.1.2
+
+- [joyent/node-triton#249] Error when creating or deleting profiles when
+  using node v10.
+
 ## 6.1.1
 
 - [TRITON-598] Fix error handling for `triton network get-default` when
