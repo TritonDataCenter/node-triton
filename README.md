@@ -328,7 +328,7 @@ are in "etc/defaults.json" and can be overriden for the CLI in
 | Name | Description |
 | ---- | ----------- |
 | profile | The name of the triton profile to use. The default with the CLI is "env", i.e. take config from `SDC_*` envvars. |
-| cacheDir | The path (relative to the config dir, "~/.triton") where cache data is stored. The default is "cache", i.e. the `triton` CLI caches at "~/.triton/cache". |
+| cacheDir | The path (relative to the config dir, "\~/.triton") where cache data is stored. The default is "cache", i.e. the `triton` CLI caches at "\~/.triton/cache". |
 
 
 ## node-triton differences with node-smartdc
