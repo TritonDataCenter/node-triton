@@ -6,6 +6,12 @@ Known issues:
 
 ## not yet released
 
+## 6.2.0
+
+- [joyent/node-triton#255, joyent/node-triton#257] Improved the interface
+  and documentation of `triton network create` and `triton vlan create`.  In
+  particular, it is now possible to specify static routes and DNS resolvers.
+
 ## 6.1.2
 
 - [joyent/node-triton#249] Error when creating or deleting profiles when
