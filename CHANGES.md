@@ -6,6 +6,15 @@ Known issues:
 
 ## not yet released
 
+## 6.3.0
+
+- [joyent/node-triton#259] Added basic support for use of SSH bastion hosts
+  to access zones on private fabrics.  If the `tritoncli.ssh.proxy` tag is set
+  on an instance, `triton ssh` will look up the name or UUID of the proxy
+  instance and use `ssh -o ProxyJump` to tunnel the connection to the target.
+  If the `tritoncli.ssh.ip` tag is set on an instance, `triton ssh` will use
+  that IP address instead of the `primaryIp` when making its connection.
+
 ## 6.2.0
 
 - [joyent/node-triton#255, joyent/node-triton#257] Improved the interface
