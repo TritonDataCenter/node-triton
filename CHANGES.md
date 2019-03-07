@@ -6,6 +6,19 @@ Known issues:
 
 ## not yet released
 
+(nothing)
+
+## 7.0.0
+
+- [Backward incompatible.] `triton image get NAME|SHORTID` will now *exclude*
+  inactive images by default. Before this change inactive images (e.g. those
+  with a state of "creating" or "unactivated" or "disabled") would be
+  included. Use the new `-a,--all` option to include inactive images. This
+  matches the behavior of `triton image list [-a,--all] ...`.
+
+- [joyent/node-triton#258] `triton instance create IMAGE ...` will now exclude
+  inactive images when looking for an image with the given name.
+
 ## 6.3.0
 
 - [joyent/node-triton#259] Added basic support for use of SSH bastion hosts
