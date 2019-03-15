@@ -6,7 +6,11 @@ Known issues:
 
 ## not yet released
 
-(nothing)
+## 7.0.1
+
+- [TRITON-884] Drop support for Cloud Analytics-related RBAC "resources"
+  for role-tags. Cloud Analytics has been removed from Triton. See
+  [TRITON-884](https://smartos.org/bugview/TRITON-884) for details.
 
 ## 7.0.0
 
