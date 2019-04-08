@@ -1,6 +1,8 @@
 /node_modules
 /tmp
 /test/*.json
+/test-unit.tap
+/test-integration.tap
 /npm-debug.log
 /triton-*.tgz
 *.swp

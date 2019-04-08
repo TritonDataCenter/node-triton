@@ -357,7 +357,7 @@ Also please run the full (longer) test suite (`make test`). See the next
 section.
 
 
-## Test suite
+## Testing
 
 node-triton has both unit tests (`make test-unit`) and integration tests (`make
 test-integration`). Integration tests require a config file, by default at
@@ -378,21 +378,70 @@ just a "profileName" or "profile" is required.
 *Warning:* Running the *integration* tests will create resources and could
 incur costs if running against a public cloud.
 
-Run all tests:
+Usage:
 
-    make test
+    make test-unit [TEST-VARS]          # run unit tests
+    make test-integration [TEST-VARS]   # run integration tests
+    make test [TEST-VARS]               # run both sets
 
-You can use `TRITON_TEST_CONFIG` to override the test file, e.g.:
+Test output is node-tap's default short-form output. Full TAP output is
+written to "test-unit.tap" and "test-integration.tap". You can use `TAP=1`
+to have TAP output emited to stdout.
 
-    $ cat test/coal.json
-    {
-        "profileName": "coal",
-        "allowWriteActions": true
-    }
-    $ TRITON_TEST_CONFIG=test/coal.json make test
+### Test vars
 
-where "coal" here refers to a development Triton (a.k.a SDC) ["Cloud On A
-Laptop"](https://github.com/joyent/sdc#getting-started) standup.
+There are a few `TEST_...` vars that can tweak how the tests are run.
+
+- `TEST_CONFIG=<path to JSON config file>` - By default the integration test
+  suite uses "test/config.json". Use this flag to provide an alternative. This
+  can be useful if you have test configs for a number of separate target DCs.
+  E.g.:
+
+        $ cat test/coal.json
+        {
+            "profileName": "coal",
+            "allowWriteActions": true
+        }
+        $ make test TEST_CONFIG=test/coal.json
+
+  where "coal" here refers to a development Triton (a.k.a SDC) ["Cloud On A
+  Laptop"](https://github.com/joyent/sdc#getting-started) standup.
+
+- `TEST_GLOB=<glob for test file basename>` - By default all "*.test.js"
+  in the "test/unit/" and "test/integration" dirs are run. To run just
+  those with "image" in the name, use `make test TEST_GLOB=*image*`, or
+  to run a specific test file: `make test TEST_GLOB=metadataFromOpts`.
+
+- `TEST_JOBS=<number of test files to run concurrently>` - By default this is
+  10. Set to 1 to run tests serially.
+
+- `TEST_TIMEOUT_S=<number of seconds timeout for each test file>` - By default
+  this is 1200 (10 minutes). Ideally tests are written to take much less than
+  10 minutes.
+
+- `TAP=1` to have the test suite emit TAP output. This is a node-tap envvar.
+
+
+### Testing Development Guide
+
+- Unit tests (i.e. not requiring the cloudapi endpoint) in "unit/\*.test.js".
+  Integration tests "integration/\*.test.js".
+
+- We are using node-tap. Read [RFD
+  139](https://github.com/joyent/rfd/blob/master/rfd/0139/README.md#guidelines-for-using-node-tap-in-triton-repos)
+  for some guidelines for node-tap usage. The more common we can make some
+  basic usage patterns in the many Triton repos, the easier the maintenance.
+
+- Use "test/lib/\*.js" and "test/{unit,integration}/helpers.js" to help make
+  ".test.js" code more expressive. Avoid excessive parameterization, however.
+  Some cut 'n paste of boilerplate is fine if it makes an individual test
+  clearer and easier to debug and maintain.
+
+- Node-tap supports running test files in parallel, and `make test` by
+  default runs tests in parallel. Therefore:
+    - Ensure that test files do not depend on each other and can run
+      concurrently.
+    - Prefer more and smaller and more targetted test files.
 
 
 ## Release process

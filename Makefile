@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015, Joyent, Inc.
+# Copyright 2019 Joyent, Inc.
 #
 # Makefile for node-triton
 #
@@ -14,6 +14,10 @@ JSL_FILES_NODE	 = $(JS_FILES)
 JSSTYLE_FILES	 = $(JS_FILES)
 JSSTYLE_FLAGS	 = -f tools/jsstyle.conf
 CLEAN_FILES += ./node_modules
+TAP_EXEC = ./node_modules/.bin/tap
+TEST_JOBS ?= 10
+TEST_TIMEOUT_S ?= 1200
+TEST_GLOB ?= *
 
 include ./tools/mk/Makefile.defs
 
@@ -29,17 +33,13 @@ test: test-unit test-integration
 
 .PHONY: test-unit
 test-unit:
-	NODE_NDEBUG= ./node_modules/.bin/tape test/unit/*.test.js
+	NODE_NDEBUG= $(TAP_EXEC) --timeout $(TEST_TIMEOUT_S) -j $(TEST_JOBS) \
+		-o ./test-unit.tap test/unit/$(TEST_GLOB).test.js
 
 .PHONY: test-integration
 test-integration:
-	NODE_NDEBUG= ./node_modules/.bin/tape test/integration/*.test.js
-
-.PHONY: test-in-parallel
-test-in-parallel:
-	ls test/unit/*.test.js test/integration/*.test.js \
-	    | parallel ./node_modules/.bin/tape \
-	    | ./node_modules/.bin/tap-summary --no-ansi --no-progress
+	NODE_NDEBUG= $(TAP_EXEC) --timeout $(TEST_TIMEOUT_S) -j $(TEST_JOBS) \
+		-o ./test-integration.tap test/integration/$(TEST_GLOB).test.js
 
 .PHONY: clean
 clean::

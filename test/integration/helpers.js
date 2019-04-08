@@ -26,8 +26,10 @@ var testcommon = require('../lib/testcommon');
 
 
 var CONFIG;
-var configPath = process.env.TRITON_TEST_CONFIG
-        ? path.resolve(process.cwd(), process.env.TRITON_TEST_CONFIG)
+// The `TRITON_TEST_CONFIG` var is deprecated, but supported for a while.
+var TEST_CONFIG = (process.env.TEST_CONFIG || process.env.TRITON_TEST_CONFIG);
+var configPath = TEST_CONFIG
+        ? path.resolve(process.cwd(), TEST_CONFIG)
         : path.resolve(__dirname, '..', 'config.json');
 try {
     CONFIG = require(configPath);
@@ -57,9 +59,9 @@ try {
     error('* * *');
     error('node-triton integration tests require a config file. By default');
     error('it looks for "test/config.json". Or you can set the');
-    error('TRITON_TEST_CONFIG envvar. E.g.:');
+    error('TEST_CONFIG envvar. E.g.:');
     error('');
-    error('    TRITON_TEST_CONFIG=test/coal.json make test');
+    error('    make test TEST_CONFIG=test/coal.json');
     error('');
     error('See "test/config.json.sample" for a starting point for a config.');
     error('');

@@ -6,6 +6,11 @@ Known issues:
 
 ## not yet released
 
+## 7.0.2
+
+- [TRITON-1347] Changing to node-tap as the test runner. Also some
+  improvements to the testing docs.
+
 ## 7.0.1
 
 - [TRITON-884] Drop support for Cloud Analytics-related RBAC "resources"

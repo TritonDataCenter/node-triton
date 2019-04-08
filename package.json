@@ -1,7 +1,7 @@
 {
   "name": "triton",
   "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "author": "Joyent (joyent.com)",
   "homepage": "https://github.com/joyent/node-triton",
   "dependencies": {
@@ -32,8 +32,8 @@
     "wordwrap": "1.0.0"
   },
   "devDependencies": {
+    "tap": "11.1.5",
     "tape": "4.2.0",
-    "tap-summary": "3.0.2",
     "uuid": "3.2.1"
   },
   "main": "./lib",
