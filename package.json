@@ -32,8 +32,7 @@
     "wordwrap": "1.0.0"
   },
   "devDependencies": {
-    "tap": "11.1.5",
-    "tape": "4.2.0",
+    "tap": "12.6.1",
     "uuid": "3.2.1"
   },
   "main": "./lib",

@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -15,7 +15,7 @@
 var assert = require('assert-plus');
 var cmdln = require('cmdln');
 var format = require('util').format;
-var test = require('tape');
+var test = require('tap').test;
 
 var metadataFromOpts = require('../../lib/metadataandtags').metadataFromOpts;
 
@@ -174,10 +174,10 @@ var cases = [
 
 // ---- test driver
 
-test('metadataFromOpts', function (tt) {
+test('metadataFromOpts', function (suite) {
     cases.forEach(function (c, num) {
         var testName = format('case %d: %s', num, c.argv.join(' '));
-        tt.test(testName, function (t) {
+        suite.test(testName, function (t) {
             debug('--', num);
             debug('c: %j', c);
             var parser = new cmdln.dashdash.Parser({options: OPTIONS});
@@ -227,4 +227,6 @@ test('metadataFromOpts', function (tt) {
             });
         });
     });
+
+    suite.end();
 });

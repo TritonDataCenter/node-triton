@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 var common = require('../../lib/common');
 
@@ -25,10 +25,10 @@ var common = require('../../lib/common');
 
 // --- Tests
 
-test('TritonApi images', function (tt) {
+test('TritonApi images', function (suite) {
 
     var client;
-    tt.test(' setup: client', function (t) {
+    suite.test(' setup: client', function (t) {
         h.createClient(function (err, client_) {
             t.error(err);
             client = client_;
@@ -38,7 +38,7 @@ test('TritonApi images', function (tt) {
 
     var testOpts = {};
     var img;
-    tt.test(' TritonApi listImages', function (t) {
+    suite.test(' TritonApi listImages', function (t) {
         client.listImages(function (err, images) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -57,7 +57,7 @@ test('TritonApi images', function (tt) {
         });
     });
 
-    tt.test(' TritonApi getImage by uuid', testOpts, function (t) {
+    suite.test(' TritonApi getImage by uuid', testOpts, function (t) {
         client.getImage(img.id, function (err, image) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -66,7 +66,7 @@ test('TritonApi images', function (tt) {
         });
     });
 
-    tt.test(' TritonApi getImage by name', testOpts, function (t) {
+    suite.test(' TritonApi getImage by name', testOpts, function (t) {
         client.getImage(img.name, function (err, image) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -75,7 +75,7 @@ test('TritonApi images', function (tt) {
         });
     });
 
-    tt.test(' TritonApi getImage by name (opts)', testOpts, function (t) {
+    suite.test(' TritonApi getImage by name (opts)', testOpts, function (t) {
         client.getImage({name: img.name}, function (err, image) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -84,7 +84,7 @@ test('TritonApi images', function (tt) {
         });
     });
 
-    tt.test(' TritonApi getImage by shortId', testOpts, function (t) {
+    suite.test(' TritonApi getImage by shortId', testOpts, function (t) {
         var shortId = img.id.split('-')[0];
         client.getImage(shortId, function (err, image) {
             if (h.ifErr(t, err))
@@ -94,8 +94,10 @@ test('TritonApi images', function (tt) {
         });
     });
 
-    tt.test(' teardown: client', function (t) {
+    suite.test(' teardown: client', function (t) {
         client.close();
         t.end();
     });
+
+    suite.end();
 });

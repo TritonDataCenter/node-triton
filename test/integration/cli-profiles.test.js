@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -16,7 +16,7 @@ var fs = require('fs');
 var path = require('path');
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 var PROFILE_FILE = path.join(__dirname, 'test-profile.json');
 var PROFILE_DATA = JSON.parse(fs.readFileSync(PROFILE_FILE, 'utf8'));
@@ -33,8 +33,8 @@ if (opts.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 
-test('triton profiles (read only)', function (tt) {
-    tt.test('  triton profile get env', function (t) {
+test('triton profiles (read only)', function (suite) {
+    suite.test('  triton profile get env', function (t) {
         h.safeTriton(t, {json: true, args: ['profile', 'get', '-j', 'env']},
             function (err, p) {
 
@@ -49,11 +49,11 @@ test('triton profiles (read only)', function (tt) {
         });
     });
 
-    tt.end();
+    suite.end();
 });
 
-test('triton profiles (read/write)', opts, function (tt) {
-    tt.test('  triton profile create', function (t) {
+test('triton profiles (read/write)', opts, function (suite) {
+    suite.test('  triton profile create', function (t) {
         /*
          * We need to skip the Docker setup with '--no-docker' because we are
          * using a bogus keyId and CloudAPI url. The Docker setup requires real
@@ -68,7 +68,7 @@ test('triton profiles (read/write)', opts, function (tt) {
         });
     });
 
-    tt.test('  triton profile get', function (t) {
+    suite.test('  triton profile get', function (t) {
         h.safeTriton(t,
             {json: true, args: ['profile', 'get', '-j', PROFILE_DATA.name]},
             function (err, p) {
@@ -78,7 +78,7 @@ test('triton profiles (read/write)', opts, function (tt) {
         });
     });
 
-    tt.test('  triton profile delete', function (t) {
+    suite.test('  triton profile delete', function (t) {
         h.safeTriton(t, ['profile', 'delete', '-f', PROFILE_DATA.name],
             function (err, stdout) {
 
@@ -87,5 +87,5 @@ test('triton profiles (read/write)', opts, function (tt) {
         });
     });
 
-    tt.end();
+    suite.end();
 });

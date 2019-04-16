@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2017, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -14,7 +14,7 @@
 
 var format = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 var vasync = require('vasync');
 
 var common = require('../../lib/common');
@@ -31,18 +31,18 @@ if (testOpts.skip) {
         + 'in test config to enable');
 }
 
-test('triton volume create ...', testOpts, function (tt) {
+test('triton volume create ...', testOpts, function (suite) {
     var currentVolume;
     var validVolumeName =
             h.makeResourceName('node-triton-test-volume-create-default');
 
-    tt.comment('Test config:');
+    suite.comment('Test config:');
     Object.keys(h.CONFIG).forEach(function (key) {
         var value = h.CONFIG[key];
-        tt.comment(format('- %s: %j', key, value));
+        suite.comment(format('- %s: %j', key, value));
     });
 
-    tt.test('  cleanup leftover resources', function (t) {
+    suite.test('  cleanup leftover resources', function (t) {
         h.triton(['volume', 'delete', '-y', '-w', validVolumeName].join(' '),
             function onDelVolume(delVolErr, stdout, stderr) {
                 // If there was nothing to delete, this will fail so that's the
@@ -51,7 +51,7 @@ test('triton volume create ...', testOpts, function (tt) {
             });
     });
 
-    tt.test('  triton volume create with invalid name', function (t) {
+    suite.test('  triton volume create with invalid name', function (t) {
         var invalidVolumeName =
             h.makeResourceName('node-triton-test-volume-create-invalid-name-' +
                 '!foo!');
@@ -72,7 +72,7 @@ test('triton volume create ...', testOpts, function (tt) {
         });
     });
 
-    tt.test('  triton volume create with invalid size', function (t) {
+    suite.test('  triton volume create with invalid size', function (t) {
         var invalidSize = 'foobar';
         var expectedErrMsg = 'triton volume create: error: size "' +
             invalidSize + '" is not a valid volume size';
@@ -93,7 +93,7 @@ test('triton volume create ...', testOpts, function (tt) {
         });
     });
 
-    tt.test('  triton volume create with invalid type', function (t) {
+    suite.test('  triton volume create with invalid type', function (t) {
         var invalidType = 'foobar';
         var volumeName =
             h.makeResourceName('node-triton-test-volume-create-invalid-type');
@@ -114,7 +114,7 @@ test('triton volume create ...', testOpts, function (tt) {
         });
     });
 
-    tt.test('  triton volume create with invalid network', function (t) {
+    suite.test('  triton volume create with invalid network', function (t) {
         var volumeName =
             h.makeResourceName('node-triton-test-volume-create-invalid-' +
                 'network');
@@ -137,7 +137,7 @@ test('triton volume create ...', testOpts, function (tt) {
         });
     });
 
-    tt.test('  triton volume create valid volume', function (t) {
+    suite.test('  triton volume create valid volume', function (t) {
         h.triton([
             'volume',
             'create',
@@ -151,7 +151,7 @@ test('triton volume create ...', testOpts, function (tt) {
         });
     });
 
-    tt.test('  check volume was created', function (t) {
+    suite.test('  check volume was created', function (t) {
         h.safeTriton(t, ['volume', 'get', validVolumeName],
             function onGetVolume(getVolErr, stdout) {
                 t.equal(getVolErr, null,
@@ -160,7 +160,7 @@ test('triton volume create ...', testOpts, function (tt) {
             });
     });
 
-    tt.test('  delete volume', function (t) {
+    suite.test('  delete volume', function (t) {
         h.triton(['volume', 'delete', '-y', '-w', validVolumeName].join(' '),
             function onDelVolume(delVolErr, stdout, stderr) {
                 t.equal(delVolErr, null,
@@ -169,7 +169,7 @@ test('triton volume create ...', testOpts, function (tt) {
             });
     });
 
-    tt.test('  check volume was deleted', function (t) {
+    suite.test('  check volume was deleted', function (t) {
         h.triton(['volume', 'get', validVolumeName].join(' '),
             function onGetVolume(getVolErr, stdout, stderr) {
                 t.ok(getVolErr,
@@ -184,7 +184,7 @@ test('triton volume create ...', testOpts, function (tt) {
     // Test that we can create a volume with a valid fabric network and the
     // volume ends up on that network.
 
-    tt.test('  find fabric network', function (t) {
+    suite.test('  find fabric network', function (t) {
         h.triton(['network', 'list', '-j'].join(' '),
             function onGetNetworks(getNetworksErr, stdout, stderr) {
                 var resultsObj;
@@ -212,7 +212,7 @@ test('triton volume create ...', testOpts, function (tt) {
             });
     });
 
-    tt.test('  triton volume on fabric network', function (t) {
+    suite.test('  triton volume on fabric network', function (t) {
         h.triton([
             'volume',
             'create',
@@ -231,7 +231,7 @@ test('triton volume create ...', testOpts, function (tt) {
         });
     });
 
-    tt.test('  check volume was created', function (t) {
+    suite.test('  check volume was created', function (t) {
         h.safeTriton(t, ['volume', 'get', currentVolume.name],
             function onGetVolume(getVolErr, stdout) {
                 var volumeObj;
@@ -246,7 +246,7 @@ test('triton volume create ...', testOpts, function (tt) {
             });
     });
 
-    tt.test('  delete volume', function (t) {
+    suite.test('  delete volume', function (t) {
         h.triton(['volume', 'delete', '-y', '-w', currentVolume.name].join(' '),
             function onDelVolume(delVolErr, stdout, stderr) {
                 t.ifError(delVolErr, 'deleting volume should succeed');
@@ -254,4 +254,5 @@ test('triton volume create ...', testOpts, function (tt) {
             });
     });
 
+    suite.end();
 });

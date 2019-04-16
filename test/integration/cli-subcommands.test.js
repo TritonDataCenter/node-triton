@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2018, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -15,7 +15,7 @@
 var f = require('util').format;
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 var common = require('../../lib/common');
 
@@ -123,11 +123,11 @@ var subs = [
 
 // --- Tests
 
-test('triton subcommands', function (ttt) {
+test('triton subcommands', function (subcommandsSuite) {
 
     // loop each sub command group
     subs.forEach(function (subcmds) {
-        ttt.test(f('  [%s]', subcmds), function (tt) {
+        subcommandsSuite.test(f('  [%s]', subcmds), function (suite) {
             var out = [];
 
             // loop each individual subcommand to test
@@ -137,7 +137,8 @@ test('triton subcommands', function (ttt) {
                 var helpArgs = subcmd.split(' ');
                 helpArgs.splice(helpArgs.length - 1, 0, 'help');
 
-                tt.test(f('    triton %s', helpArgs.join(' ')), function (t) {
+                suite.test(f('    triton %s', helpArgs.join(' ')),
+                function (t) {
                     h.triton(helpArgs, function (err, stdout, stderr) {
                         if (h.ifErr(t, err, 'no error'))
                             return t.end();
@@ -150,7 +151,8 @@ test('triton subcommands', function (ttt) {
 
                 var flagArgs = subcmd.split(' ').concat('-h');
 
-                tt.test(f('    triton %s', flagArgs.join(' ')), function (t) {
+                suite.test(f('    triton %s', flagArgs.join(' ')),
+                function (t) {
                     h.triton(flagArgs, function (err, stdout, stderr) {
                         if (h.ifErr(t, err, 'no error'))
                             return t.end();
@@ -164,11 +166,11 @@ test('triton subcommands', function (ttt) {
 
             // ensure all stdout output is the same
             out.forEach(function (stdout) {
-                tt.equal(stdout, out[0], 'stdout mismatch');
+                suite.equal(stdout, out[0], 'stdout mismatch');
             });
-            tt.end();
+            suite.end();
         });
     });
 
-    ttt.end();
+    subcommandsSuite.end();
 });

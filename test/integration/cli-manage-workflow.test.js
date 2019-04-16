@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -14,7 +14,7 @@
 
 var f = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 var vasync = require('vasync');
 
 var common = require('../../lib/common');
@@ -40,10 +40,11 @@ if (opts.skip) {
     console.error('** skipping %s tests', __filename);
     console.error('** set "allowWriteActions" in test config to enable');
 }
-test('triton manage workflow', opts, function (tt) {
-    h.printConfig(tt);
+test('triton manage workflow', opts, function (suite) {
+    h.printConfig(suite);
 
-    tt.test('  cleanup existing inst with alias ' + INST_ALIAS, function (t) {
+    suite.test('  cleanup existing inst with alias ' + INST_ALIAS,
+    function (t) {
         h.deleteTestInst(t, INST_ALIAS, function (err) {
             t.ifErr(err);
             t.end();
@@ -51,7 +52,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     var imgId;
-    tt.test('  setup: find test image', function (t) {
+    suite.test('  setup: find test image', function (t) {
         h.getTestImg(t, function (err, imgId_) {
             t.ifError(err, 'getTestImg' + (err ? ': ' + err : ''));
             imgId = imgId_;
@@ -60,7 +61,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     var pkgId;
-    tt.test('  setup: find test package', function (t) {
+    suite.test('  setup: find test package', function (t) {
         h.getTestPkg(t, function (err, pkgId_) {
             t.ifError(err, 'getTestPkg' + (err ? ': ' + err : ''));
             pkgId = pkgId_;
@@ -69,7 +70,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     var resizePkgName;
-    tt.test('  setup: find resize test package', function (t) {
+    suite.test('  setup: find resize test package', function (t) {
         h.getResizeTestPkg(t, function (err, pkgName_) {
             t.ifError(err, 'getResizeTestPkg' + (err ? ': ' + err : ''));
             resizePkgName = pkgName_;
@@ -78,7 +79,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // create a test machine (blocking) and output JSON
-    tt.test('  setup: triton create', function (t) {
+    suite.test('  setup: triton create', function (t) {
         var argv = [
             'create',
             '-wj',
@@ -103,7 +104,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // test `triton instance -j` with the UUID, the alias, and the short ID
-    tt.test('  triton instance get', function (t) {
+    suite.test('  triton instance get', function (t) {
         var uuid = instance.id;
         var shortId = common.uuidToShortId(uuid);
         vasync.parallel({
@@ -144,14 +145,14 @@ test('triton manage workflow', opts, function (tt) {
     // Remove instance. Add a test timeout, because '-w' on delete doesn't
     // have a way to know if the attempt failed or if it is just taking a
     // really long time.
-    tt.test('  triton delete', {timeout: 10 * 60 * 1000}, function (t) {
+    suite.test('  triton delete', {timeout: 10 * 60 * 1000}, function (t) {
         h.safeTriton(t, ['delete', '-w', instance.id], function () {
             t.end();
         });
     });
 
     // Test the '410 Gone' handling from CloudAPI GetMachine.
-    tt.test('  triton inst get (deleted)', function (t) {
+    suite.test('  triton inst get (deleted)', function (t) {
         h.triton(['inst', 'get', instance.id], function (err, stdout, stderr) {
             t.ok(err, 'got err: ' + err);
             t.equal(err.code, 3, 'exit status of 3');
@@ -169,7 +170,7 @@ test('triton manage workflow', opts, function (tt) {
     //      verify the user-script worked.
 
     // create a test machine (non-blocking)
-    tt.test('  triton create', function (t) {
+    suite.test('  triton create', function (t) {
         h.safeTriton(t, ['create', '-jn', INST_ALIAS, imgId, pkgId],
             function (err, stdout) {
 
@@ -192,7 +193,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // wait for the machine to start
-    tt.test('  triton inst wait', function (t) {
+    suite.test('  triton inst wait', function (t) {
         h.safeTriton(t, ['inst', 'wait', instance.id],
             function (err, stdout) {
 
@@ -210,7 +211,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // stop the machine
-    tt.test('  triton stop', function (t) {
+    suite.test('  triton stop', function (t) {
         h.safeTriton(t, ['stop', '-w', INST_ALIAS], function (err, stdout) {
             t.ok(stdout.match(/^Stop instance/, 'correct stdout'));
             t.end();
@@ -218,7 +219,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // wait for the machine to stop
-    tt.test('  triton confirm stopped', function (t) {
+    suite.test('  triton confirm stopped', function (t) {
         h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
                 function (err, d) {
             instance = d;
@@ -228,14 +229,14 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // start the machine
-    tt.test('  triton start', function (t) {
+    suite.test('  triton start', function (t) {
         h.safeTriton(t, ['start', '-w', INST_ALIAS],
                 function (err, stdout) {
             t.ok(stdout.match(/^Start instance/, 'correct stdout'));
             t.end();
         });
     });
-    tt.test('  confirm running', function (t) {
+    suite.test('  confirm running', function (t) {
         h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
                 function (err, d) {
             instance = d;
@@ -245,7 +246,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // reboot the machine
-    tt.test('  triton reboot', function (t) {
+    suite.test('  triton reboot', function (t) {
         h.safeTriton(t, ['reboot', '-w', INST_ALIAS],
                 function (err, stdout) {
             t.ok(stdout.match(/^Rebooting instance/),
@@ -255,7 +256,7 @@ test('triton manage workflow', opts, function (tt) {
             t.end();
         });
     });
-    tt.test('  confirm running', function (t) {
+    suite.test('  confirm running', function (t) {
         h.safeTriton(t, {json: true, args: ['inst', 'get', '-j', INST_ALIAS]},
                 function (err, d) {
             instance = d;
@@ -265,7 +266,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // resize the instance
-    tt.test('  triton inst resize', function (t) {
+    suite.test('  triton inst resize', function (t) {
         var args = ['inst', 'resize', '-w', instance.id, resizePkgName];
         h.safeTriton(t, args, function (err, stdout) {
             t.ok(stdout.match(/^Resizing instance/m),
@@ -276,7 +277,7 @@ test('triton manage workflow', opts, function (tt) {
         });
     });
 
-    tt.test('  confirm resized', function (t) {
+    suite.test('  confirm resized', function (t) {
         h.safeTriton(t, {json: true, args: ['inst', 'get', '-j',
               INST_ALIAS]},
           function (err, inst) {
@@ -286,7 +287,7 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // rename the instance
-    tt.test('  triton inst rename', function (t) {
+    suite.test('  triton inst rename', function (t) {
         var args = ['inst', 'rename', '-w', instance.id, INST_ALIAS_NEWNAME];
         h.safeTriton(t, args, function (err, stdout) {
             t.ok(stdout.match(/^Renaming instance/m),
@@ -297,7 +298,7 @@ test('triton manage workflow', opts, function (tt) {
         });
     });
 
-    tt.test('  confirm renamed', function (t) {
+    suite.test('  confirm renamed', function (t) {
         h.safeTriton(t, {json: true, args: ['inst', 'get', '-j',
             INST_ALIAS_NEWNAME]},
                 function (err, inst) {
@@ -307,10 +308,11 @@ test('triton manage workflow', opts, function (tt) {
     });
 
     // remove test instance
-    tt.test('  cleanup (triton delete)', function (t) {
+    suite.test('  cleanup (triton delete)', function (t) {
         h.safeTriton(t, ['delete', '-w', instance.id], function () {
             t.end();
         });
     });
 
+    suite.end();
 });

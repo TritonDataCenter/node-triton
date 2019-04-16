@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2018, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -15,7 +15,7 @@
 var h = require('./helpers');
 var f = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 
 // --- Globals
 
@@ -37,17 +37,18 @@ if (OPTS.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 
-test('triton instance nics', OPTS, function (tt) {
-    h.printConfig(tt);
+test('triton instance nics', OPTS, function (suite) {
+    h.printConfig(suite);
 
-    tt.test('  cleanup existing inst with alias ' + INST_ALIAS, function (t) {
+    suite.test('  cleanup existing inst with alias ' + INST_ALIAS,
+    function (t) {
         h.deleteTestInst(t, INST_ALIAS, function onDelete(err) {
             t.ifErr(err);
             t.end();
         });
     });
 
-    tt.test('  setup: triton instance create', function (t) {
+    suite.test('  setup: triton instance create', function (t) {
         h.createTestInst(t, INST_ALIAS, {}, function onInst(err, instId) {
             if (h.ifErr(t, err, 'triton instance create')) {
                 t.end();
@@ -61,7 +62,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  setup: find network for tests', function (t) {
+    suite.test('  setup: find network for tests', function (t) {
         h.triton('network list -j', function onNetworks(err, stdout) {
             if (h.ifErr(t, err, 'triton network list')) {
                 t.end();
@@ -75,7 +76,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance nic create', function (t) {
+    suite.test('  triton instance nic create', function (t) {
         var cmd = 'instance nic create -j -w ' + INST + ' ' + NETWORK.id;
 
         h.triton(cmd, function onTriton(err, stdout, stderr) {
@@ -91,7 +92,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance nic get', function (t) {
+    suite.test('  triton instance nic get', function (t) {
         var cmd = 'instance nic get ' + INST + ' ' + NIC.mac;
 
         h.triton(cmd, function onTriton(err, stdout, stderr) {
@@ -109,7 +110,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance nic list', function (t) {
+    suite.test('  triton instance nic list', function (t) {
         var cmd = 'instance nic list ' + INST;
 
         h.triton(cmd, function onTriton(err, stdout, stderr) {
@@ -135,7 +136,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance nic list -j', function (t) {
+    suite.test('  triton instance nic list -j', function (t) {
         var cmd = 'instance nic list -j ' + INST;
 
         h.triton(cmd, function onTriton(err, stdout, stderr) {
@@ -160,7 +161,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton instance nic list mac=<...>', function (t) {
+    suite.test(' triton instance nic list mac=<...>', function (t) {
         var cmd = 'instance nic list -j ' + INST + ' mac=' + NIC.mac;
         h.triton(cmd, function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
@@ -180,7 +181,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton nic list mac=<...>', function (t) {
+    suite.test(' triton nic list mac=<...>', function (t) {
         var cmd = 'instance nic list -j ' + INST + ' mac=' + NIC.mac;
 
         h.triton(cmd, function doTriton(err, stdout, stderr) {
@@ -201,7 +202,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance nic delete', function (t) {
+    suite.test('  triton instance nic delete', function (t) {
         var cmd = 'instance nic delete --force ' + INST + ' ' + NIC.mac;
 
         h.triton(cmd, function doTriton(err, stdout, stderr) {
@@ -216,7 +217,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance nic create (with NICOPTS)', function (t) {
+    suite.test('  triton instance nic create (with NICOPTS)', function (t) {
         var cmd = 'instance nic create -j -w ' + INST + ' ipv4_uuid=' +
             NETWORK.id;
 
@@ -232,7 +233,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance nic with ip get', function (t) {
+    suite.test('  triton instance nic with ip get', function (t) {
         var cmd = 'instance nic get ' + INST + ' ' + NIC2.mac;
 
         h.triton(cmd, function onTriton(err, stdout, stderr) {
@@ -250,7 +251,7 @@ test('triton instance nics', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance nic with ip delete', function (t) {
+    suite.test('  triton instance nic with ip delete', function (t) {
         var cmd = 'instance nic delete --force ' + INST + ' ' + NIC2.mac;
 
         h.triton(cmd, function onTriton(err, stdout, stderr) {
@@ -269,10 +270,12 @@ test('triton instance nics', OPTS, function (tt) {
      * Use a timeout, because '-w' on delete doesn't have a way to know if the
      * attempt failed or if it is just taking a really long time.
      */
-    tt.test('  cleanup: triton instance rm INST', {timeout: 10 * 60 * 1000},
+    suite.test('  cleanup: triton instance rm INST', {timeout: 10 * 60 * 1000},
             function (t) {
         h.deleteTestInst(t, INST_ALIAS, function () {
             t.end();
         });
     });
+
+    suite.end();
 });

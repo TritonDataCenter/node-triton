@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -18,7 +18,7 @@
 
 var format = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 var vasync = require('vasync');
 
 var common = require('../../lib/common');
@@ -36,12 +36,13 @@ var testOpts = {
 
 // --- Tests
 
-test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
-    tt.comment('Add \'"skipAffinityTests":true\' to test/config.json if ' +
+test('affinity (triton create -a RULE ...)', testOpts, function (suite) {
+    suite.comment('Add \'"skipAffinityTests":true\' to test/config.json if ' +
         'this target DC does not have multiple provisionable CNs (e.g. COAL).');
 
     // TODO: `triton rm -f` would be helpful for this
-    tt.test('  setup: rm existing insts ' + ALIAS_PREFIX + '*', function (t) {
+    suite.test('  setup: rm existing insts ' + ALIAS_PREFIX + '*',
+    function (t) {
         // Cheat and use the current SNAFU behaviour that 'name=foo' matches
         // all VMs *prefixed* with "foo".
         h.safeTriton(t, ['inst', 'list', '-j', 'name='+ALIAS_PREFIX],
@@ -61,7 +62,7 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
     });
 
     var imgId;
-    tt.test('  setup: find test image', function (t) {
+    suite.test('  setup: find test image', function (t) {
         h.getTestImg(t, function (err, imgId_) {
             t.ifError(err, 'getTestImg' + (err ? ': ' + err : ''));
             imgId = imgId_;
@@ -70,7 +71,7 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
     });
 
     var pkgId;
-    tt.test('  setup: find test package', function (t) {
+    suite.test('  setup: find test package', function (t) {
         h.getTestPkg(t, function (err, pkgId_) {
             t.ifError(err, 'getTestPkg' + (err ? ': ' + err : ''));
             pkgId = pkgId_;
@@ -80,7 +81,7 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
 
     var db0Alias = ALIAS_PREFIX + '-db0';
     var db0;
-    tt.test('  setup: triton create -n db0', function (t) {
+    suite.test('  setup: triton create -n db0', function (t) {
         var argv = ['create', '-wj', '-n', db0Alias, '-t', 'role=database',
             imgId, pkgId];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -93,7 +94,7 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
     // Test db1 being put on same server as db0.
     var db1Alias = ALIAS_PREFIX + '-db1';
     var db1;
-    tt.test('  triton create -n db1 -a instance==db0', function (t) {
+    suite.test('  triton create -n db1 -a instance==db0', function (t) {
         var argv = ['create', '-wj', '-n', db1Alias, '-a',
             'instance==' + db0Alias, imgId, pkgId];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -109,7 +110,7 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
     // Test db2 being put on a server without a db.
     var db2Alias = ALIAS_PREFIX + '-db2';
     var db2;
-    tt.test('  triton create -n db2 -a \'instance!=db*\'', function (t) {
+    suite.test('  triton create -n db2 -a \'instance!=db*\'', function (t) {
         var argv = ['create', '-wj', '-n', db2Alias, '-a',
             'instance!=' + ALIAS_PREFIX + '-db*',
             imgId, pkgId];
@@ -127,7 +128,7 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
     // Test db3 being put on server *other* than db0.
     var db3Alias = ALIAS_PREFIX + '-db3';
     var db3;
-    tt.test('  triton create -n db3 -a \'instance!=db0\'', function (t) {
+    suite.test('  triton create -n db3 -a \'instance!=db0\'', function (t) {
         var argv = ['create', '-wj', '-n', db3Alias, '-a',
             'instance!='+db0Alias, imgId, pkgId];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -143,7 +144,7 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
     // Test db4 being put on server *other* than db0 (due ot db0's tag).
     var db4Alias = ALIAS_PREFIX + '-db4';
     var db4;
-    tt.test('  triton create -n db4 -a \'role!=database\'', function (t) {
+    suite.test('  triton create -n db4 -a \'role!=database\'', function (t) {
         var argv = ['create', '-wj', '-n', db4Alias, '-a', 'role!=database',
             imgId, pkgId];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -159,10 +160,12 @@ test('affinity (triton create -a RULE ...)', testOpts, function (tt) {
     // Remove instances. Add a test timeout, because '-w' on delete doesn't
     // have a way to know if the attempt failed or if it is just taking a
     // really long time.
-    tt.test('  cleanup: triton rm', {timeout: 10 * 60 * 1000}, function (t) {
+    suite.test('  cleanup: triton rm', {timeout: 10 * 60 * 1000}, function (t) {
         h.safeTriton(t, ['rm', '-w', db0.id, db1.id, db2.id, db3.id, db4.id],
         function () {
             t.end();
         });
     });
+
+    suite.end();
 });

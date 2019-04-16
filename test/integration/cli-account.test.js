@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -14,7 +14,7 @@
 
 var h = require('./helpers');
 var format = require('util').format;
-var test = require('tape');
+var test = require('tap').test;
 
 
 
@@ -27,9 +27,9 @@ var writeTestOpts = {
 
 // --- Tests
 
-test('triton account', function (tt) {
+test('triton account', function (suite) {
 
-    tt.test(' triton account -h', function (t) {
+    suite.test(' triton account -h', function (t) {
         h.triton('account -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -38,7 +38,7 @@ test('triton account', function (tt) {
         });
     });
 
-    tt.test(' triton help account', function (t) {
+    suite.test(' triton help account', function (t) {
         h.triton('help account', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -47,7 +47,7 @@ test('triton account', function (tt) {
         });
     });
 
-    tt.test(' triton account get', function (t) {
+    suite.test(' triton account get', function (t) {
         h.triton('-v account get', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -58,7 +58,7 @@ test('triton account', function (tt) {
     });
 
     var account;
-    tt.test(' triton account get -j', function (t) {
+    suite.test(' triton account get -j', function (t) {
         h.triton('account get -j', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -68,14 +68,14 @@ test('triton account', function (tt) {
         });
     });
 
-    tt.test(' triton account update foo=bar', writeTestOpts, function (t) {
+    suite.test(' triton account update foo=bar', writeTestOpts, function (t) {
         h.triton('account update foo=bar', function (err, stdout, stderr) {
             t.ok(err);
             t.end();
         });
     });
 
-    tt.test(' triton account update companyName=foo', writeTestOpts,
+    suite.test(' triton account update companyName=foo', writeTestOpts,
             function (t) {
         h.triton('account update companyName=foo', function (err, _o, _e) {
             if (h.ifErr(t, err))
@@ -99,7 +99,7 @@ test('triton account', function (tt) {
         });
     });
 
-    tt.test(' triton account update companyName=<oldvalue>', writeTestOpts,
+    suite.test(' triton account update companyName=<oldvalue>', writeTestOpts,
             function (t) {
         h.triton(
             format('account update companyName=\'%s\'',
@@ -110,4 +110,6 @@ test('triton account', function (tt) {
                 t.end();
             });
     });
+
+    suite.end();
 });

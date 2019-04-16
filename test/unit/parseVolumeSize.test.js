@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2017, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,12 +13,12 @@
  */
 
 var assert = require('assert-plus');
-var test = require('tape');
+var test = require('tap').test;
 
 var parseVolumeSize = require('../../lib/volumes').parseVolumeSize;
 
-test('parseVolumeSize', function (tt) {
-    tt.test('parsing invalid sizes', function (t) {
+test('parseVolumeSize', function (suite) {
+    suite.test('parsing invalid sizes', function (t) {
         var invalidVolumeSizes = [
             'foo',
             '0',
@@ -61,7 +61,7 @@ test('parseVolumeSize', function (tt) {
         t.end();
     });
 
-    tt.test('parsing valid sizes', function (t) {
+    suite.test('parsing valid sizes', function (t) {
         var validVolumeSizes = [
             {input: '42G', expectedOutput: 42 * 1024}
         ];
@@ -86,4 +86,6 @@ test('parseVolumeSize', function (tt) {
 
         t.end();
     });
+
+    suite.end();
 });

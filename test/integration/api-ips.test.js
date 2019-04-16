@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2017 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 
 // --- Globals
@@ -25,8 +25,8 @@ var IP;
 
 // --- Tests
 
-test('TritonApi network ips', function (tt) {
-    tt.test(' setup', function (t) {
+test('TritonApi network ips', function (suite) {
+    suite.test(' setup', function (t) {
         h.createClient(function (err, client_) {
             t.error(err);
             CLIENT = client_;
@@ -34,7 +34,7 @@ test('TritonApi network ips', function (tt) {
         });
     });
 
-    tt.test(' setup: net', function (t) {
+    suite.test(' setup: net', function (t) {
         var opts = {
             account: CLIENT.profile.account
         };
@@ -58,7 +58,7 @@ test('TritonApi network ips', function (tt) {
         });
     });
 
-    tt.test(' TritonApi listIps', function (t) {
+    suite.test(' TritonApi listIps', function (t) {
         if (!NET) {
             return t.end();
         }
@@ -76,7 +76,7 @@ test('TritonApi network ips', function (tt) {
     });
 
 
-    tt.test(' TritonApi getIp', function (t) {
+    suite.test(' TritonApi getIp', function (t) {
         if (!NET || !IP) {
             return t.end();
         }
@@ -97,8 +97,10 @@ test('TritonApi network ips', function (tt) {
     });
 
 
-    tt.test(' teardown: client', function (t) {
+    suite.test(' teardown: client', function (t) {
         CLIENT.close();
         t.end();
     });
+
+    suite.end();
 });

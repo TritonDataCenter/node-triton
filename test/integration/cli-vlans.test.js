@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2018 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -14,7 +14,7 @@
 
 var f = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 var h = require('./helpers');
 
 var common = require('../../lib/common');
@@ -39,9 +39,9 @@ if (OPTS.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 
-test('triton vlan list', function (tt) {
+test('triton vlan list', function (suite) {
 
-    tt.test(' triton vlan list -h', function (t) {
+    suite.test(' triton vlan list -h', function (t) {
         h.triton('vlan list -h', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -54,7 +54,7 @@ test('triton vlan list', function (tt) {
         });
     });
 
-    tt.test(' triton vlan list', function (t) {
+    suite.test(' triton vlan list', function (t) {
         h.triton('vlan list', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -68,7 +68,7 @@ test('triton vlan list', function (tt) {
         });
     });
 
-    tt.test(' triton vlan list -j', function (t) {
+    suite.test(' triton vlan list -j', function (t) {
         h.triton('vlan list -j', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -81,7 +81,7 @@ test('triton vlan list', function (tt) {
         });
     });
 
-    tt.test(' triton vlan list vlan_id=<...>', function (t) {
+    suite.test(' triton vlan list vlan_id=<...>', function (t) {
         var cmd = 'vlan list -j vlan_id=' + VLAN.vlan_id;
         h.triton(cmd, function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
@@ -99,7 +99,8 @@ test('triton vlan list', function (tt) {
         });
     });
 
-    tt.test(' triton vlan list vlan_id=<...> name=<...> (good)', function (t) {
+    suite.test(' triton vlan list vlan_id=<...> name=<...> (good)',
+    function (t) {
         var cmd = 'vlan list -j vlan_id=' + VLAN.vlan_id + ' name=' + VLAN.name;
 
         h.triton(cmd, function onTriton(err, stdout, stderr) {
@@ -118,7 +119,8 @@ test('triton vlan list', function (tt) {
         });
     });
 
-    tt.test(' triton vlan list vlan_id=<...> name=<...> (bad)', function (t) {
+    suite.test(' triton vlan list vlan_id=<...> name=<...> (bad)',
+    function (t) {
         // search for a mismatch, should return nada
         var cmd = 'vlan list -j vlan_id=' + VLAN.vlan_id + ' name=' +
                   VLAN.name + 'a';
@@ -135,12 +137,13 @@ test('triton vlan list', function (tt) {
         });
     });
 
+    suite.end();
 });
 
 
-test('triton vlan get', function (tt) {
+test('triton vlan get', function (suite) {
 
-    tt.test(' triton vlan get -h', function (t) {
+    suite.test(' triton vlan get -h', function (t) {
         h.triton('vlan get -h', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -153,7 +156,7 @@ test('triton vlan get', function (tt) {
         });
     });
 
-    tt.test(' triton vlan help get', function (t) {
+    suite.test(' triton vlan help get', function (t) {
         h.triton('vlan help get', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -166,7 +169,7 @@ test('triton vlan get', function (tt) {
         });
     });
 
-    tt.test(' triton vlan get', function (t) {
+    suite.test(' triton vlan get', function (t) {
         h.triton('vlan get', function onTriton(err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -174,7 +177,7 @@ test('triton vlan get', function (tt) {
         });
     });
 
-    tt.test(' triton vlan get ID', function (t) {
+    suite.test(' triton vlan get ID', function (t) {
         h.triton('vlan get ' + VLAN.vlan_id,
                 function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
@@ -189,7 +192,7 @@ test('triton vlan get', function (tt) {
         });
     });
 
-    tt.test(' triton vlan get NAME', function (t) {
+    suite.test(' triton vlan get NAME', function (t) {
         h.triton('vlan get ' + VLAN.name,
                 function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
@@ -204,12 +207,13 @@ test('triton vlan get', function (tt) {
         });
     });
 
+    suite.end();
 });
 
 
-test('triton vlan networks', function (tt) {
+test('triton vlan networks', function (suite) {
 
-    tt.test(' triton vlan networks -h', function (t) {
+    suite.test(' triton vlan networks -h', function (t) {
         h.triton('vlan networks -h', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -222,7 +226,7 @@ test('triton vlan networks', function (tt) {
         });
     });
 
-    tt.test(' triton vlan help networks', function (t) {
+    suite.test(' triton vlan help networks', function (t) {
         h.triton('vlan help networks', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -235,7 +239,7 @@ test('triton vlan networks', function (tt) {
         });
     });
 
-    tt.test(' triton vlan networks', function (t) {
+    suite.test(' triton vlan networks', function (t) {
         h.triton('vlan networks', function onTriton(err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -243,7 +247,7 @@ test('triton vlan networks', function (tt) {
         });
     });
 
-    tt.test(' triton vlan networks ID', function (t) {
+    suite.test(' triton vlan networks ID', function (t) {
         h.triton('vlan networks -j ' + VLAN.vlan_id,
                 function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
@@ -258,7 +262,7 @@ test('triton vlan networks', function (tt) {
         });
     });
 
-    tt.test(' triton vlan networks NAME', function (t) {
+    suite.test(' triton vlan networks NAME', function (t) {
         h.triton('vlan networks -j ' + VLAN.name,
                 function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
@@ -273,18 +277,19 @@ test('triton vlan networks', function (tt) {
         });
     });
 
+    suite.end();
 });
 
 
-test('triton vlan create', OPTS, function (tt) {
+test('triton vlan create', OPTS, function (suite) {
 
-    tt.test('  cleanup: rm vlan ' + VLAN_NAME + ' if exists', function (t) {
+    suite.test('  cleanup: rm vlan ' + VLAN_NAME + ' if exists', function (t) {
         h.triton('vlan delete ' + VLAN_NAME, function onTriton(err, stdout) {
             t.end();
         });
     });
 
-    tt.test(' triton vlan create -h', function (t) {
+    suite.test(' triton vlan create -h', function (t) {
         h.triton('vlan create -h', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -297,7 +302,7 @@ test('triton vlan create', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton vlan help create', function (t) {
+    suite.test(' triton vlan help create', function (t) {
         h.triton('vlan help create', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -310,7 +315,7 @@ test('triton vlan create', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton vlan create', function (t) {
+    suite.test(' triton vlan create', function (t) {
         h.triton('vlan create', function onTriton(err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -319,7 +324,7 @@ test('triton vlan create', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton vlan create VLAN', function (t) {
+    suite.test(' triton vlan create VLAN', function (t) {
         h.triton('vlan create -j --name=' + VLAN_NAME + ' ' + VLAN_ID,
                  function onTriton(err, stdout) {
             if (h.ifErr(t, err)) {
@@ -339,12 +344,13 @@ test('triton vlan create', OPTS, function (tt) {
         });
     });
 
+    suite.end();
 });
 
 
-test('triton vlan delete', OPTS, function (tt) {
+test('triton vlan delete', OPTS, function (suite) {
 
-    tt.test(' triton vlan delete -h', function (t) {
+    suite.test(' triton vlan delete -h', function (t) {
         h.triton('vlan delete -h', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -357,7 +363,7 @@ test('triton vlan delete', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton vlan help delete', function (t) {
+    suite.test(' triton vlan help delete', function (t) {
         h.triton('vlan help delete', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err)) {
                 t.end();
@@ -370,7 +376,7 @@ test('triton vlan delete', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton vlan delete', function (t) {
+    suite.test(' triton vlan delete', function (t) {
         h.triton('vlan delete', function onTriton(err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -403,16 +409,17 @@ test('triton vlan delete', OPTS, function (tt) {
         });
     }
 
-    tt.test(' triton vlan delete ID', function (t) {
+    suite.test(' triton vlan delete ID', function (t) {
         deleteNetworkTester(t, function doDelete(err, vlan, cb) {
             h.triton('vlan delete ' + vlan.vlan_id, cb);
         });
     });
 
-    tt.test(' triton vlan delete NAME', function (t) {
+    suite.test(' triton vlan delete NAME', function (t) {
         deleteNetworkTester(t, function doDelete(err, vlan, cb) {
             h.triton('vlan delete ' + vlan.name, cb);
         });
     });
 
+    suite.end();
 });

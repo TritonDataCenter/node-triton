@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2018 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 
 // --- Globals
@@ -25,8 +25,8 @@ var NIC;
 
 // --- Tests
 
-test('TritonApi nics', function (tt) {
-    tt.test(' setup', function (t) {
+test('TritonApi nics', function (suite) {
+    suite.test(' setup', function (t) {
         h.createClient(function onCreate(err, client_) {
             t.error(err);
             CLIENT = client_;
@@ -35,7 +35,7 @@ test('TritonApi nics', function (tt) {
     });
 
 
-    tt.test(' setup: inst', function (t) {
+    suite.test(' setup: inst', function (t) {
         CLIENT.cloudapi.listMachines({}, function onList(err, vms) {
             if (vms.length === 0) {
                 t.end();
@@ -50,7 +50,7 @@ test('TritonApi nics', function (tt) {
     });
 
 
-    tt.test(' TritonApi listNics', function (t) {
+    suite.test(' TritonApi listNics', function (t) {
         if (!INST) {
             t.end();
             return;
@@ -82,7 +82,7 @@ test('TritonApi nics', function (tt) {
     });
 
 
-    tt.test(' TritonApi getNic', function (t) {
+    suite.test(' TritonApi getNic', function (t) {
         if (!NIC) {
             t.end();
             return;
@@ -113,8 +113,10 @@ test('TritonApi nics', function (tt) {
     });
 
 
-    tt.test(' teardown: client', function (t) {
+    suite.test(' teardown: client', function (t) {
         CLIENT.close();
         t.end();
     });
+
+    suite.end();
 });

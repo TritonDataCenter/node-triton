@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2016, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -15,7 +15,7 @@
 var h = require('./helpers');
 var f = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 
 // --- Globals
 
@@ -36,17 +36,18 @@ if (OPTS.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 
-test('triton fwrule', OPTS, function (tt) {
-    h.printConfig(tt);
+test('triton fwrule', OPTS, function (suite) {
+    h.printConfig(suite);
 
-    tt.test('  cleanup existing inst with alias ' + INST_ALIAS, function (t) {
+    suite.test('  cleanup existing inst with alias ' + INST_ALIAS,
+    function (t) {
         h.deleteTestInst(t, INST_ALIAS, function (err) {
             t.ifErr(err);
             t.end();
         });
     });
 
-    tt.test('  setup: triton create', function (t) {
+    suite.test('  setup: triton create', function (t) {
         h.createTestInst(t, INST_ALIAS, {}, function onInst(err2, instId) {
             if (h.ifErr(t, err2, 'triton instance create'))
                 return t.end();
@@ -59,7 +60,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule create --disabled', function (t) {
+    suite.test('  triton fwrule create --disabled', function (t) {
         var cmd = f('fwrule create -d "%s"', RULE);
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule create --disabled'))
@@ -77,7 +78,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule get (disabled)', function (t) {
+    suite.test('  triton fwrule get (disabled)', function (t) {
         var cmd = 'fwrule get ' + ID;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -91,7 +92,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule create', function (t) {
+    suite.test('  triton fwrule create', function (t) {
         var cmd = f('fwrule create -D "%s" "%s"', DESC, RULE);
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -111,7 +112,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule get', function (t) {
+    suite.test('  triton fwrule get', function (t) {
         var cmd = 'fwrule get ' + ID;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -126,7 +127,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule enable', function (t) {
+    suite.test('  triton fwrule enable', function (t) {
         var cmd = 'fwrule enable ' + ID;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -139,7 +140,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule disable', function (t) {
+    suite.test('  triton fwrule disable', function (t) {
         var cmd = 'fwrule disable ' + ID;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -152,7 +153,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule update', function (t) {
+    suite.test('  triton fwrule update', function (t) {
         var cmd = 'fwrule update ' + ID + ' rule="' + RULE2 + '"';
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -166,7 +167,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule list', function (t) {
+    suite.test('  triton fwrule list', function (t) {
         h.triton('fwrule list -l', function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule list'))
                 return t.end();
@@ -187,7 +188,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrules', function (t) {
+    suite.test('  triton fwrules', function (t) {
         h.triton('fwrules -l', function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule list'))
                 return t.end();
@@ -208,7 +209,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule instances', function (t) {
+    suite.test('  triton fwrule instances', function (t) {
         h.triton('fwrule instances -l ' + ID, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule instances'))
                 return t.end();
@@ -236,7 +237,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance fwrules', function (t) {
+    suite.test('  triton instance fwrules', function (t) {
         h.triton('instance fwrules -l ' + INST, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule list'))
                 return t.end();
@@ -257,7 +258,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance fwrule list', function (t) {
+    suite.test('  triton instance fwrule list', function (t) {
         h.triton('instance fwrule list -l ' + INST,
             function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule list'))
@@ -279,7 +280,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton fwrule delete', function (t) {
+    suite.test('  triton fwrule delete', function (t) {
         var cmd = 'fwrule delete ' + ID + ' --force';
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton fwrule delete'))
@@ -291,7 +292,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance enable-firewall', function (t) {
+    suite.test('  triton instance enable-firewall', function (t) {
         var cmd = 'instance enable-firewall ' + INST + ' -w';
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton instance enable-firewall'))
@@ -312,7 +313,7 @@ test('triton fwrule', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance disable-firewall', function (t) {
+    suite.test('  triton instance disable-firewall', function (t) {
         var cmd = 'instance disable-firewall ' + INST + ' -w';
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton instance disable-firewall'))
@@ -337,10 +338,12 @@ test('triton fwrule', OPTS, function (tt) {
      * Use a timeout, because '-w' on delete doesn't have a way to know if the
      * attempt failed or if it is just taking a really long time.
      */
-    tt.test('  cleanup: triton rm INST', {timeout: 10 * 60 * 1000},
+    suite.test('  cleanup: triton rm INST', {timeout: 10 * 60 * 1000},
             function (t) {
         h.deleteTestInst(t, INST_ALIAS, function () {
             t.end();
         });
     });
+
+    suite.end();
 });

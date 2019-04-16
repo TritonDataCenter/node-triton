@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 var common = require('../../lib/common');
 
@@ -28,8 +28,8 @@ var PKG;
 // --- Tests
 
 
-test('TritonApi packages', function (tt) {
-    tt.test(' setup', function (t) {
+test('TritonApi packages', function (suite) {
+    suite.test(' setup', function (t) {
         h.createClient(function (err, client_) {
             t.error(err);
             CLIENT = client_;
@@ -37,7 +37,7 @@ test('TritonApi packages', function (tt) {
         });
     });
 
-    tt.test(' setup: pkg', function (t) {
+    suite.test(' setup: pkg', function (t) {
         CLIENT.cloudapi.listPackages(function (err, pkgs) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -51,7 +51,7 @@ test('TritonApi packages', function (tt) {
     });
 
 
-    tt.test(' TritonApi getPackage', function (t) {
+    suite.test(' TritonApi getPackage', function (t) {
         if (!PKG) {
             return t.end();
         }
@@ -79,8 +79,10 @@ test('TritonApi packages', function (tt) {
     });
 
 
-    tt.test(' teardown: client', function (t) {
+    suite.test(' teardown: client', function (t) {
         CLIENT.close();
         t.end();
     });
+
+    suite.end();
 });

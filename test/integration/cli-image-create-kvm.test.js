@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -14,7 +14,7 @@
 
 var format = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 var vasync = require('vasync');
 
 var common = require('../../lib/common');
@@ -39,19 +39,19 @@ var testOpts = {
 
 // --- Tests
 
-test('triton image ...', testOpts, function (tt) {
+test('triton image ...', testOpts, function (suite) {
     var imgNameVer = IMAGE_DATA.name + '@' + IMAGE_DATA.version;
     var originInst;
     var img;
 
-    tt.comment('Test config:');
+    suite.comment('Test config:');
     Object.keys(h.CONFIG).forEach(function (key) {
         var value = h.CONFIG[key];
-        tt.comment(format('- %s: %j', key, value));
+        suite.comment(format('- %s: %j', key, value));
     });
 
     // TODO: `triton rm -f` would be helpful for this
-    tt.test('  setup: rm existing origin inst ' + ORIGIN_INST_ALIAS,
+    suite.test('  setup: rm existing origin inst ' + ORIGIN_INST_ALIAS,
             function (t) {
         h.deleteTestInst(t, ORIGIN_INST_ALIAS, function onDel() {
             t.end();
@@ -59,21 +59,21 @@ test('triton image ...', testOpts, function (tt) {
     });
 
     // TODO: `triton rm -f` would be helpful for this
-    tt.test('  setup: rm existing derived inst ' + DERIVED_INST_ALIAS,
+    suite.test('  setup: rm existing derived inst ' + DERIVED_INST_ALIAS,
             function (t) {
         h.deleteTestInst(t, DERIVED_INST_ALIAS, function onDel() {
             t.end();
         });
     });
 
-    tt.test('  setup: rm existing img ' + imgNameVer, function (t) {
+    suite.test('  setup: rm existing img ' + imgNameVer, function (t) {
         h.deleteTestImg(t, imgNameVer, function onDel() {
             t.end();
         });
     });
 
     var originImgNameOrId;
-    tt.test('  setup: find origin image', function (t) {
+    suite.test('  setup: find origin image', function (t) {
         h.getTestKvmImg(t, function (err, imgId) {
             t.ifError(err, 'getTestImg' + (err ? ': ' + err : ''));
             originImgNameOrId = imgId;
@@ -82,7 +82,7 @@ test('triton image ...', testOpts, function (tt) {
     });
 
     var pkgId;
-    tt.test('  setup: find test package', function (t) {
+    suite.test('  setup: find test package', function (t) {
         h.getTestKvmPkg(t, function (err, pkgId_) {
             t.ifError(err, 'getTestPkg' + (err ? ': ' + err : ''));
             pkgId = pkgId_;
@@ -91,7 +91,8 @@ test('triton image ...', testOpts, function (tt) {
     });
 
     var markerFile = '/nodetritontest-was-here.txt';
-    tt.test('  setup: triton create ... -n ' + ORIGIN_INST_ALIAS, function (t) {
+    suite.test('  setup: triton create ... -n ' + ORIGIN_INST_ALIAS,
+    function (t) {
         var argv = ['create', '-wj', '-n', ORIGIN_INST_ALIAS,
             '-m', 'user-script=touch ' + markerFile,
             originImgNameOrId, pkgId];
@@ -109,7 +110,7 @@ test('triton image ...', testOpts, function (tt) {
     //      tape (don't know why yet). Instead we'll use a user-script to
     //      change the origin as our image change.
     //
-    //tt.test('  setup: add marker to origin', function (t) {
+    //suite.test('  setup: add marker to origin', function (t) {
     //    var argv = ['ssh', originInst.id,
     //        '-o', 'StrictHostKeyChecking=no',
     //        '-o', 'UserKnownHostsFile=/dev/null',
@@ -120,7 +121,7 @@ test('triton image ...', testOpts, function (tt) {
     //    });
     //});
 
-    tt.test('  triton image create ...', function (t) {
+    suite.test('  triton image create ...', function (t) {
         var argv = ['image', 'create', '-j', '-w', '-t', 'foo=bar',
             originInst.id, IMAGE_DATA.name, IMAGE_DATA.version];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -137,7 +138,7 @@ test('triton image ...', testOpts, function (tt) {
     });
 
     var derivedInst;
-    tt.test('  triton create ... -n ' + DERIVED_INST_ALIAS, function (t) {
+    suite.test('  triton create ... -n ' + DERIVED_INST_ALIAS, function (t) {
         var argv = ['create', '-wj', '-n', DERIVED_INST_ALIAS, img.id, pkgId];
         h.safeTriton(t, argv, function (err, stdout) {
             var lines = h.jsonStreamParse(stdout);
@@ -154,16 +155,18 @@ test('triton image ...', testOpts, function (tt) {
     // Remove instances. Add a test timeout, because '-w' on delete doesn't
     // have a way to know if the attempt failed or if it is just taking a
     // really long time.
-    tt.test('  cleanup: triton rm', {timeout: 10 * 60 * 1000}, function (t) {
+    suite.test('  cleanup: triton rm', {timeout: 10 * 60 * 1000}, function (t) {
         h.safeTriton(t, ['rm', '-w', originInst.id, derivedInst.id],
                 function () {
             t.end();
         });
     });
 
-    tt.test('  cleanup: triton image rm', function (t) {
+    suite.test('  cleanup: triton image rm', function (t) {
         h.safeTriton(t, ['image', 'rm', '-f', img.id], function () {
             t.end();
         });
     });
+
+    suite.end();
 });

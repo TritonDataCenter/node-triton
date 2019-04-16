@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2018 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 
 // --- Globals
@@ -24,8 +24,8 @@ var VLAN;
 
 // --- Tests
 
-test('TritonApi vlan', function (tt) {
-    tt.test(' setup', function (t) {
+test('TritonApi vlan', function (suite) {
+    suite.test(' setup', function (t) {
         h.createClient(function onCreate(err, client_) {
             t.error(err);
             CLIENT = client_;
@@ -34,7 +34,7 @@ test('TritonApi vlan', function (tt) {
     });
 
 
-    tt.test(' setup: vlan', function (t) {
+    suite.test(' setup: vlan', function (t) {
         CLIENT.cloudapi.listFabricVlans({}, function onList(err, vlans) {
             if (vlans.length === 0) {
                 t.end();
@@ -48,7 +48,7 @@ test('TritonApi vlan', function (tt) {
     });
 
 
-    tt.test(' TritonApi getFabricVlan', function (t) {
+    suite.test(' TritonApi getFabricVlan', function (t) {
         if (!VLAN) {
             t.end();
             return;
@@ -75,7 +75,7 @@ test('TritonApi vlan', function (tt) {
     });
 
 
-    tt.test(' TritonApi deleteFabricVlan', function (t) {
+    suite.test(' TritonApi deleteFabricVlan', function (t) {
         function check(genId, idType, cb) {
             CLIENT.cloudapi.createFabricVlan({
                 vlan_id: 3291,
@@ -113,8 +113,10 @@ test('TritonApi vlan', function (tt) {
     });
 
 
-    tt.test(' teardown: client', function (t) {
+    suite.test(' teardown: client', function (t) {
         CLIENT.close();
         t.end();
     });
+
+    suite.end();
 });

@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2017 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -14,7 +14,7 @@
 
 var assert = require('assert-plus');
 var format = require('util').format;
-var test = require('tape');
+var test = require('tap').test;
 
 var argvFromLine = require('../../lib/common').argvFromLine;
 
@@ -163,10 +163,10 @@ var cases = [
 
 // ---- test driver
 
-test('argvFromLine', function (tt) {
+test('argvFromLine', function (suite) {
     cases.forEach(function (c, num) {
         var testName = format('case %d: %s', num, c.line);
-        tt.test(testName, function (t) {
+        suite.test(testName, function (t) {
             debug('--', num);
             debug('c: %j', c);
 
@@ -197,4 +197,6 @@ test('argvFromLine', function (tt) {
             t.end();
         });
     });
+
+    suite.end();
 });

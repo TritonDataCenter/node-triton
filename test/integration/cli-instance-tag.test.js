@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2016, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -16,7 +16,7 @@ var f = require('util').format;
 var os = require('os');
 var path = require('path');
 var tabula = require('tabula');
-var test = require('tape');
+var test = require('tap').test;
 var vasync = require('vasync');
 
 var common = require('../../lib/common');
@@ -38,12 +38,12 @@ if (opts.skip) {
     console.error('** skipping %s tests', __filename);
     console.error('** set "allowWriteActions" in test config to enable');
 }
-test('triton inst tag ...', opts, function (tt) {
-    h.printConfig(tt);
+test('triton inst tag ...', opts, function (suite) {
+    h.printConfig(suite);
 
     var inst;
 
-    tt.test('  cleanup: rm inst ' + INST_ALIAS + ' if exists', function (t) {
+    suite.test('  cleanup: rm inst ' + INST_ALIAS + ' if exists', function (t) {
         h.deleteTestInst(t, INST_ALIAS, function (err) {
             t.ifErr(err);
             t.end();
@@ -51,7 +51,7 @@ test('triton inst tag ...', opts, function (tt) {
     });
 
     var imgId;
-    tt.test('  setup: find test image', function (t) {
+    suite.test('  setup: find test image', function (t) {
         h.getTestImg(t, function (err, imgId_) {
             t.ifError(err, 'getTestImg' + (err ? ': ' + err : ''));
             imgId = imgId_;
@@ -60,7 +60,7 @@ test('triton inst tag ...', opts, function (tt) {
     });
 
     var pkgId;
-    tt.test('  setup: find test package', function (t) {
+    suite.test('  setup: find test package', function (t) {
         h.getTestPkg(t, function (err, pkgId_) {
             t.ifError(err, 'getTestPkg' + (err ? ': ' + err : ''));
             pkgId = pkgId_;
@@ -69,7 +69,7 @@ test('triton inst tag ...', opts, function (tt) {
     });
 
     // create a test machine (blocking) and output JSON
-    tt.test('  setup: triton create ' + INST_ALIAS, function (t) {
+    suite.test('  setup: triton create ' + INST_ALIAS, function (t) {
         var argv = [
             'create',
             '-wj',
@@ -90,7 +90,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tag ls INST', function (t) {
+    suite.test('  triton inst tag ls INST', function (t) {
         h.safeTriton(t, ['inst', 'tag', 'ls', inst.name],
                 function (err, stdout) {
             var tags = JSON.parse(stdout);
@@ -99,7 +99,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tags INST', function (t) {
+    suite.test('  triton inst tags INST', function (t) {
         h.safeTriton(t, ['inst', 'tags', inst.name], function (err, stdout) {
             var tags = JSON.parse(stdout);
             t.deepEqual(tags, {blah: 'bling'});
@@ -107,7 +107,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tag set -w INST name=value', function (t) {
+    suite.test('  triton inst tag set -w INST name=value', function (t) {
         var argv = ['inst', 'tag', 'set', '-w', inst.id,
             'foo=bar', 'pi=3.14', 'really=true'];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -122,7 +122,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst get INST foo', function (t) {
+    suite.test('  triton inst get INST foo', function (t) {
         h.safeTriton(t, ['inst', 'tag', 'get', inst.id.split('-')[0], 'foo'],
                 function (err, stdout) {
             t.equal(stdout.trim(), 'bar');
@@ -130,7 +130,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst get INST foo -j', function (t) {
+    suite.test('  triton inst get INST foo -j', function (t) {
         h.safeTriton(t, ['inst', 'tag', 'get', inst.id, 'foo', '-j'],
                 function (err, stdout) {
             t.equal(stdout.trim(), '"bar"');
@@ -138,7 +138,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst get INST really -j', function (t) {
+    suite.test('  triton inst get INST really -j', function (t) {
         h.safeTriton(t, ['inst', 'tag', 'get', inst.name, 'really', '-j'],
                 function (err, stdout) {
             t.equal(stdout.trim(), 'true');
@@ -146,7 +146,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tag set -w INST -f tags.json', function (t) {
+    suite.test('  triton inst tag set -w INST -f tags.json', function (t) {
         var argv = ['inst', 'tag', 'set', '-w', inst.name, '-f',
             path.resolve(__dirname, 'data', 'tags.json')];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -161,7 +161,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tag set -w INST -f tags.kv', function (t) {
+    suite.test('  triton inst tag set -w INST -f tags.kv', function (t) {
         var argv = ['inst', 'tag', 'set', '-w', inst.name, '-f',
             path.resolve(__dirname, 'data', 'tags.kv')];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -178,7 +178,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tag rm -w INST key really', function (t) {
+    suite.test('  triton inst tag rm -w INST key really', function (t) {
         var argv = ['inst', 'tag', 'rm', '-w', inst.name, 'key', 'really'];
         h.safeTriton(t, argv, function (err, stdout) {
             var lines = stdout.trim().split(/\n/);
@@ -190,7 +190,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tag list INST', function (t) {
+    suite.test('  triton inst tag list INST', function (t) {
         var argv = ['inst', 'tag', 'list', inst.name];
         h.safeTriton(t, argv, function (err, stdout) {
             var tags = JSON.parse(stdout);
@@ -204,7 +204,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tag replace-all -w INST ...', function (t) {
+    suite.test('  triton inst tag replace-all -w INST ...', function (t) {
         var argv = ['inst', 'tag', 'replace-all', '-w',
             inst.name, 'whoa=there'];
         h.safeTriton(t, argv, function (err, stdout) {
@@ -216,7 +216,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tag delete -w -a INST', function (t) {
+    suite.test('  triton inst tag delete -w -a INST', function (t) {
         var argv = ['inst', 'tag', 'delete', '-w', '-a', inst.name];
         h.safeTriton(t, argv, function (err, stdout) {
             t.equal(stdout.trim(), 'Deleted all tags on instance ' + inst.name);
@@ -224,7 +224,7 @@ test('triton inst tag ...', opts, function (tt) {
         });
     });
 
-    tt.test('  triton inst tags INST', function (t) {
+    suite.test('  triton inst tags INST', function (t) {
         var argv = ['inst', 'tags', inst.name];
         h.safeTriton(t, argv, function (err, stdout) {
             t.equal(stdout.trim(), '{}');
@@ -236,11 +236,12 @@ test('triton inst tag ...', opts, function (tt) {
      * Use a timeout, because '-w' on delete doesn't have a way to know if the
      * attempt failed or if it is just taking a really long time.
      */
-    tt.test('  cleanup: triton rm INST', {timeout: 10 * 60 * 1000},
+    suite.test('  cleanup: triton rm INST', {timeout: 10 * 60 * 1000},
             function (t) {
         h.safeTriton(t, ['rm', '-w', inst.id], function (err, stdout) {
             t.end();
         });
     });
 
+    suite.end();
 });

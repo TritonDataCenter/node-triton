@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2018 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 
 // --- Globals
@@ -26,8 +26,8 @@ var NET;
 
 // --- Tests
 
-test('TritonApi networks', function (tt) {
-    tt.test(' setup', function (t) {
+test('TritonApi networks', function (suite) {
+    suite.test(' setup', function (t) {
         h.createClient(function (err, client_) {
             t.error(err);
             CLIENT = client_;
@@ -35,13 +35,14 @@ test('TritonApi networks', function (tt) {
         });
     });
 
-    tt.test('  cleanup: rm network ' + NET_NAME + ' if exists', function (t) {
+    suite.test('  cleanup: rm network ' + NET_NAME + ' if exists',
+    function (t) {
         CLIENT.deleteFabricNetwork({id: NET_NAME}, function () {
             t.end();
         });
     });
 
-    tt.test(' setup: net', function (t) {
+    suite.test(' setup: net', function (t) {
         CLIENT.cloudapi.listNetworks({}, function (err, nets) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -55,7 +56,7 @@ test('TritonApi networks', function (tt) {
     });
 
 
-    tt.test(' TritonApi getNetwork', function (t) {
+    suite.test(' TritonApi getNetwork', function (t) {
         if (!NET) {
             return t.end();
         }
@@ -83,7 +84,7 @@ test('TritonApi networks', function (tt) {
     });
 
 
-    tt.test(' TritonApi deleteFabricNetwork', function (t) {
+    suite.test(' TritonApi deleteFabricNetwork', function (t) {
         function check(genId, idType, vlanId, cb) {
             CLIENT.cloudapi.createFabricNetwork({
                 name: NET_NAME,
@@ -138,8 +139,10 @@ test('TritonApi networks', function (tt) {
 
 
 
-    tt.test(' teardown: client', function (t) {
+    suite.test(' teardown: client', function (t) {
         CLIENT.close();
         t.end();
     });
+
+    suite.end();
 });

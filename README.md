@@ -407,7 +407,7 @@ There are a few `TEST_...` vars that can tweak how the tests are run.
   where "coal" here refers to a development Triton (a.k.a SDC) ["Cloud On A
   Laptop"](https://github.com/joyent/sdc#getting-started) standup.
 
-- `TEST_GLOB=<glob for test file basename>` - By default all "*.test.js"
+- `TEST_GLOB=<glob for test file basename>` - By default all "\*.test.js"
   in the "test/unit/" and "test/integration" dirs are run. To run just
   those with "image" in the name, use `make test TEST_GLOB=*image*`, or
   to run a specific test file: `make test TEST_GLOB=metadataFromOpts`.

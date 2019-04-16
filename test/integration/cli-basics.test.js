@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 
 
@@ -23,9 +23,9 @@ var test = require('tape');
 
 // --- Tests
 
-test('triton (basics)', function (tt) {
+test('triton (basics)', function (suite) {
 
-    tt.test(' triton --version', function (t) {
+    suite.test(' triton --version', function (t) {
         h.triton('--version', function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton --version'))
                 return t.end();
@@ -36,7 +36,7 @@ test('triton (basics)', function (tt) {
         });
     });
 
-    tt.test(' triton -h', function (t) {
+    suite.test(' triton -h', function (t) {
         h.triton('-h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -47,7 +47,7 @@ test('triton (basics)', function (tt) {
         });
     });
 
-    tt.test(' triton --help', function (t) {
+    suite.test(' triton --help', function (t) {
         h.triton('--help', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -58,7 +58,7 @@ test('triton (basics)', function (tt) {
         });
     });
 
-    tt.test(' triton help', function (t) {
+    suite.test(' triton help', function (t) {
         h.triton('help', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -69,4 +69,5 @@ test('triton (basics)', function (tt) {
         });
     });
 
+    suite.end();
 });

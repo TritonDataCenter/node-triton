@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2017, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var common = require('../../lib/common');
-var test = require('tape');
+var test = require('tap').test;
 
 
 // ---- globals

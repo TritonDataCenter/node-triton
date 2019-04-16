@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2017 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 
 var common = require('../../lib/common');
 
@@ -26,9 +26,9 @@ var ips;
 
 // --- Tests
 
-test('triton network ip list', function (tt) {
+test('triton network ip list', function (suite) {
 
-    tt.test(' triton network ip list -h', function (t) {
+    suite.test(' triton network ip list -h', function (t) {
         h.triton('network ip list -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -37,7 +37,7 @@ test('triton network ip list', function (tt) {
         });
     });
 
-    tt.test(' triton networks -j', function (t) {
+    suite.test(' triton networks -j', function (t) {
         h.triton('networks -j', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -57,7 +57,7 @@ test('triton network ip list', function (tt) {
         });
     });
 
-    tt.test(' triton network ip list', function (t) {
+    suite.test(' triton network ip list', function (t) {
         h.triton('network ip list', function (err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -65,7 +65,7 @@ test('triton network ip list', function (tt) {
         });
     });
 
-    tt.test(' triton network ip list ID', function (t) {
+    suite.test(' triton network ip list ID', function (t) {
         h.triton('network ip list ' + networks[0].id,
             function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -76,7 +76,7 @@ test('triton network ip list', function (tt) {
         });
     });
 
-    tt.test(' triton network ip list SHORTID', function (t) {
+    suite.test(' triton network ip list SHORTID', function (t) {
         var shortid = networks[0].id.split('-')[0];
         h.triton('network ip list ' + shortid, function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -87,7 +87,7 @@ test('triton network ip list', function (tt) {
         });
     });
 
-    tt.test(' triton network ip list -j', function (t) {
+    suite.test(' triton network ip list -j', function (t) {
         h.triton('network ip list -j ' + networks[0].id,
             function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -105,12 +105,13 @@ test('triton network ip list', function (tt) {
         });
     });
 
+    suite.end();
 });
 
 
-test('triton network ip get', function (tt) {
+test('triton network ip get', function (suite) {
 
-    tt.test(' triton network ip get -h', function (t) {
+    suite.test(' triton network ip get -h', function (t) {
         h.triton('network ip get -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -119,7 +120,7 @@ test('triton network ip get', function (tt) {
         });
     });
 
-    tt.test(' triton network ip help get', function (t) {
+    suite.test(' triton network ip help get', function (t) {
         h.triton('network ip help get', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -128,7 +129,7 @@ test('triton network ip get', function (tt) {
         });
     });
 
-    tt.test(' triton network ip get', function (t) {
+    suite.test(' triton network ip get', function (t) {
         h.triton('network ip get', function (err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -136,7 +137,7 @@ test('triton network ip get', function (tt) {
         });
     });
 
-    tt.test(' triton network ip get ID IP', function (t) {
+    suite.test(' triton network ip get ID IP', function (t) {
         h.triton('network ip get ' + networks[0].id + ' ' +
                 ips[0].ip, function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -147,7 +148,7 @@ test('triton network ip get', function (tt) {
         });
     });
 
-    tt.test(' triton network ip get SHORTID IP', function (t) {
+    suite.test(' triton network ip get SHORTID IP', function (t) {
         var shortid = networks[0].id.split('-')[0];
         h.triton('network ip get ' + shortid + ' ' + ips[0].ip,
             function (err, stdout, stderr) {
@@ -159,7 +160,7 @@ test('triton network ip get', function (tt) {
         });
     });
 
-    tt.test(' triton network ip get NAME IP', function (t) {
+    suite.test(' triton network ip get NAME IP', function (t) {
         h.triton('network ip get ' + networks[0].name + ' ' +
                 ips[0].ip, function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -170,4 +171,5 @@ test('triton network ip get', function (tt) {
         });
     });
 
+    suite.end();
 });

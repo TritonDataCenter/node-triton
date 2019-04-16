@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2018 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -14,7 +14,7 @@
 
 var f = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 var h = require('./helpers');
 
 var common = require('../../lib/common');
@@ -39,9 +39,9 @@ if (OPTS.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 
-test('triton networks', function (tt) {
+test('triton networks', function (suite) {
 
-    tt.test('  setup: find a test VLAN', function (t) {
+    suite.test('  setup: find a test VLAN', function (t) {
         h.triton('vlan list -j', function onTriton(err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -52,7 +52,7 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton network list -h', function (t) {
+    suite.test(' triton network list -h', function (t) {
         h.triton('networks -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -61,7 +61,7 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton help networks', function (t) {
+    suite.test(' triton help networks', function (t) {
         h.triton('help networks', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -71,7 +71,7 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton networks', function (t) {
+    suite.test(' triton networks', function (t) {
         h.triton('networks', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -81,7 +81,7 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton network list', function (t) {
+    suite.test(' triton network list', function (t) {
         h.triton('network list', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -91,7 +91,7 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton networks public=false', function (t) {
+    suite.test(' triton networks public=false', function (t) {
         h.triton('networks public=false -H -o public',
         function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -107,7 +107,7 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton network list public=false', function (t) {
+    suite.test(' triton network list public=false', function (t) {
         h.triton('network list public=false -H -o public',
         function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -123,7 +123,7 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton network list public=true', function (t) {
+    suite.test(' triton network list public=true', function (t) {
         h.triton('network list public=true -H -o public',
         function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -136,14 +136,14 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton network list public=bogus', function (t) {
+    suite.test(' triton network list public=bogus', function (t) {
         h.triton('network list public=bogus', function (err, stdout, stderr) {
             t.ok(err, err);
             t.end();
         });
     });
 
-    tt.test(' triton networks -l', function (t) {
+    suite.test(' triton networks -l', function (t) {
         h.triton('networks -l', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -152,7 +152,7 @@ test('triton networks', function (tt) {
         });
     });
 
-    tt.test(' triton networks -j', function (t) {
+    suite.test(' triton networks -j', function (t) {
         h.triton('networks -j', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -169,12 +169,13 @@ test('triton networks', function (tt) {
         });
     });
 
+    suite.end();
 });
 
 
-test('triton network get', function (tt) {
+test('triton network get', function (suite) {
 
-    tt.test(' triton network get -h', function (t) {
+    suite.test(' triton network get -h', function (t) {
         h.triton('network get -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -183,7 +184,7 @@ test('triton network get', function (tt) {
         });
     });
 
-    tt.test(' triton network help get', function (t) {
+    suite.test(' triton network help get', function (t) {
         h.triton('network help get', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -192,7 +193,7 @@ test('triton network get', function (tt) {
         });
     });
 
-    tt.test(' triton network get', function (t) {
+    suite.test(' triton network get', function (t) {
         h.triton('network get', function (err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -200,7 +201,7 @@ test('triton network get', function (tt) {
         });
     });
 
-    tt.test(' triton network get ID', function (t) {
+    suite.test(' triton network get ID', function (t) {
         h.triton('network get ' + networks[0].id,
                 function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -211,7 +212,7 @@ test('triton network get', function (tt) {
         });
     });
 
-    tt.test(' triton network get SHORTID', function (t) {
+    suite.test(' triton network get SHORTID', function (t) {
         var shortid = networks[0].id.split('-')[0];
         h.triton('network get ' + shortid, function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -222,7 +223,7 @@ test('triton network get', function (tt) {
         });
     });
 
-    tt.test(' triton network get NAME', function (t) {
+    suite.test(' triton network get NAME', function (t) {
         h.triton('network get ' + networks[0].name,
                 function (err, stdout, stderr) {
             if (h.ifErr(t, err))
@@ -233,18 +234,20 @@ test('triton network get', function (tt) {
         });
     });
 
+    suite.end();
 });
 
 
-test('triton network create', OPTS, function (tt) {
+test('triton network create', OPTS, function (suite) {
 
-    tt.test('  cleanup: rm network ' + NET_NAME + ' if exists', function (t) {
+    suite.test('  cleanup: rm network ' + NET_NAME + ' if exists',
+    function (t) {
         h.triton('network delete ' + NET_NAME, function (err, stdout) {
             t.end();
         });
     });
 
-    tt.test(' triton network create -h', function (t) {
+    suite.test(' triton network create -h', function (t) {
         h.triton('network create -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -253,7 +256,7 @@ test('triton network create', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton network help create', function (t) {
+    suite.test(' triton network help create', function (t) {
         h.triton('network help create', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -262,7 +265,7 @@ test('triton network create', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton network create', function (t) {
+    suite.test(' triton network create', function (t) {
         h.triton('network create', function (err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -270,7 +273,7 @@ test('triton network create', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton network create VLAN', function (t) {
+    suite.test(' triton network create VLAN', function (t) {
         h.triton('network create --name=' + NET_NAME +
                  ' --subnet=192.168.97.0/24 --start_ip=192.168.97.1' +
                  ' --end_ip=192.168.97.254 -j ' + vlan.vlan_id,
@@ -293,12 +296,13 @@ test('triton network create', OPTS, function (tt) {
         });
     });
 
+    suite.end();
 });
 
 
-test('triton network delete', OPTS, function (tt) {
+test('triton network delete', OPTS, function (suite) {
 
-    tt.test(' triton network delete -h', function (t) {
+    suite.test(' triton network delete -h', function (t) {
         h.triton('network delete -h', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -307,7 +311,7 @@ test('triton network delete', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton network help delete', function (t) {
+    suite.test(' triton network help delete', function (t) {
         h.triton('network help delete', function (err, stdout, stderr) {
             if (h.ifErr(t, err))
                 return t.end();
@@ -316,7 +320,7 @@ test('triton network delete', OPTS, function (tt) {
         });
     });
 
-    tt.test(' triton network delete', function (t) {
+    suite.test(' triton network delete', function (t) {
         h.triton('network delete', function (err, stdout, stderr) {
             t.ok(err);
             t.ok(/error \(Usage\)/.test(stderr));
@@ -346,23 +350,24 @@ test('triton network delete', OPTS, function (tt) {
         });
     }
 
-    tt.test(' triton network delete ID', function (t) {
+    suite.test(' triton network delete ID', function (t) {
         deleteNetworkTester(t, function (err, network, cb) {
             h.triton('network delete ' + network.id, cb);
         });
     });
 
-    tt.test(' triton network delete NAME', function (t) {
+    suite.test(' triton network delete NAME', function (t) {
         deleteNetworkTester(t, function (err, network, cb) {
             h.triton('network delete ' + network.name, cb);
         });
     });
 
-    tt.test(' triton network delete SHORTID', function (t) {
+    suite.test(' triton network delete SHORTID', function (t) {
         deleteNetworkTester(t, function (err, network, cb) {
             var shortid = network.id.split('-')[0];
             h.triton('network delete ' + shortid, cb);
         });
     });
 
+    suite.end();
 });

@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2017, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -14,7 +14,7 @@
 
 var format = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 var vasync = require('vasync');
 
 var common = require('../../lib/common');
@@ -33,20 +33,21 @@ if (testOpts.skip) {
         + 'in test config to enable');
 }
 
-test('triton volume create with non-default size...', testOpts, function (tt) {
+test('triton volume create with non-default size...', testOpts,
+function (suite) {
     var validVolumeName =
             h.makeResourceName('node-triton-test-volume-create-non-default-' +
                 'size');
     var validVolumeSize = '20G';
     var validVolumeSizeInMib = 20 * 1024;
 
-    tt.comment('Test config:');
+    suite.comment('Test config:');
     Object.keys(h.CONFIG).forEach(function (key) {
         var value = h.CONFIG[key];
-        tt.comment(format('- %s: %j', key, value));
+        suite.comment(format('- %s: %j', key, value));
     });
 
-    tt.test('  cleanup leftover resources', function (t) {
+    suite.test('  cleanup leftover resources', function (t) {
         h.triton(['volume', 'delete', '-y', '-w', validVolumeName].join(' '),
             function onDelVolume(delVolErr, stdout, stderr) {
                 // If there was nothing to delete, this will fail so that's the
@@ -55,7 +56,7 @@ test('triton volume create with non-default size...', testOpts, function (tt) {
             });
     });
 
-    tt.test('  triton volume create volume with non-default size',
+    suite.test('  triton volume create volume with non-default size',
         function (t) {
             h.triton([
                 'volume',
@@ -72,7 +73,7 @@ test('triton volume create with non-default size...', testOpts, function (tt) {
             });
         });
 
-    tt.test('  check volume was created', function (t) {
+    suite.test('  check volume was created', function (t) {
         h.safeTriton(t, ['volume', 'get', validVolumeName],
             function onGetVolume(getVolErr, stdout) {
                 var volume;
@@ -88,7 +89,7 @@ test('triton volume create with non-default size...', testOpts, function (tt) {
             });
     });
 
-    tt.test('  delete volume', function (t) {
+    suite.test('  delete volume', function (t) {
         h.safeTriton(t, ['volume', 'delete', '-y', '-w', validVolumeName],
             function onDelVolume(delVolErr, stdout) {
                 t.equal(delVolErr, null,
@@ -97,7 +98,7 @@ test('triton volume create with non-default size...', testOpts, function (tt) {
             });
     });
 
-    tt.test('  check volume was deleted', function (t) {
+    suite.test('  check volume was deleted', function (t) {
         h.triton(['volume', 'get', validVolumeName].join(' '),
             function onGetVolume(getVolErr, stdout, stderr) {
                 t.ok(getVolErr,
@@ -108,14 +109,17 @@ test('triton volume create with non-default size...', testOpts, function (tt) {
                 t.end();
             });
     });
+
+    suite.end();
 });
 
-test('triton volume create with unavailable size...', testOpts, function (tt) {
+test('triton volume create with unavailable size...', testOpts,
+function (suite) {
     var validVolumeName =
             h.makeResourceName('node-triton-test-volume-create-unavailable-' +
                 'size');
 
-    tt.test('  triton volume create volume with unavailable size',
+    suite.test('  triton volume create volume with unavailable size',
         function (t) {
 
             vasync.pipeline({arg: {}, funcs: [
@@ -186,4 +190,6 @@ test('triton volume create with unavailable size...', testOpts, function (tt) {
                 t.end();
             });
         });
+
+    suite.end();
 });

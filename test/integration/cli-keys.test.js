@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2015, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -13,7 +13,7 @@
  */
 
 var h = require('./helpers');
-var test = require('tape');
+var test = require('tap').test;
 var backoff = require('backoff');
 
 
@@ -28,8 +28,8 @@ var MAX_CHECK_KEY_TRIES = 10;
 
 // --- Tests
 
-test('triton key', function (tt) {
-    tt.test(' triton key add', function (t) {
+test('triton key', function (suite) {
+    suite.test(' triton key add', function (t) {
         var cmd = 'key add -n ' + KEY_NAME + ' ' + KEY_PATH;
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton key add'))
@@ -40,7 +40,7 @@ test('triton key', function (tt) {
         });
     });
 
-    tt.test(' triton key get', function (t) {
+    suite.test(' triton key get', function (t) {
         h.triton('key get ' + KEY_SIG, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton key get'))
                 return t.end();
@@ -50,7 +50,7 @@ test('triton key', function (tt) {
         });
     });
 
-    tt.test(' triton key list', function (t) {
+    suite.test(' triton key list', function (t) {
         h.triton('key list', function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton key list'))
                 return t.end();
@@ -75,7 +75,7 @@ test('triton key', function (tt) {
         });
     });
 
-    tt.test(' triton key delete', function (t) {
+    suite.test(' triton key delete', function (t) {
         var cmd = 'key delete ' + KEY_SIG + ' --yes';
         h.triton(cmd, function (err, stdout, stderr) {
             if (h.ifErr(t, err, 'triton key delete'))
@@ -97,4 +97,6 @@ test('triton key', function (tt) {
             call.start();
         });
     });
+
+    suite.end();
 });

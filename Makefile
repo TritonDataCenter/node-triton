@@ -31,13 +31,19 @@ all:
 .PHONY: test
 test: test-unit test-integration
 
+.PHONY: ensure-node-v6-or-greater-for-test-suite
+ensure-node-v6-or-greater-for-test-suite:
+	@NODE_VER=$(shell node --version) && \
+		./node_modules/.bin/semver -r '>=6.x' $$NODE_VER >/dev/null || \
+		(echo "error: test suite requires node v6 or greater: you have $$NODE_VER"; exit 1)
+
 .PHONY: test-unit
-test-unit:
+test-unit: ensure-node-v6-or-greater-for-test-suite
 	NODE_NDEBUG= $(TAP_EXEC) --timeout $(TEST_TIMEOUT_S) -j $(TEST_JOBS) \
 		-o ./test-unit.tap test/unit/$(TEST_GLOB).test.js
 
 .PHONY: test-integration
-test-integration:
+test-integration: ensure-node-v6-or-greater-for-test-suite
 	NODE_NDEBUG= $(TAP_EXEC) --timeout $(TEST_TIMEOUT_S) -j $(TEST_JOBS) \
 		-o ./test-integration.tap test/integration/$(TEST_GLOB).test.js
 

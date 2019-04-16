@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2018, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -16,7 +16,7 @@
 var h = require('./helpers');
 var f = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 
 // --- Globals
 
@@ -49,13 +49,13 @@ if (OPTS.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 
-test('triton instance', OPTS, function (tt) {
-    h.printConfig(tt);
+test('triton instance', OPTS, function (suite) {
+    h.printConfig(suite);
 
-    tt.test('  cleanup existing inst with alias ' + INST_ALIAS, cleanup);
+    suite.test('  cleanup existing inst with alias ' + INST_ALIAS, cleanup);
 
 
-    tt.test('  triton create --deletion-protection', function (t) {
+    suite.test('  triton create --deletion-protection', function (t) {
         h.createTestInst(t, INST_ALIAS, {
             extraFlags: ['--deletion-protection']
         }, function onInst(err2, instId) {
@@ -77,7 +77,7 @@ test('triton instance', OPTS, function (tt) {
     });
 
 
-    tt.test('  attempt to delete deletion-protected instance', function (t) {
+    suite.test('  attempt to delete deletion-protected instance', function (t) {
         var cmd = 'instance rm ' + INST + ' -w';
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -89,7 +89,7 @@ test('triton instance', OPTS, function (tt) {
     });
 
 
-    tt.test('  triton instance disable-deletion-protection', function (t) {
+    suite.test('  triton instance disable-deletion-protection', function (t) {
         var cmd = 'instance disable-deletion-protection ' + INST + ' -w';
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -112,7 +112,7 @@ test('triton instance', OPTS, function (tt) {
     });
 
 
-    tt.test('  triton instance disable-deletion-protection (already enabled)',
+    suite.test('  triton inst disable-deletion-protection (already enabled)',
     function (t) {
         var cmd = 'instance disable-deletion-protection ' + INST + ' -w';
 
@@ -136,7 +136,7 @@ test('triton instance', OPTS, function (tt) {
     });
 
 
-    tt.test('  triton instance enable-deletion-protection', function (t) {
+    suite.test('  triton instance enable-deletion-protection', function (t) {
         var cmd = 'instance enable-deletion-protection ' + INST + ' -w';
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -159,7 +159,7 @@ test('triton instance', OPTS, function (tt) {
     });
 
 
-    tt.test('  triton instance enable-deletion-protection (already enabled)',
+    suite.test('  triton instance enable-deletion-protection (already enabled)',
     function (t) {
         var cmd = 'instance enable-deletion-protection ' + INST + ' -w';
 
@@ -187,5 +187,7 @@ test('triton instance', OPTS, function (tt) {
      * Use a timeout, because '-w' on delete doesn't have a way to know if the
      * attempt failed or if it is just taking a really long time.
      */
-    tt.test('  cleanup: triton rm INST', {timeout: 10 * 60 * 1000}, cleanup);
+    suite.test('  cleanup: triton rm INST', {timeout: 10 * 60 * 1000}, cleanup);
+
+    suite.end();
 });

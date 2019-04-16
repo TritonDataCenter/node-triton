@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright (c) 2016, Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -15,7 +15,7 @@
 var h = require('./helpers');
 var f = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 
 // --- Globals
 
@@ -33,17 +33,18 @@ if (OPTS.skip) {
     console.error('** set "allowWriteActions" in test config to enable');
 }
 
-test('triton instance snapshot', OPTS, function (tt) {
-    h.printConfig(tt);
+test('triton instance snapshot', OPTS, function (suite) {
+    h.printConfig(suite);
 
-    tt.test('  cleanup existing inst with alias ' + INST_ALIAS, function (t) {
+    suite.test('  cleanup existing inst with alias ' + INST_ALIAS,
+    function (t) {
         h.deleteTestInst(t, INST_ALIAS, function (err) {
             t.ifErr(err);
             t.end();
         });
     });
 
-    tt.test('  setup: triton instance create', function (t) {
+    suite.test('  setup: triton instance create', function (t) {
         h.createTestInst(t, INST_ALIAS, {}, function onInst(err2, instId) {
             if (h.ifErr(t, err2, 'triton instance create'))
                 return t.end();
@@ -54,7 +55,7 @@ test('triton instance snapshot', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance snapshot create', function (t) {
+    suite.test('  triton instance snapshot create', function (t) {
         var cmd = 'instance snapshot create -w -n ' + SNAP_NAME + ' ' + INST;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -68,7 +69,7 @@ test('triton instance snapshot', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance snapshot get', function (t) {
+    suite.test('  triton instance snapshot get', function (t) {
         var cmd = 'instance snapshot get ' + INST + ' ' + SNAP_NAME;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -83,7 +84,7 @@ test('triton instance snapshot', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance snapshot list', function (t) {
+    suite.test('  triton instance snapshot list', function (t) {
         var cmd = 'instance snapshot list ' + INST;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -106,7 +107,7 @@ test('triton instance snapshot', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance start --snapshot', function (t) {
+    suite.test('  triton instance start --snapshot', function (t) {
         var cmd = 'instance start ' + INST + ' -w --snapshot=' + SNAP_NAME;
 
         h.triton(cmd, function (err, stdout, stderr) {
@@ -119,7 +120,7 @@ test('triton instance snapshot', OPTS, function (tt) {
         });
     });
 
-    tt.test('  triton instance snapshot delete', function (t) {
+    suite.test('  triton instance snapshot delete', function (t) {
         var cmd = 'instance snapshot delete  -w --force ' + INST + ' ' +
                   SNAP_NAME;
 
@@ -140,10 +141,12 @@ test('triton instance snapshot', OPTS, function (tt) {
      * Use a timeout, because '-w' on delete doesn't have a way to know if the
      * attempt failed or if it is just taking a really long time.
      */
-    tt.test('  cleanup: triton instance rm INST', {timeout: 10 * 60 * 1000},
+    suite.test('  cleanup: triton instance rm INST', {timeout: 10 * 60 * 1000},
             function (t) {
         h.deleteTestInst(t, INST_ALIAS, function () {
             t.end();
         });
     });
+
+    suite.end();
 });
