@@ -6,6 +6,9 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#263] Correct envvar name to `TRITON_TLS_INSECURE`
+  in CLI profile validation error message.
+
 ## 7.0.2
 
 - [TRITON-1347] Changing to node-tap as the test runner. Also some
