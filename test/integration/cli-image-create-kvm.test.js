@@ -33,7 +33,8 @@ var DERIVED_INST_ALIAS = _RESOURCE_NAME_PREFIX + '-derived';
 delete _RESOURCE_NAME_PREFIX;
 
 var testOpts = {
-    skip: !h.CONFIG.allowWriteActions || h.CONFIG.skipKvmTests
+    skip: (!h.CONFIG.allowWriteActions || h.CONFIG.skipKvmTests) &&
+        'requires config.allowWriteActions and config.skipKvmTests=false'
 };
 
 

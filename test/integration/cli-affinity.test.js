@@ -30,9 +30,11 @@ var h = require('./helpers');
 var ALIAS_PREFIX = format('nodetritontest-affinity-%s', os.hostname());
 
 var testOpts = {
-    skip: !h.CONFIG.allowWriteActions || h.CONFIG.skipAffinityTests
+    skip: (
+        (!h.CONFIG.allowWriteActions || h.CONFIG.skipAffinityTests) &&
+        'requires config.allowWriteActions and config.skipAffinityTests=false'
+    )
 };
-
 
 // --- Tests
 

@@ -27,17 +27,12 @@ var VLAN_ID   = 3197;
 
 var VLAN;
 
-var OPTS = {
-    skip: !h.CONFIG.allowWriteActions
+var writeTestOpts = {
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
 };
 
 
 // --- Tests
-
-if (OPTS.skip) {
-    console.error('** skipping some %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
 
 test('triton vlan list', function (suite) {
 
@@ -281,7 +276,7 @@ test('triton vlan networks', function (suite) {
 });
 
 
-test('triton vlan create', OPTS, function (suite) {
+test('triton vlan create', writeTestOpts, function (suite) {
 
     suite.test('  cleanup: rm vlan ' + VLAN_NAME + ' if exists', function (t) {
         h.triton('vlan delete ' + VLAN_NAME, function onTriton(err, stdout) {
@@ -348,7 +343,7 @@ test('triton vlan create', OPTS, function (suite) {
 });
 
 
-test('triton vlan delete', OPTS, function (suite) {
+test('triton vlan delete', writeTestOpts, function (suite) {
 
     suite.test(' triton vlan delete -h', function (t) {
         h.triton('vlan delete -h', function onTriton(err, stdout, stderr) {

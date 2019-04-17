@@ -22,8 +22,8 @@ var test = require('tap').test;
 
 var INST_ALIAS = f('nodetritontest-deletion-protection-%s', os.hostname());
 var INST;
-var OPTS = {
-    skip: !h.CONFIG.allowWriteActions
+var testOpts = {
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
 };
 
 // --- Helpers
@@ -44,12 +44,7 @@ function cleanup(t) {
 
 // --- Tests
 
-if (OPTS.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
-
-test('triton instance', OPTS, function (suite) {
+test('triton instance', testOpts, function (suite) {
     h.printConfig(suite);
 
     suite.test('  cleanup existing inst with alias ' + INST_ALIAS, cleanup);

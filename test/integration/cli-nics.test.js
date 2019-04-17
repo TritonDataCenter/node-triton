@@ -25,19 +25,17 @@ var INST;
 var NIC;
 var NIC2;
 
-var OPTS = {
-    skip: !h.CONFIG.allowWriteActions
+var testOpts = {
+    skip: (
+        (!process.env.TEST_KNOWN_FAIL && 'known failure, see TRITON-1398') ||
+        (!h.CONFIG.allowWriteActions && 'requires config.allowVolumesTests')
+    )
 };
 
 
 // --- Tests
 
-if (OPTS.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
-
-test('triton instance nics', OPTS, function (suite) {
+test('triton instance nics', testOpts, function (suite) {
     h.printConfig(suite);
 
     suite.test('  cleanup existing inst with alias ' + INST_ALIAS,

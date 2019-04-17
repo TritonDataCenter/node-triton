@@ -25,18 +25,13 @@ var RULE2 = 'FROM any TO vm $id BLOCK tcp port 25';
 var INST;
 var ID;
 var INST_ALIAS = f('nodetritontest-fwrules-%s', os.hostname());
-var OPTS = {
-    skip: !h.CONFIG.allowWriteActions
+var testOpts = {
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
 };
 
 // --- Tests
 
-if (OPTS.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
-
-test('triton fwrule', OPTS, function (suite) {
+test('triton fwrule', testOpts, function (suite) {
     h.printConfig(suite);
 
     suite.test('  cleanup existing inst with alias ' + INST_ALIAS,

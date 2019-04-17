@@ -26,8 +26,8 @@ var h = require('./helpers');
 var INST_ALIAS = f('nodetritontest-managewf-%s', os.hostname());
 var INST_ALIAS_NEWNAME = INST_ALIAS + '-renamed';
 
-var opts = {
-    skip: !h.CONFIG.allowWriteActions
+var testOpts = {
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
 };
 
 // global variable to hold vm instance JSON
@@ -36,11 +36,7 @@ var instance;
 
 // --- Tests
 
-if (opts.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
-test('triton manage workflow', opts, function (suite) {
+test('triton manage workflow', testOpts, function (suite) {
     h.printConfig(suite);
 
     suite.test('  cleanup existing inst with alias ' + INST_ALIAS,

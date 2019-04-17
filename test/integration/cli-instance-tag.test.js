@@ -26,19 +26,14 @@ var h = require('./helpers');
 // --- globals
 
 var INST_ALIAS = f('nodetritontest-insttag-%s', os.hostname());
-
-var opts = {
-    skip: !h.CONFIG.allowWriteActions
+var testOpts = {
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
 };
 
 
 // --- Tests
 
-if (opts.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
-test('triton inst tag ...', opts, function (suite) {
+test('triton inst tag ...', testOpts, function (suite) {
     h.printConfig(suite);
 
     var inst;

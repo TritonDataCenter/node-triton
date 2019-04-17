@@ -27,17 +27,8 @@ var NET_NAME = f('nodetritontest-network-%s', os.hostname());
 var networks;
 var vlan;
 
-var OPTS = {
-    skip: !h.CONFIG.allowWriteActions
-};
-
 
 // --- Tests
-
-if (OPTS.skip) {
-    console.error('** skipping some %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
 
 test('triton networks', function (suite) {
 
@@ -238,7 +229,9 @@ test('triton network get', function (suite) {
 });
 
 
-test('triton network create', OPTS, function (suite) {
+test('triton network create', {
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
+}, function (suite) {
 
     suite.test('  cleanup: rm network ' + NET_NAME + ' if exists',
     function (t) {
@@ -273,7 +266,9 @@ test('triton network create', OPTS, function (suite) {
         });
     });
 
-    suite.test(' triton network create VLAN', function (t) {
+    suite.test(' triton network create VLAN', {
+        skip: !process.env.TEST_KNOWN_FAIL && 'known failure, see TRITON-1389'
+    }, function (t) {
         h.triton('network create --name=' + NET_NAME +
                  ' --subnet=192.168.97.0/24 --start_ip=192.168.97.1' +
                  ' --end_ip=192.168.97.254 -j ' + vlan.vlan_id,
@@ -300,7 +295,12 @@ test('triton network create', OPTS, function (suite) {
 });
 
 
-test('triton network delete', OPTS, function (suite) {
+test('triton network delete', {
+    skip: (
+        (!process.env.TEST_KNOWN_FAIL && 'known failure, see TRITON-1389') ||
+        (!h.CONFIG.allowWriteActions && 'requires config.allowWriteActions')
+    )
+}, function (suite) {
 
     suite.test(' triton network delete -h', function (t) {
         h.triton('network delete -h', function (err, stdout, stderr) {

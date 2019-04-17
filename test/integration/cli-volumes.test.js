@@ -20,16 +20,14 @@ var vasync = require('vasync');
 var common = require('../../lib/common');
 var h = require('./helpers');
 
+var testOpts = {
+    skip: (
+        !(h.CONFIG.allowWriteActions && h.CONFIG.allowVolumesTests) &&
+        'requires config.allowWriteActions and config.allowVolumesTests'
+    )
+};
 var FABRIC_NETWORKS = [];
 
-var testOpts = {
-    skip: !(h.CONFIG.allowWriteActions && h.CONFIG.allowVolumesTests)
-};
-if (testOpts.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" and "allowVolumesTests" '
-        + 'in test config to enable');
-}
 
 test('triton volume create ...', testOpts, function (suite) {
     var currentVolume;

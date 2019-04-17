@@ -25,13 +25,11 @@ var FABRIC_NETWORKS = [];
 var MIBS_IN_GIB = 1024;
 
 var testOpts = {
-    skip: !(h.CONFIG.allowWriteActions && h.CONFIG.allowVolumesTests)
+    skip: (
+        !(h.CONFIG.allowWriteActions && h.CONFIG.allowVolumesTests) &&
+        'requires config.allowWriteActions and config.allowVolumesTests'
+    )
 };
-if (testOpts.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" and "allowVolumesTests" '
-        + 'in test config to enable');
-}
 
 test('triton volume create with non-default size...', testOpts,
 function (suite) {

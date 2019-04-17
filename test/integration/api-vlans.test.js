@@ -75,7 +75,9 @@ test('TritonApi vlan', function (suite) {
     });
 
 
-    suite.test(' TritonApi deleteFabricVlan', function (t) {
+    suite.test(' TritonApi deleteFabricVlan', {
+        skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
+    }, function (t) {
         function check(genId, idType, cb) {
             CLIENT.cloudapi.createFabricVlan({
                 vlan_id: 3291,

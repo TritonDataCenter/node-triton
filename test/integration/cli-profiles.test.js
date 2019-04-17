@@ -21,17 +21,12 @@ var test = require('tap').test;
 var PROFILE_FILE = path.join(__dirname, 'test-profile.json');
 var PROFILE_DATA = JSON.parse(fs.readFileSync(PROFILE_FILE, 'utf8'));
 
-var opts = {
-    skip: !h.CONFIG.allowWriteActions
+var testOpts = {
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
 };
 
 
 // --- Tests
-
-if (opts.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
 
 test('triton profiles (read only)', function (suite) {
     suite.test('  triton profile get env', function (t) {
@@ -52,7 +47,7 @@ test('triton profiles (read only)', function (suite) {
     suite.end();
 });
 
-test('triton profiles (read/write)', opts, function (suite) {
+test('triton profiles (read/write)', testOpts, function (suite) {
     suite.test('  triton profile create', function (t) {
         /*
          * We need to skip the Docker setup with '--no-docker' because we are

@@ -32,7 +32,7 @@ var IMAGE_DATA = {
 var DERIVED_ALIAS = format('nodetritontest-images-%s-derived', os.hostname());
 
 var testOpts = {
-    skip: !h.CONFIG.allowWriteActions
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
 };
 
 

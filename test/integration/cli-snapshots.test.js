@@ -22,18 +22,17 @@ var test = require('tap').test;
 var SNAP_NAME = 'test-snapshot';
 var INST_ALIAS = f('nodetritontest-snapshots-%s', os.hostname());
 var INST;
-var OPTS = {
-    skip: !h.CONFIG.allowWriteActions
+
+var testOpts = {
+    skip: (
+        (!process.env.TEST_KNOWN_FAIL && 'known failure, see TRITON-1387') ||
+        (!h.CONFIG.allowWriteActions && 'requires config.allowWriteActions')
+    )
 };
 
 // --- Tests
 
-if (OPTS.skip) {
-    console.error('** skipping %s tests', __filename);
-    console.error('** set "allowWriteActions" in test config to enable');
-}
-
-test('triton instance snapshot', OPTS, function (suite) {
+test('triton instance snapshot', testOpts, function (suite) {
     h.printConfig(suite);
 
     suite.test('  cleanup existing inst with alias ' + INST_ALIAS,

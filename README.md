@@ -412,6 +412,20 @@ There are a few `TEST_...` vars that can tweak how the tests are run.
   those with "image" in the name, use `make test TEST_GLOB=*image*`, or
   to run a specific test file: `make test TEST_GLOB=metadataFromOpts`.
 
+- `TEST_KNOWN_FAIL=1` - At any given time there may be some known failures
+  in the test suite that are being worked on in specific tickets. Those
+  tests may be excluded from the default test run. These will show up in
+  test output like this:
+
+    ```
+    test/integration/cli-snapshots.test.js ................ 0/1 1s
+      Skipped: 1
+        triton instance snapshot known failure, see TRITON-1387
+    ```
+
+  Set the `TEST_KNOWN_FAIL=1` environment variable to include these tests
+  in the test run.
+
 - `TEST_JOBS=<number of test files to run concurrently>` - By default this is
   10. Set to 1 to run tests serially.
 

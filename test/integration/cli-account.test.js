@@ -21,7 +21,7 @@ var test = require('tap').test;
 // --- Globals
 
 var writeTestOpts = {
-    skip: !h.CONFIG.allowWriteActions
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
 };
 
 
