@@ -25,7 +25,6 @@ var INST;
 
 var testOpts = {
     skip: (
-        (!process.env.TEST_KNOWN_FAIL && 'known failure, see TRITON-1387') ||
         (!h.CONFIG.allowWriteActions && 'requires config.allowWriteActions')
     )
 };

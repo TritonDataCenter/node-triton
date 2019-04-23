@@ -91,6 +91,8 @@ Known issues:
 
 - [joyent/node-triton#263] Correct envvar name to `TRITON_TLS_INSECURE`
   in CLI profile validation error message.
+- [TRITON-1387] Fixed -w so it works properly with both instance deletion and
+  starting with a snapshot. Also added support for --with-timeout to both.
 
 ## 7.0.2
 
