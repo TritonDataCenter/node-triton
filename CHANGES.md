@@ -6,6 +6,12 @@ Known issues:
 
 ## not yet released
 
+## 7.1.0
+
+- [TRITON-967] Add support for listing, adding, deleting, and resizing
+  disks for instances based into `flexible_disk` packages.
+  [RFD 154](https://github.com/joyent/rfd/tree/master/rfd/0154)
+
 - [joyent/node-triton#263] Correct envvar name to `TRITON_TLS_INSECURE`
   in CLI profile validation error message.
 

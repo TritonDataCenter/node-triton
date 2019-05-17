@@ -17,8 +17,6 @@ var f = require('util').format;
 var h = require('./helpers');
 var test = require('tap').test;
 
-var common = require('../../lib/common');
-
 var subs = [
     ['info'],
     ['profile'],
@@ -62,6 +60,12 @@ var subs = [
     ['instance nic list', 'instance nic ls'],
     ['instance nic get'],
     ['instance nic delete', 'instance nic rm'],
+    ['instance disk'],
+    ['instance disk add'],
+    ['instance disk list', 'instance disk ls'],
+    ['instance disk get'],
+    ['instance disk resize'],
+    ['instance disk delete', 'instance disk rm'],
     ['ip'],
     ['ssh'],
     ['network'],

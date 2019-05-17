@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2017 Joyent, Inc.
+ * Copyright 2019 Joyent, Inc.
  */
 
 /*
@@ -19,7 +19,6 @@ var os = require('os');
 var path = require('path');
 var tabula = require('tabula');
 
-var common = require('../../lib/common');
 var mod_triton = require('../../');
 var testcommon = require('../lib/testcommon');
 
@@ -78,7 +77,6 @@ if (CONFIG.allowWriteActions === undefined)
     CONFIG.allowWriteActions = false;
 
 var TRITON = [process.execPath, path.resolve(__dirname, '../../bin/triton')];
-var UA = 'node-triton-test';
 
 var LOG = require('../lib/log');
 
@@ -254,6 +252,46 @@ function getTestKvmImg(t, cb) {
     });
 }
 
+/*
+ * Find and return an image that can be used for test *bhyve* provisions.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, imgId)`
+ *      where `imgId` is an image identifier (an image name, shortid, or id).
+ */
+function getTestBhyveImg(t, cb) {
+    if (CONFIG.bhyveImage) {
+        assert.string(CONFIG.bhyvePackage, 'CONFIG.bhyvePackage');
+        t.ok(CONFIG.bhyveImage, 'bhyveImage from config: ' + CONFIG.bhyveImage);
+        cb(null, CONFIG.bhyveImage);
+        return;
+    }
+
+    var candidateImageNames = {
+        'ubuntu-certified-16.04': true
+    };
+    safeTriton(t, ['img', 'ls', '-j'], function (err, stdout) {
+        var imgId;
+        var imgs = jsonStreamParse(stdout);
+        // Newest images first.
+        tabula.sortArrayOfObjects(imgs, ['-published_at']);
+        var imgRepr;
+        for (var i = 0; i < imgs.length; i++) {
+            var img = imgs[i];
+            if (candidateImageNames[img.name] && !img.requirements ||
+                !img.requirements.brand || img.requirements.brand === 'bhyve') {
+                imgId = img.id;
+                imgRepr = f('%s@%s', img.name, img.version);
+                break;
+            }
+        }
+
+        t.ok(imgId,
+            f('latest bhyve image (using subset of supported names): %s (%s)',
+            imgId, imgRepr));
+        cb(err, imgId);
+    });
+}
 
 /*
  * Find and return an package that can be used for test provisions.
@@ -313,6 +351,48 @@ function getTestKvmPkg(t, cb) {
         cb(null, pkgId);
     });
 }
+
+/*
+ * Find and return a package that can be used for flexible_disk test
+ * provisions.
+ *
+ * @param {Tape} t - tape test object
+ * @param {Function} cb - `function (err, pkgId)`
+ *      where `pkgId` is an package identifier (a name, shortid, or id).
+ */
+function getTestFlexPkg(t, cb) {
+    if (CONFIG.flexPackage) {
+        assert.string(CONFIG.flexPackage, 'CONFIG.flexPackage');
+        t.ok(CONFIG.flexPackage, 'flexPackage from config: ' +
+            CONFIG.flexPackage);
+        cb(null, CONFIG.flexPackage);
+        return;
+    }
+
+    safeTriton(t, ['pkg', 'ls', '-j'], function (err, stdout) {
+        if (err) {
+            cb(err);
+            return;
+        }
+        var pkgs = jsonStreamParse(stdout);
+        pkgs = pkgs.filter(function getFlex(pkg) {
+            return pkg.flexible_disk === true;
+        });
+
+        if (pkgs.length === 0) {
+            cb();
+            return;
+        }
+
+        // Smallest RAM first.
+        tabula.sortArrayOfObjects(pkgs, ['memory']);
+        var pkgId = pkgs[0].id;
+        t.ok(pkgId, f('smallest (RAM) available flexible_disk package: %s (%s)',
+            pkgId, pkgs[0].name));
+        cb(null, pkgId);
+    });
+}
+
 
 /*
  * Find and return second smallest package name that can be used for
@@ -414,6 +494,53 @@ function createTestInst(t, name, opts, cb) {
     });
 }
 
+function createTestFlexInst(t, name, opts, cb) {
+    assert.object(t, 't');
+    assert.string(name, 'name');
+    assert.object(opts, 'opts');
+    assert.optionalArrayOfString(opts.extraFlags, 'opts.extraFlags');
+    assert.func(cb, 'cb');
+
+    getTestFlexPkg(t, function (err, pkgId) {
+        t.ifErr(err);
+        if (err) {
+            cb(err);
+            return;
+        }
+
+        if (!pkgId) {
+            error('No flexible_disk packages are available');
+            cb();
+            return;
+        }
+
+        getTestBhyveImg(t, function (err2, imgId) {
+            t.ifErr(err2);
+            if (err2) {
+                cb(err2);
+                return;
+            }
+
+            var cmd = f('instance create -w -n %s %s %s', name, imgId, pkgId);
+            if (opts.extraFlags) {
+                cmd += ' ' + opts.extraFlags.join(' ');
+            }
+
+            triton(cmd, function (err3, stdout) {
+                t.ifErr(err3, 'create test instance');
+                if (err3) {
+                    cb(err3);
+                    return;
+                }
+
+                var match = stdout.match(/Created .+? \((.+)\)/);
+                var inst = match[1];
+
+                cb(null, inst);
+            });
+        });
+    });
+}
 
 /*
  * Delete the given test instance (by name or id). It is not an error for the
@@ -520,6 +647,7 @@ module.exports = {
 
     createClient: createClient,
     createTestInst: createTestInst,
+    createTestFlexInst: createTestFlexInst,
     deleteTestInst: deleteTestInst,
     deleteTestImg: deleteTestImg,
 

@@ -41,4 +41,8 @@
     // ubuntu-certified image.
     "kvmPackage": "<package name or uuid>",
     "kvmImage": "<image uuid, name or name@version>"
+
+    // Optional. Set to 'true' to skip flexible disk tests. These tests assume
+    // the datacenter has flexible disk packages.
+    "skipFlexDiskTests": false
 }
