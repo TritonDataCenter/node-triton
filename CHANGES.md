@@ -6,6 +6,11 @@ Known issues:
 
 ## not yet released
 
+## 7.1.1
+
+- [joyent/node-triton#169] Fix `triton rbac ...` commands that were
+  all broken by #108 in v5 (by github.com/YangYong3).
+
 ## 7.1.0
 
 - [TRITON-967] Add support for listing, adding, deleting, and resizing
