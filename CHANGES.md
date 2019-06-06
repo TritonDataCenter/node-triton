@@ -6,6 +6,46 @@ Known issues:
 
 ## not yet released
 
+## 7.2.0
+
+- [TRITON-1325] node-triton fwrule support for cloud firewall logging.
+  Firewall rules will now include the attribute `log (Boolean)`. When
+  true, the system will log new TCP connections or new other-protocol
+  sessions matching the rules.
+  [RFD 163](https://github.com/joyent/rfd/tree/master/rfd/0163)
+
+  This change modifies the default output of the `triton inst fwrules`
+  and `triton fwrule list` adding a `LOG` column to the default output.
+
+  For example, for a set of rules that previously were as follows:
+
+        SHORTID   ENABLED  GLOBAL  RULE
+        285d7f76  false    -       FROM any TO vm efe45825-4c0d-48f5-d62c-c5a50433fad1 BLOCK tcp PORT 666
+        4ef987de  true     -       FROM subnet 10.99.99.0/24 TO vm 3a2b9998-965d-c4ab-d952-eb2802f8d6b9 ALLOW tcp PORT all
+        44eae6bb  true     -       FROM subnet 10.99.99.0/24 TO vm efe45825-4c0d-48f5-d62c-c5a50433fad1 ALLOW tcp PORT all
+
+  The new output will be:
+
+        SHORTID   ENABLED  GLOBAL  LOG   RULE 
+        285d7f76  false    -       true  FROM any TO vm efe45825-4c0d-48f5-d62c-c5a50433fad1 BLOCK tcp PORT 666
+        4ef987de  true     -       true  FROM subnet 10.99.99.0/24 TO vm 3a2b9998-965d-c4ab-d952-eb2802f8d6b9 ALLOW tcp PORT all
+        44eae6bb  true     -       true  FROM subnet 10.99.99.0/24 TO vm efe45825-4c0d-48f5-d62c-c5a50433fad1 ALLOW tcp PORT all
+
+  The `log (Boolean)` field will be returned when a single firewall rule is
+  retrieved using `fwrule get`:
+
+        fwrule get 44eae6bb
+        {
+            "id": "44eae6bb-337f-45ba-8ff9-dddcd46e5918",
+            "rule": "FROM subnet 10.99.99.0/24 TO vm efe45825-4c0d-48f5-d62c-c5a50433fad1 ALLOW tcp PORT all",
+            "enabled": true,
+            "log": true
+        }
+
+  The sub-command `fwrule create` will include the new `-l|--log` option for
+  rule creation and the `log` value has been added to the list of fields which
+  can be updated using `fwrule update`.
+
 ## 7.1.1
 
 - [joyent/node-triton#169] Fix `triton rbac ...` commands that were
