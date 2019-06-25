@@ -1,7 +1,7 @@
 {
   "name": "triton",
   "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
-  "version": "7.2.0",
+  "version": "7.3.0",
   "author": "Joyent (joyent.com)",
   "homepage": "https://github.com/joyent/node-triton",
   "dependencies": {

@@ -6,6 +6,10 @@ Known issues:
 
 ## not yet released
 
+## 7.3.0
+
+- [TRITON-899] Add node-triton support for triton instance migration.
+
 ## 7.2.0
 
 - [TRITON-1325] node-triton fwrule support for cloud firewall logging.
