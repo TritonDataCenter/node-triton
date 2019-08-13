@@ -6,6 +6,11 @@ Known issues:
 
 ## not yet released
 
+## 7.4.0
+
+- [TRITON-1862] Add `triton account limits` support. This returns the
+  provisioning limits set for the account and/or datacenter.
+
 ## 7.3.0
 
 - [TRITON-899] Add node-triton support for triton instance migration.
