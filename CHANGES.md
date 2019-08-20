@@ -6,6 +6,10 @@ Known issues:
 
 ## not yet released
 
+## 7.4.1
+
+- [TRITON-1869] node-triton needs `triton instance migration finalize`.
+
 ## 7.4.0
 
 - [TRITON-1862] Add `triton account limits` support. This returns the

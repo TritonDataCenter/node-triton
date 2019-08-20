@@ -246,6 +246,31 @@ test('triton instance migration', OPTS, function (tt) {
     });
 
 
+    tt.test('   triton instance migration finalize', function (t) {
+        if (!INST_SHORT) {
+            t.comment('Skipping test. Instance not created');
+            t.end();
+            return;
+        }
+
+        if (!USER_MIGR_ALLOWED) {
+            t.comment('Skipping test. User migration not allowed');
+            t.end();
+            return;
+        }
+        var cmd = ['instance', 'migration', 'finalize', INST_SHORT];
+
+        h.safeTriton(t, cmd, function syncCb(err, stdout, stderr) {
+            if (err) {
+                t.end();
+                return;
+            }
+            t.equal(stdout.trim(), 'Done - the migration is finalized');
+            t.end();
+        });
+    });
+
+
     /*
      * Use a timeout, because '-w' on delete doesn't have a way to know if the
      * attempt failed or if it is just taking a really long time.
