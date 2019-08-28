@@ -6,6 +6,18 @@ Known issues:
 
 ## not yet released
 
+(nothing yet)
+
+## 7.5.0
+
+- [joyent/node-triton#264] Update `triton rbac role[s]` to use the new
+  CloudAPI role API (see https://apidocs.joyent.com/cloudapi/#900).
+
+- [joyent/node-triton#265] Un-hide the `triton --act-as ACCOUNT ...`
+  option (and add a matching `TRITON_ACT_AS=ACCCOUNT` envvar) that allows
+  one to masquerade as the given account. This is useful (a) for operator
+  accounts and (b) members of cross-account roles.
+
 ## 7.4.1
 
 - [TRITON-1869] node-triton needs `triton instance migration finalize`.
