@@ -111,31 +111,51 @@ test('triton account', function (suite) {
             });
     });
 
-    suite.test(' triton account limits', function (t) {
-        h.triton('-v account limits', function (err, stdout, stderr) {
-            if (h.ifErr(t, err))
-                return t.end();
-            t.ok(stdout.indexOf('LIMIT') > 0, 'LIMIT header should be found');
-            t.end();
-        });
-    });
-
-    suite.test(' triton account limits -j', function (t) {
-        h.triton('account limits -j', function (err, stdout, stderr) {
-            if (h.ifErr(t, err))
-                return t.end();
-            var i;
-            var limits = JSON.parse(stdout);
-            t.ok(Array.isArray(limits), 'json limits should be an array');
-            if (Array.isArray(limits) && limits.length > 0) {
-                for (i = 0; i < limits.length; i++) {
-                    t.ok(['ram', 'quota', 'machines'].indexOf(
-                        limits[i].type) >= 0, 'limit has a valid type field');
-                    t.ok(limits[i].used >= 0, 'limit has a valid used field');
-                    t.ok(limits[i].limit >= 0, 'limit has a valid limit field');
-                }
+    suite.test(' triton account limit version check', function (tt) {
+        h.cloudapiVersionGtrOrEq('9.8.0', function (verErr, versionGoodEnough) {
+            if (h.ifErr(tt, verErr)) {
+                tt.end();
+                return;
             }
-            t.end();
+
+            var limitTestOpts = {
+                skip: !versionGoodEnough
+            };
+
+            tt.test(' triton account limits', limitTestOpts, function (t) {
+                h.triton('-v account limits', function (err, stdout, stderr) {
+                    if (h.ifErr(t, err))
+                        return t.end();
+                    t.ok(stdout.indexOf('LIMIT') > 0,
+                        'LIMIT header should be found');
+                    t.end();
+                });
+            });
+
+            tt.test(' triton account limits -j', limitTestOpts, function (t) {
+                h.triton('account limits -j', function (err, stdout, stderr) {
+                    if (h.ifErr(t, err))
+                        return t.end();
+                    var i;
+                    var limits = JSON.parse(stdout);
+                    t.ok(Array.isArray(limits),
+                        'json limits should be an array');
+                    if (Array.isArray(limits) && limits.length > 0) {
+                        for (i = 0; i < limits.length; i++) {
+                            t.ok(['ram', 'quota', 'machines'].indexOf(
+                                limits[i].type) >= 0,
+                                'limit has a valid type field');
+                            t.ok(limits[i].used >= 0,
+                                'limit has a valid used field');
+                            t.ok(limits[i].limit >= 0,
+                                'limit has a valid limit field');
+                        }
+                    }
+                    t.end();
+                });
+            });
+
+            tt.end();
         });
     });
 

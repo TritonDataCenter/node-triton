@@ -17,6 +17,7 @@ var error = console.error;
 var f = require('util').format;
 var os = require('os');
 var path = require('path');
+var semver = require('semver');
 var tabula = require('tabula');
 
 var mod_triton = require('../../');
@@ -618,6 +619,55 @@ function deleteTestImg(t, imgNameOrId, cb) {
 
 
 /*
+ * Compare the given `ver` with the cloudapi version.
+ *
+ * Callback fires as (err, cmpResult), where cmpResult is as below:
+ *    1  if `ver` >  cloudapiVer
+ *    0  if `ver` == cloudapiVer
+ *   -1  if `ver` <  cloudapiVer
+ */
+function cloudapiVersionCmp(ver, cb) {
+    // Get the API version from CloudAPI.
+    var cmd = 'cloudapi /--ping -i';
+
+    triton(cmd, function (err, stdout, stderr) {
+        var cloudapiVer;
+        if (!stderr.split('\n').some(function (line) {
+            var match = line.match(/^server:\s+cloudapi\/(.*)$/i);
+            if (match) {
+                cloudapiVer = match[1];
+                return true;
+            }
+            return false;
+        })) {
+            cb(new Error('server header was not found in ping response'));
+            return;
+        }
+
+        try {
+            cb(null, semver.compare(ver, cloudapiVer));
+        } catch (ex) {
+            cb(ex);
+        }
+    });
+}
+
+/*
+ * Returns true if the CloudAPI version is greater than or equal to the given
+ * version, else returns false.
+ */
+function cloudapiVersionGtrOrEq(ver, cb) {
+    cloudapiVersionCmp(ver, function (err, result) {
+        if (err) {
+            cb(err);
+            return;
+        }
+
+        cb(null, result >= 0);
+    });
+}
+
+/*
  * Print out a listing of the test config.json values.
  */
 function printConfig(t) {
@@ -650,6 +700,9 @@ module.exports = {
     createTestFlexInst: createTestFlexInst,
     deleteTestInst: deleteTestInst,
     deleteTestImg: deleteTestImg,
+
+    cloudapiVersionCmp: cloudapiVersionCmp,
+    cloudapiVersionGtrOrEq: cloudapiVersionGtrOrEq,
 
     getTestImg: getTestImg,
     getTestKvmImg: getTestKvmImg,
