@@ -233,7 +233,7 @@ test('triton inst tag ...', testOpts, function (suite) {
      */
     suite.test('  cleanup: triton rm INST', {timeout: 10 * 60 * 1000},
             function (t) {
-        h.safeTriton(t, ['rm', '-w', inst.id], function (err, stdout) {
+        h.safeTriton(t, ['rm', '-f', '-w', inst.id], function (err, stdout) {
             t.end();
         });
     });

@@ -64,7 +64,8 @@ test('triton image ...', testOpts, function (suite) {
                 }
             } else {
                 var instToRm = JSON.parse(stdout);
-                h.safeTriton(t, ['inst', 'rm', '-w', instToRm.id], function () {
+                h.safeTriton(t, ['inst', 'rm', '-f', '-w', instToRm.id],
+                    function () {
                     t.ok(true, 'deleted inst ' + instToRm.id);
                     t.end();
                 });
@@ -87,7 +88,8 @@ test('triton image ...', testOpts, function (suite) {
                 }
             } else {
                 var instToRm = JSON.parse(stdout);
-                h.safeTriton(t, ['inst', 'rm', '-w', instToRm.id], function () {
+                h.safeTriton(t, ['inst', 'rm', '-f', '-w', instToRm.id],
+                    function () {
                     t.ok(true, 'deleted inst ' + instToRm.id);
                     t.end();
                 });
@@ -269,7 +271,7 @@ test('triton image ...', testOpts, function (suite) {
             t.end();
             return;
         }
-        h.safeTriton(t, ['rm', '-w', originInst.id, derivedInst.id],
+        h.safeTriton(t, ['rm', '-f', '-w', originInst.id, derivedInst.id],
                 function () {
             t.end();
         });

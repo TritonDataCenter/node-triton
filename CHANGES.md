@@ -8,6 +8,10 @@ Known issues:
 
 (nothing yet)
 
+## 7.6.0
+
+- [TRITON-1951] `triton instance delete` should provide `--force` flag
+
 ## 7.5.0
 
 - [joyent/node-triton#264] Update `triton rbac role[s]` to use the new

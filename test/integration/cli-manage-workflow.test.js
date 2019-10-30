@@ -305,7 +305,7 @@ test('triton manage workflow', testOpts, function (suite) {
 
     // remove test instance
     suite.test('  cleanup (triton delete)', function (t) {
-        h.safeTriton(t, ['delete', '-w', instance.id], function () {
+        h.safeTriton(t, ['delete', '-f', '-w', instance.id], function () {
             t.end();
         });
     });
