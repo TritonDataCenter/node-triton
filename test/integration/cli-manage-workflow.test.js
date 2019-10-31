@@ -142,7 +142,7 @@ test('triton manage workflow', testOpts, function (suite) {
     // have a way to know if the attempt failed or if it is just taking a
     // really long time.
     suite.test('  triton delete', {timeout: 10 * 60 * 1000}, function (t) {
-        h.safeTriton(t, ['delete', '-w', instance.id], function () {
+        h.safeTriton(t, ['delete', '-w', '-f', instance.id], function () {
             t.end();
         });
     });

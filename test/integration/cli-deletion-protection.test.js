@@ -73,7 +73,7 @@ test('triton instance', testOpts, function (suite) {
 
 
     suite.test('  attempt to delete deletion-protected instance', function (t) {
-        var cmd = 'instance rm ' + INST + ' -w';
+        var cmd = 'instance rm ' + INST + ' -w -f';
 
         h.triton(cmd, function (err, stdout, stderr) {
             t.ok(err, 'err expected');
