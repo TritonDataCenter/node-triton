@@ -1,7 +1,7 @@
 {
   "name": "triton",
   "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
-  "version": "7.5.0",
+  "version": "7.5.1",
   "author": "Joyent (joyent.com)",
   "homepage": "https://github.com/joyent/node-triton",
   "dependencies": {
@@ -22,7 +22,7 @@
     "rimraf": "2.4.4",
     "semver": "5.1.0",
     "smartdc-auth": "2.5.7",
-    "sshpk": "1.14.1",
+    "sshpk": "^1.14.1",
     "sshpk-agent": "1.7.0",
     "strsplit": "1.0.0",
     "tabula": "1.10.0",
