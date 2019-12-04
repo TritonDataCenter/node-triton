@@ -11,13 +11,12 @@
 /*
  * Test image commands.
  */
+'use strict';
 
 var format = require('util').format;
 var os = require('os');
 var test = require('tap').test;
-var vasync = require('vasync');
 
-var common = require('../../lib/common');
 var h = require('./helpers');
 
 
@@ -30,13 +29,13 @@ var IMAGE_DATA = {
     version: '1.0.0'
 };
 var DERIVED_INST_ALIAS = _RESOURCE_NAME_PREFIX + '-derived';
-delete _RESOURCE_NAME_PREFIX;
 
 var testOpts = {
     skip: (!h.CONFIG.allowWriteActions || h.CONFIG.skipKvmTests) &&
         'requires config.allowWriteActions and config.skipKvmTests=false'
 };
 
+_RESOURCE_NAME_PREFIX = null;
 
 // --- Tests
 
@@ -44,6 +43,13 @@ test('triton image ...', testOpts, function (suite) {
     var imgNameVer = IMAGE_DATA.name + '@' + IMAGE_DATA.version;
     var originInst;
     var img;
+
+    if (!h.CONFIG.kvmImage || !h.CONFIG.kvmPackage) {
+        suite.comment('CONFIG kvmImage and kvmPackage are required ' +
+            'when skipKvmTest is not true');
+        suite.end();
+        return;
+    }
 
     suite.comment('Test config:');
     Object.keys(h.CONFIG).forEach(function (key) {
@@ -94,10 +100,16 @@ test('triton image ...', testOpts, function (suite) {
     var markerFile = '/nodetritontest-was-here.txt';
     suite.test('  setup: triton create ... -n ' + ORIGIN_INST_ALIAS,
     function (t) {
+        if (!pkgId || !originImgNameOrId) {
+            t.comment('Cannot find pkg or origin image. Skip');
+            t.end();
+            return;
+        }
         var argv = ['create', '-wj', '-n', ORIGIN_INST_ALIAS,
             '-m', 'user-script=touch ' + markerFile,
             originImgNameOrId, pkgId];
         h.safeTriton(t, argv, function (err, stdout) {
+            t.ifError(err, 'Create instance error');
             var lines = h.jsonStreamParse(stdout);
             originInst = lines[1];
             t.ok(originInst.id, 'originInst.id: ' + originInst.id);
@@ -111,7 +123,7 @@ test('triton image ...', testOpts, function (suite) {
     //      tape (don't know why yet). Instead we'll use a user-script to
     //      change the origin as our image change.
     //
-    //suite.test('  setup: add marker to origin', function (t) {
+    // suite.test('  setup: add marker to origin', function (t) {
     //    var argv = ['ssh', originInst.id,
     //        '-o', 'StrictHostKeyChecking=no',
     //        '-o', 'UserKnownHostsFile=/dev/null',
@@ -120,12 +132,18 @@ test('triton image ...', testOpts, function (suite) {
     //        t.ifError(err, 'adding origin marker file, err=' + err);
     //        t.end();
     //    });
-    //});
+    // });
 
     suite.test('  triton image create ...', function (t) {
+        if (!originInst) {
+            t.comment('Cannot create original instance. Skip');
+            t.end();
+            return;
+        }
         var argv = ['image', 'create', '-j', '-w', '-t', 'foo=bar',
             originInst.id, IMAGE_DATA.name, IMAGE_DATA.version];
         h.safeTriton(t, argv, function (err, stdout) {
+            t.ifError(err, 'image create error');
             var lines = h.jsonStreamParse(stdout);
             img = lines[1];
             t.ok(img, 'created image, id=' + img.id);
@@ -140,8 +158,14 @@ test('triton image ...', testOpts, function (suite) {
 
     var derivedInst;
     suite.test('  triton create ... -n ' + DERIVED_INST_ALIAS, function (t) {
+        if (!img) {
+            t.comment('Cannot create image. Skip');
+            t.end();
+            return;
+        }
         var argv = ['create', '-wj', '-n', DERIVED_INST_ALIAS, img.id, pkgId];
         h.safeTriton(t, argv, function (err, stdout) {
+            t.ifError(err, 'create instance from image error');
             var lines = h.jsonStreamParse(stdout);
             derivedInst = lines[1];
             t.ok(derivedInst.id, 'derivedInst.id: ' + derivedInst.id);
@@ -157,6 +181,11 @@ test('triton image ...', testOpts, function (suite) {
     // have a way to know if the attempt failed or if it is just taking a
     // really long time.
     suite.test('  cleanup: triton rm', {timeout: 10 * 60 * 1000}, function (t) {
+        if (!originInst) {
+            t.comment('Cannot create original instance. Skip');
+            t.end();
+            return;
+        }
         h.safeTriton(t, ['rm', '-w', originInst.id, derivedInst.id],
                 function () {
             t.end();
@@ -164,6 +193,11 @@ test('triton image ...', testOpts, function (suite) {
     });
 
     suite.test('  cleanup: triton image rm', function (t) {
+        if (!originInst) {
+            t.comment('Cannot create image. Skip');
+            t.end();
+            return;
+        }
         h.safeTriton(t, ['image', 'rm', '-f', img.id], function () {
             t.end();
         });
