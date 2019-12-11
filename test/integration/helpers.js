@@ -572,7 +572,8 @@ function deleteTestInst(t, instNameOrId, cb) {
             }
         } else {
             var instToRm = JSON.parse(stdout);
-            safeTriton(t, ['inst', 'rm', '-w', instToRm.id], function onRm() {
+            safeTriton(t, ['inst', 'rm', '-f', '-w', instToRm.id],
+                function onRm() {
                 t.ok(true, 'deleted inst ' + instToRm.id);
                 cb();
             });

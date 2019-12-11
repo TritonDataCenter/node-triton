@@ -54,7 +54,7 @@ test('affinity (triton create -a RULE ...)', testOpts, function (suite) {
                 t.end();
                 return;
             }
-            var rmCmd = ['inst', 'rm', '-w'].concat(
+            var rmCmd = ['inst', 'rm', '-f', '-w'].concat(
                 instsToRm.map(function (i) { return i.id; }));
             h.safeTriton(t, rmCmd, function () {
                 t.ok(true, rmCmd.join(' '));
@@ -163,8 +163,8 @@ test('affinity (triton create -a RULE ...)', testOpts, function (suite) {
     // have a way to know if the attempt failed or if it is just taking a
     // really long time.
     suite.test('  cleanup: triton rm', {timeout: 10 * 60 * 1000}, function (t) {
-        h.safeTriton(t, ['rm', '-w', db0.id, db1.id, db2.id, db3.id, db4.id],
-        function () {
+        h.safeTriton(t, ['rm', '-f', '-w',
+            db0.id, db1.id, db2.id, db3.id, db4.id], function () {
             t.end();
         });
     });
