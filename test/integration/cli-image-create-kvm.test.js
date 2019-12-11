@@ -35,8 +35,6 @@ var testOpts = {
         'requires config.allowWriteActions and config.skipKvmTests=false'
 };
 
-_RESOURCE_NAME_PREFIX = null;
-
 // --- Tests
 
 test('triton image ...', testOpts, function (suite) {
@@ -45,7 +43,7 @@ test('triton image ...', testOpts, function (suite) {
     var img;
 
     if (!h.CONFIG.kvmImage || !h.CONFIG.kvmPackage) {
-        suite.comment('CONFIG kvmImage and kvmPackage are required ' +
+        suite.comment('SKIP: CONFIG kvmImage and kvmPackage are required ' +
             'when skipKvmTest is not true');
         suite.end();
         return;
@@ -101,7 +99,7 @@ test('triton image ...', testOpts, function (suite) {
     suite.test('  setup: triton create ... -n ' + ORIGIN_INST_ALIAS,
     function (t) {
         if (!pkgId || !originImgNameOrId) {
-            t.comment('Cannot find pkg or origin image. Skip');
+            t.comment('SKIP: Cannot find pkg or origin image.');
             t.end();
             return;
         }
@@ -136,7 +134,7 @@ test('triton image ...', testOpts, function (suite) {
 
     suite.test('  triton image create ...', function (t) {
         if (!originInst) {
-            t.comment('Cannot create original instance. Skip');
+            t.comment('SKIP: Cannot create original instance.');
             t.end();
             return;
         }
@@ -159,7 +157,7 @@ test('triton image ...', testOpts, function (suite) {
     var derivedInst;
     suite.test('  triton create ... -n ' + DERIVED_INST_ALIAS, function (t) {
         if (!img) {
-            t.comment('Cannot create image. Skip');
+            t.comment('SKIP: Cannot create image.');
             t.end();
             return;
         }
@@ -182,7 +180,7 @@ test('triton image ...', testOpts, function (suite) {
     // really long time.
     suite.test('  cleanup: triton rm', {timeout: 10 * 60 * 1000}, function (t) {
         if (!originInst) {
-            t.comment('Cannot create original instance. Skip');
+            t.comment('SKIP: Cannot create original instance.');
             t.end();
             return;
         }
@@ -194,7 +192,7 @@ test('triton image ...', testOpts, function (suite) {
 
     suite.test('  cleanup: triton image rm', function (t) {
         if (!originInst) {
-            t.comment('Cannot create image. Skip');
+            t.comment('SKIP: Cannot create image.');
             t.end();
             return;
         }
