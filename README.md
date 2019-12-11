@@ -3,8 +3,8 @@
 # node-triton
 
 This repository is part of the Joyent Triton project. See the [contribution
-guidelines](https://github.com/joyent/triton/blob/master/CONTRIBUTING.md) --
-*Triton does not use GitHub PRs* -- and general documentation at the main
+guidelines](https://github.com/joyent/triton/blob/master/CONTRIBUTING.md)
+and general documentation at the main
 [Triton project](https://github.com/joyent/triton) page.
 
 `triton` is a CLI tool for working with the CloudAPI for Joyent's Triton [Public Cloud]
@@ -471,9 +471,7 @@ Here is how to cut a release:
     ## $version
     ```
 
-2. Get that commit approved and merged via <https://cr.joyent.us>, as with all
-   commits to this repo. See the discussion of contribution at the top of this
-   readme.
+2. Get that commit approved and merged via a pull request.
 
 3. Once that is merged and you've updated your local copy, run:
 

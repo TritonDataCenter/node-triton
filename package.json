@@ -22,7 +22,7 @@
     "rimraf": "2.4.4",
     "semver": "5.1.0",
     "smartdc-auth": "2.5.7",
-    "sshpk": "1.14.1",
+    "sshpk": "^1.14.1",
     "sshpk-agent": "1.7.0",
     "strsplit": "1.0.0",
     "tabula": "1.10.0",

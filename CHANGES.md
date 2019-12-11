@@ -12,6 +12,13 @@ Known issues:
 
 - [TRITON-1951] `triton instance delete` should provide `--force` flag
 
+## 7.5.1
+
+- [TOOLS-2378] Allow an sshpk dependency range. The sshpk.Fingerprint "api
+  version" was changed between sshpk 1.14 and 1.16, such that unlucky
+  mixing of `Fingerprint` objects between sshpk module versions will
+  fail `isFingerprint(fp)`.
+
 ## 7.5.0
 
 - [joyent/node-triton#264] Update `triton rbac role[s]` to use the new
