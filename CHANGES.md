@@ -8,6 +8,10 @@ Known issues:
 
 (nothing yet)
 
+## 7.6.0
+
+- [TRITON-1951] `triton instance delete` should provide `--force` flag
+
 ## 7.5.1
 
 - [TOOLS-2378] Allow an sshpk dependency range. The sshpk.Fingerprint "api

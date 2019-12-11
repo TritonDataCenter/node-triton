@@ -184,7 +184,8 @@ test('triton image ...', testOpts, function (suite) {
             t.end();
             return;
         }
-        h.safeTriton(t, ['rm', '-w', originInst.id, derivedInst.id],
+
+        h.safeTriton(t, ['rm', '-f', '-w', originInst.id, derivedInst.id],
                 function () {
             t.end();
         });
