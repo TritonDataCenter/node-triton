@@ -8,6 +8,11 @@ Known issues:
 
 (nothing yet)
 
+## 7.7.0
+
+- [TRITON-2010] Support for `--encrypted` flag added to
+  `triton instance create`.
+
 ## 7.6.0
 
 - [TRITON-1951] `triton instance delete` should provide `--force` flag
