@@ -8,6 +8,11 @@ Known issues:
 
 (nothing yet)
 
+## 7.7.1
+
+- [joyent/node-triton#281] Fix an issue where `triton profile create ...`
+  crashes without showing the actual error.
+
 ## 7.7.0
 
 - [TRITON-2010] Support for `--encrypted` flag added to
