@@ -5,13 +5,16 @@
  */
 
 /*
- * Copyright 2019 Joyent, Inc.
+ * Copyright 2020 Joyent, Inc.
  */
 
 /*
  * Test image commands.
  */
+
+/* jsl:ignore */
 'use strict';
+/* jsl:end */
 
 var format = require('util').format;
 var os = require('os');
