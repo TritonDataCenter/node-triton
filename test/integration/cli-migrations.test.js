@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2019 Joyent, Inc.
+ * Copyright 2020 Joyent, Inc.
  */
 
 /*
@@ -15,7 +15,7 @@
 var h = require('./helpers');
 var f = require('util').format;
 var os = require('os');
-var test = require('tape');
+var test = require('tap').test;
 
 // --- Globals
 
@@ -117,6 +117,8 @@ test('triton instance migration abort', OPTS, function (tt) {
             t.end();
         });
     });
+
+    tt.end();
 });
 
 test('triton instance migration', OPTS, function (tt) {
@@ -287,6 +289,8 @@ test('triton instance migration', OPTS, function (tt) {
             t.end();
         });
     });
+
+    tt.end();
 });
 
 // vim: set expandtab softtabstop=4 shiftwidth=4:
