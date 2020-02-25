@@ -6,7 +6,14 @@ Known issues:
 
 ## not yet released
 
-(nothing yet)
+- [TRITON-1870] Fix snapshot validation being ignored by
+  `triton instance start --snapshot=SNAP_NAME`. Added validation for
+  snapshot `created` state. Added `--wait-timeout` option to this command
+  and, by extension, to `triton instance stop` and `triton instance delete`.
+  Added `--wait-timeout` to `triton instance snapshot create ...`.
+- [TRITON-1387] Added `cloudapi.waitForMachineAudit` method.
+  Make `triton instance snapshot delete ...` poll using audit instead of
+  snapshot states to avoid timeouts when `delete_snapshot` job fails.
 
 ## 7.7.1
 
