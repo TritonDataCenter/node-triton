@@ -14,6 +14,8 @@ Known issues:
 - [TRITON-1387] Added `cloudapi.waitForMachineAudit` method.
   Make `triton instance snapshot delete ...` poll using audit instead of
   snapshot states to avoid timeouts when `delete_snapshot` job fails.
+- [joyent/node-triton#288] triton volume list and triton volume sizes should
+  agree on a unit.
 
 ## 7.7.1
 
@@ -79,7 +81,7 @@ Known issues:
 
   The new output will be:
 
-        SHORTID   ENABLED  GLOBAL  LOG   RULE 
+        SHORTID   ENABLED  GLOBAL  LOG   RULE
         285d7f76  false    -       true  FROM any TO vm efe45825-4c0d-48f5-d62c-c5a50433fad1 BLOCK tcp PORT 666
         4ef987de  true     -       true  FROM subnet 10.99.99.0/24 TO vm 3a2b9998-965d-c4ab-d952-eb2802f8d6b9 ALLOW tcp PORT all
         44eae6bb  true     -       true  FROM subnet 10.99.99.0/24 TO vm efe45825-4c0d-48f5-d62c-c5a50433fad1 ALLOW tcp PORT all
