@@ -135,6 +135,50 @@ test('triton volume create ...', testOpts, function (suite) {
         });
     });
 
+    suite.test('  triton volume create with invalid affinity', function (t) {
+        var volumeName =
+            h.makeResourceName('node-triton-test-volume-create-invalid-' +
+                'affinity');
+        var invalidAffinity = 'foobar';
+        var expectedErrMsg = 'could not find operator in affinity rule';
+
+        h.triton([
+            'volume',
+            'create',
+            '--name',
+            volumeName,
+            '--affinity',
+            invalidAffinity
+        ].join(' '), function (volCreateErr, stdout, stderr) {
+            t.notEqual(stderr.indexOf(expectedErrMsg), -1,
+                'stderr should include error message: ' + expectedErrMsg +
+                ', got: ' + volCreateErr);
+            t.end();
+        });
+    });
+
+    suite.test('  triton volume create with invalid tags', function (t) {
+        var volumeName =
+            h.makeResourceName('node-triton-test-volume-create-invalid-' +
+                'tags');
+        var invalidTag = 'foobar';
+        var expectedErrMsg = 'invalid KEY=VALUE tag argument: ' + invalidTag;
+
+        h.triton([
+            'volume',
+            'create',
+            '--name',
+            volumeName,
+            '--tag',
+            invalidTag
+        ].join(' '), function (volCreateErr, stdout, stderr) {
+            t.notEqual(stderr.indexOf(expectedErrMsg), -1,
+                'stderr should include error message: ' + expectedErrMsg +
+                ', got: ' + volCreateErr);
+            t.end();
+        });
+    });
+
     suite.test('  triton volume create valid volume', function (t) {
         h.triton([
             'volume',
