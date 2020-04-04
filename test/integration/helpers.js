@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2019 Joyent, Inc.
+ * Copyright 2020 Joyent, Inc.
  */
 
 /*
@@ -664,7 +664,7 @@ function cloudapiVersionGtrOrEq(ver, cb) {
             return;
         }
 
-        cb(null, result >= 0);
+        cb(null, result <= 0);
     });
 }
 
