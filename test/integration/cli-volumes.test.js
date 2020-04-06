@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2019 Joyent, Inc.
+ * Copyright 2020 Joyent, Inc.
  */
 
 /*
@@ -30,7 +30,9 @@ var FABRIC_NETWORKS = [];
 
 
 test('triton volume create ...', testOpts, function (suite) {
+    var affinitySupported = false;
     var currentVolume;
+    var tagsSupported = false;
     var validVolumeName =
             h.makeResourceName('node-triton-test-volume-create-default');
 
@@ -38,6 +40,16 @@ test('triton volume create ...', testOpts, function (suite) {
     Object.keys(h.CONFIG).forEach(function (key) {
         var value = h.CONFIG[key];
         suite.comment(format('- %s: %j', key, value));
+    });
+
+    suite.test('  check cloudapi version', function (t) {
+        h.cloudapiVersionGtrOrEq('9.8.6', function (verErr, supported) {
+            t.ifErr(verErr, 'cloudapi version check should not fail');
+            affinitySupported = supported;
+            // Tags came in at the same time as affinity.
+            tagsSupported = supported;
+            t.end();
+        });
     });
 
     suite.test('  cleanup leftover resources', function (t) {
@@ -135,12 +147,66 @@ test('triton volume create ...', testOpts, function (suite) {
         });
     });
 
+    suite.test('  triton volume create with invalid affinity', function (t) {
+        if (!affinitySupported) {
+            t.ok(true, 'SKIPPED - affinity not supported');
+            t.end();
+            return;
+        }
+
+        var volumeName =
+            h.makeResourceName('node-triton-test-volume-create-invalid-' +
+                'affinity');
+        var invalidAffinity = 'foobar';
+        var expectedErrMsg = 'could not find operator in affinity rule';
+
+        h.triton([
+            'volume',
+            'create',
+            '--name',
+            volumeName,
+            '--affinity',
+            invalidAffinity
+        ].join(' '), function (volCreateErr, stdout, stderr) {
+            t.notEqual(stderr.indexOf(expectedErrMsg), -1,
+                'stderr should include error message: ' + expectedErrMsg +
+                ', got: ' + volCreateErr);
+            t.end();
+        });
+    });
+
+    suite.test('  triton volume create with invalid tags', function (t) {
+        var volumeName =
+            h.makeResourceName('node-triton-test-volume-create-invalid-' +
+                'tags');
+        var invalidTag = 'foobar';
+        var expectedErrMsg = 'invalid KEY=VALUE tag argument: ' + invalidTag;
+
+        h.triton([
+            'volume',
+            'create',
+            '--name',
+            volumeName,
+            '--tag',
+            invalidTag
+        ].join(' '), function (volCreateErr, stdout, stderr) {
+            t.notEqual(stderr.indexOf(expectedErrMsg), -1,
+                'stderr should include error message: ' + expectedErrMsg +
+                ', got: ' + volCreateErr);
+            t.end();
+        });
+    });
+
     suite.test('  triton volume create valid volume', function (t) {
         h.triton([
             'volume',
             'create',
             '--name',
             validVolumeName,
+            '--tag',
+            'role=volume',
+            '--affinity',
+            'sometag!=nosuchtag',
             '-w'
         ].join(' '), function (volCreateErr, stdout, stderr) {
             t.equal(volCreateErr, null,
@@ -150,10 +216,27 @@ test('triton volume create ...', testOpts, function (suite) {
     });
 
     suite.test('  check volume was created', function (t) {
-        h.safeTriton(t, ['volume', 'get', validVolumeName],
+        h.safeTriton(t, ['volume', 'get', '--json', validVolumeName],
             function onGetVolume(getVolErr, stdout) {
                 t.equal(getVolErr, null,
                     'Getting volume should not error');
+
+                if (getVolErr) {
+                    t.end();
+                    return;
+                }
+
+                // Check volume properties.
+                var volume = JSON.parse(stdout);
+                t.equal(volume.name, validVolumeName, 'check volume name');
+                t.equal(volume.type, 'tritonnfs', 'check volume type');
+
+                // Check volume tags when cloudapi supports it.
+                if (tagsSupported) {
+                    t.deepEqual(volume.tags, {'role': 'volume'},
+                    'check volume tags');
+                }
+
                 t.end();
             });
     });

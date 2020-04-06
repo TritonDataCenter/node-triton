@@ -16,6 +16,7 @@ Known issues:
   snapshot states to avoid timeouts when `delete_snapshot` job fails.
 - [joyent/node-triton#288] triton volume list and triton volume sizes should
   agree on a unit.
+- [TRITON-2096] Allow affinity rules and volume tags when creating volumes.
 
 ## 7.7.1
 
