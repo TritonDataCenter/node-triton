@@ -6,6 +6,8 @@ Known issues:
 
 ## not yet released
 
+- [TRITON-426] Provide access to KVM Console for end users. Use
+  `triton instance vnc` to start a local VNC server for your instance.
 - [TRITON-1870] Fix snapshot validation being ignored by
   `triton instance start --snapshot=SNAP_NAME`. Added validation for
   snapshot `created` state. Added `--wait-timeout` option to this command
