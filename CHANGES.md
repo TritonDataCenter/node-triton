@@ -6,6 +6,7 @@ Known issues:
 
 ## not yet released
 
+- [PUBAPI-804] Provide access to KVM Console for end users
 - [TRITON-1870] Fix snapshot validation being ignored by
   `triton instance start --snapshot=SNAP_NAME`. Added validation for
   snapshot `created` state. Added `--wait-timeout` option to this command
