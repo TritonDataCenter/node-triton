@@ -6,6 +6,7 @@ Known issues:
 
 ## not yet released
 
+- [joyent/node-triton#294] `triton profile` should generate certs for cmon
 - [TRITON-426] Provide access to KVM Console for end users. Use
   `triton instance vnc` to start a local VNC server for your instance.
 - [TRITON-1870] Fix snapshot validation being ignored by
