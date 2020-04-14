@@ -6,7 +6,8 @@ Known issues:
 
 ## not yet released
 
-- No unreleased changes.
+- [TRITON-2002] Allow the user to specify a hvm brand for CloudAPI
+  CreateMachine - e.g.  `triton create -b bhyve ...`.
 
 ## 7.8.0
 
