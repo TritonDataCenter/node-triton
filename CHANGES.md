@@ -6,6 +6,10 @@ Known issues:
 
 ## not yet released
 
+- No unreleased changes.
+
+## 7.8.0
+
 - [joyent/node-triton#294] `triton profile` should generate certs for cmon
 - [TRITON-426] Provide access to KVM Console for end users. Use
   `triton instance vnc` to start a local VNC server for your instance.
