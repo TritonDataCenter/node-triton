@@ -6,6 +6,10 @@ Known issues:
 
 ## not yet released
 
+## 7.9.0
+
+- Handle CloudAPI failures with VNC endpoint better, add callback function
+  names for VNC pieces.
 - [TRITON-2002] Allow the user to specify a hvm brand for CloudAPI
   CreateMachine - e.g.  `triton create -b bhyve ...`.
 
