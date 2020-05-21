@@ -6,7 +6,16 @@ Known issues:
 
 ## not yet released
 
+## 7.11.0
+
+- [TRITON-853] cloudapi should allow creation of instances with delegated datasets
+  This adds a `--delegate-dataset` option taking the value `on` or `off` to
+  `triton inst create`. Instances with delegated datasets created using this
+  interface are prevented from being able to use `zfs recv` to receive ZFS
+  datasets.
+
 ## 7.10.0
+
 - [TRITON-1950][joyent/node-triton#276] Added `triton image update` and
   `triton image tag` subcommands. Fixed help for `triton image create`.
   Updated `triton completion` for `triton image update` possible fields.
