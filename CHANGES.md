@@ -6,6 +6,11 @@ Known issues:
 
 ## not yet released
 
+## 7.10.0
+- [TRITON-1950][joyent/node-triton#276] Added `triton image update` and
+  `triton image tag` subcommands. Fixed help for `triton image create`.
+  Updated `triton completion` for `triton image update` possible fields.
+
 ## 7.9.0
 
 - Handle CloudAPI failures with VNC endpoint better, add callback function

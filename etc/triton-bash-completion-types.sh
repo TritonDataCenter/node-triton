@@ -187,3 +187,10 @@ function complete_tritonupdatefwrulefield {
     candidates="{{UPDATE_FWRULE_FIELDS}}"
     compgen $compgen_opts -W "$candidates" -- "$word"
 }
+
+function complete_tritonupdateimagefield {
+    local word="$1"
+    local candidates
+    candidates="{{UPDATE_IMAGE_FIELDS}}"
+    compgen $compgen_opts -W "$candidates" -- "$word"
+}
