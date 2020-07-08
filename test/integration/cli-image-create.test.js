@@ -5,7 +5,7 @@
  */
 
 /*
- * Copyright 2019 Joyent, Inc.
+ * Copyright 2020 Joyent, Inc.
  */
 
 /*
@@ -16,9 +16,7 @@ var format = require('util').format;
 var os = require('os');
 var test = require('tap').test;
 var uuid = require('uuid');
-var vasync = require('vasync');
 
-var common = require('../../lib/common');
 var h = require('./helpers');
 
 
@@ -55,7 +53,7 @@ test('triton image ...', testOpts, function (suite) {
         h.triton(['inst', 'get', '-j', ORIGIN_ALIAS],
                 function (err, stdout, stderr) {
             if (err) {
-                if (err.code === 3) {  // `triton` code for ResourceNotFound
+                if (err.code === 3) { // `triton` code for ResourceNotFound
                     t.ok(true, 'no pre-existing inst ' + ORIGIN_ALIAS);
                     t.end();
                 } else {
@@ -79,7 +77,7 @@ test('triton image ...', testOpts, function (suite) {
         h.triton(['inst', 'get', '-j', DERIVED_ALIAS],
                 function (err, stdout, stderr) {
             if (err) {
-                if (err.code === 3) {  // `triton` code for ResourceNotFound
+                if (err.code === 3) { // `triton` code for ResourceNotFound
                     t.ok(true, 'no pre-existing inst ' + DERIVED_ALIAS);
                     t.end();
                 } else {
@@ -101,7 +99,7 @@ test('triton image ...', testOpts, function (suite) {
         h.triton(['img', 'get', '-j', imgNameVer],
                 function (err, stdout, stderr) {
             if (err) {
-                if (err.code === 3) {  // `triton` code for ResourceNotFound
+                if (err.code === 3) { // `triton` code for ResourceNotFound
                     t.ok(true, 'no pre-existing img ' + imgNameVer);
                     t.end();
                 } else {
@@ -141,7 +139,7 @@ test('triton image ...', testOpts, function (suite) {
         var argv = ['create', '-wj', '-n', ORIGIN_ALIAS,
             '-m', 'user-script=touch ' + markerFile,
             originImgNameOrId, pkgId];
-        h.safeTriton(t, argv, function (err, stdout) {
+        h.safeTriton(t, argv, function (_err, stdout) {
             var lines = h.jsonStreamParse(stdout);
             originInst = lines[1];
             t.ok(originInst.id, 'originInst.id: ' + originInst.id);
@@ -155,7 +153,7 @@ test('triton image ...', testOpts, function (suite) {
     //      tape (don't know why yet). Instead we'll use a user-script to
     //      change the origin as our image change.
     //
-    //suite.test('  setup: add marker to origin', function (t) {
+    // suite.test('  setup: add marker to origin', function (t) {
     //    var argv = ['ssh', originInst.id,
     //        '-o', 'StrictHostKeyChecking=no',
     //        '-o', 'UserKnownHostsFile=/dev/null',
@@ -164,7 +162,7 @@ test('triton image ...', testOpts, function (suite) {
     //        t.ifError(err, 'adding origin marker file, err=' + err);
     //        t.end();
     //    });
-    //});
+    // });
 
     suite.test('  triton image create ...', function (t) {
         var argv = ['image', 'create', '-j', '-w', '-t', 'foo=bar',
@@ -258,6 +256,66 @@ test('triton image ...', testOpts, function (suite) {
                 });
             });
         }
+    });
+
+    suite.test('   triton image update ...', function (t) {
+        var argv = ['image', 'update', img.id,
+            'description=this is a description'];
+        h.safeTriton(t, argv, function (err) {
+            if (err) {
+                t.end();
+                return;
+            }
+            argv = ['image', 'get', '-j', img.id];
+            h.safeTriton(t, argv, function (err2, stdout2) {
+                t.ifErr(err2, 'image get response');
+                if (err2) {
+                    t.end();
+                    return;
+                }
+                var result = JSON.parse(stdout2);
+                t.ok(result, 'image update result');
+                t.comment(result.description);
+                t.ok(result.description, 'image update result.description');
+                if (result.description) {
+                    t.equal(result.description, 'this is a description',
+                        'image update description');
+                } else {
+                    t.fail('image update result does not contain description');
+                }
+                t.end();
+            });
+        });
+    });
+
+    suite.test('   triton image tag', function (t) {
+        var argv = ['image', 'tag', img.id,
+            'foo="bar"', 'bool=true', 'one=1'];
+        h.safeTriton(t, argv, function (err) {
+            if (err) {
+                t.end();
+                return;
+            }
+            argv = ['image', 'get', '-j', img.id];
+            h.safeTriton(t, argv, function (err2, stdout2) {
+                t.ifErr(err2, 'image get response');
+                if (err2) {
+                    t.end();
+                    return;
+                }
+                var result = JSON.parse(stdout2);
+                t.ok(result, 'image tag result');
+                t.ok(result.tags, 'image tag result.tags');
+                if (result.tags) {
+                    t.ok(result.tags.foo, 'result.tags.foo');
+                    t.ok(result.tags.one, 'result.tags.one');
+                    t.ok(result.tags.bool, 'result.tags.bool');
+                } else {
+                    t.fail('image tag result does not contain tags');
+                }
+                t.end();
+            });
+        });
     });
 
     // TODO: Once have `triton ssh ...` working in test suite without hangs,
