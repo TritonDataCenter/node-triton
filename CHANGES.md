@@ -6,6 +6,9 @@ Known issues:
 
 ## not yet released
 
+- [node-triton#314] want act-as support for "triton profile docker-setup" and
+  "triton profile cmon-certgen"
+
 ## 7.14.0
 
 - [node-triton#311] Wrong CLI_CONFIG_DIR when XDG_CONFIG_HOME is set
