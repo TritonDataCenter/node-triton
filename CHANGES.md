@@ -8,8 +8,9 @@ Known issues:
 
 ## 7.12.2
 
-- Add in sourcing from an instance tag an alternate port to ssh to for 
+- Add in sourcing from an instance tag an alternate port to ssh to for
   circumstances where instances have ssh listening on a non-standard port.
+- [node-triton#304](joyent/node-triton#304) triton rbac commands generate os.tmpDir deprecation warning
 
 ## 7.12.1
 
