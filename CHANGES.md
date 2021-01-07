@@ -7,6 +7,8 @@ Known issues:
 ## not yet released
 
 - [TRITON-2182] make check fixes
+- Add in sourcing from an instance tag an alternate port to ssh to for 
+  circumstances where instances have ssh listening on a non-standard port.
 
 ## 7.12.0
 
