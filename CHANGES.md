@@ -6,6 +6,12 @@ Known issues:
 
 ## not yet released
 
+- [TRITON-2182] make check fixes
+
+## 7.12.0
+
+- [TRITON-2182] Added `triton changefeed` subcommand
+
 ## 7.11.0
 
 - [TRITON-853] cloudapi should allow creation of instances with delegated datasets
