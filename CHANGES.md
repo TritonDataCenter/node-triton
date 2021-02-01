@@ -6,6 +6,10 @@ Known issues:
 
 ## not yet released
 
+## 7.13.0
+
+- [node-triton#290] Honor the XDG directory conventions.
+
 ## 7.12.2
 
 - Add in sourcing from an instance tag an alternate port to ssh to for
