@@ -6,7 +6,10 @@ Known issues:
 
 ## not yet released
 
+## 7.14.0
+
 - [node-triton#311] Wrong CLI_CONFIG_DIR when XDG_CONFIG_HOME is set
+- [node-triton#310] Unhide volumes
 
 ## 7.13.0
 
