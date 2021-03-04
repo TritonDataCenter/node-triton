@@ -6,6 +6,8 @@ Known issues:
 
 ## not yet released
 
+- [node-triton#311] Wrong CLI_CONFIG_DIR when XDG_CONFIG_HOME is set
+
 ## 7.13.0
 
 - [node-triton#290] Honor the XDG directory conventions.
