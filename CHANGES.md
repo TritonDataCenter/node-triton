@@ -11,6 +11,7 @@ Known issues:
 - [node-triton#314] want act-as support for "triton profile docker-setup" and
   "triton profile cmon-certgen"
 - [node-triton#316] cmon-certgen should generate an example prometheus.yml
+- [node-triton#318] want --primary argument to "triton inst nic create"
 
 ## 7.14.0
 
