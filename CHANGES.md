@@ -6,8 +6,11 @@ Known issues:
 
 ## not yet released
 
+## 7.15.0
+
 - [node-triton#314] want act-as support for "triton profile docker-setup" and
   "triton profile cmon-certgen"
+- [node-triton#316] cmon-certgen should generate an example prometheus.yml
 
 ## 7.14.0
 
