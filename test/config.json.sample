@@ -16,6 +16,11 @@
     // This is essentially the "safe" guard.
     "allowWriteActions": true,
 
+    // Image creation is well supported, but only available in datacenters that
+    // have explicitly allowed it. This means in most cases it will be
+    // unavailable.
+    "allowImageCreate": false,
+
     // While volumes support is still experimental (and not deployed everywhere)
     // volumes test are skipped by default. Set this to true to run them.
     "allowVolumesTests": true,
