@@ -6,6 +6,7 @@
 
 /*
  * Copyright 2019 Joyent, Inc.
+ * Copyright 2022 MNX Cloud, Inc.
  */
 
 /*
@@ -27,8 +28,7 @@ var NIC2;
 
 var testOpts = {
     skip: (
-        (!process.env.TEST_KNOWN_FAIL && 'known failure, see TRITON-1398') ||
-        (!h.CONFIG.allowWriteActions && 'requires config.allowVolumesTests')
+        (!h.CONFIG.allowWriteActions && 'requires config.allowWriteActions')
     )
 };
 

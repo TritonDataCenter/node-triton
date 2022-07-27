@@ -6,6 +6,7 @@
 
 /*
  * Copyright 2019 Joyent, Inc.
+ * Copyright 2022 MNX Cloud, Inc.
  */
 
 /*
@@ -266,10 +267,8 @@ test('triton network create', {
         });
     });
 
-    suite.test(' triton network create VLAN', {
-        skip: !process.env.TEST_KNOWN_FAIL && 'known failure, see TRITON-1389'
-    }, function (t) {
-        h.triton('network create --name=' + NET_NAME +
+    suite.test(' triton network create VLAN', function (t) {
+        h.triton('network create --no-nat --name=' + NET_NAME +
                  ' --subnet=192.168.97.0/24 --start_ip=192.168.97.1' +
                  ' --end_ip=192.168.97.254 -j ' + vlan.vlan_id,
                  function (err, stdout) {
@@ -297,7 +296,6 @@ test('triton network create', {
 
 test('triton network delete', {
     skip: (
-        (!process.env.TEST_KNOWN_FAIL && 'known failure, see TRITON-1389') ||
         (!h.CONFIG.allowWriteActions && 'requires config.allowWriteActions')
     )
 }, function (suite) {
@@ -329,7 +327,7 @@ test('triton network delete', {
     });
 
     function deleteNetworkTester(t, deleter) {
-        h.triton('network create --name=' + NET_NAME +
+        h.triton('network create --no-nat --name=' + NET_NAME +
                  ' --subnet=192.168.97.0/24 --start_ip=192.168.97.1' +
                  ' --end_ip=192.168.97.254 -j ' + vlan.vlan_id,
                  function (err, stdout) {

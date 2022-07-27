@@ -6,6 +6,7 @@
 
 /*
  * Copyright 2020 Joyent, Inc.
+ * Copyright 2022 MNX Cloud, Inc.
  */
 
 /*
@@ -34,8 +35,12 @@ var IMAGE_DATA = {
 var DERIVED_INST_ALIAS = _RESOURCE_NAME_PREFIX + '-derived';
 
 var testOpts = {
-    skip: (!h.CONFIG.allowWriteActions || h.CONFIG.skipKvmTests) &&
-        'requires config.allowWriteActions and config.skipKvmTests=false'
+    skip: (
+        !h.CONFIG.allowImageCreate ||
+        !h.CONFIG.allowWriteActions ||
+        h.CONFIG.skipKvmTests
+    ) && 'requires config.allowWriteActions, config.allowImageCreate, ' +
+    'and config.skipKvmTests=false'
 };
 
 // --- Tests

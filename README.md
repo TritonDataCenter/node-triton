@@ -1,23 +1,25 @@
-![logo](./tools/triton-text.png)
+# ![logo](./tools/triton-text.png) node-triton
 
-# node-triton
+<!-- markdownlint-disable code-block-style -->
 
-This repository is part of the Joyent Triton project. See the [contribution
-guidelines](https://github.com/joyent/triton/blob/master/CONTRIBUTING.md)
+This repository is part of the Triton Data Center project. See the
+[contribution guidelines](https://github.com/TritonDataCenter/triton/blob/master/CONTRIBUTING.md)
 and general documentation at the main
-[Triton project](https://github.com/joyent/triton) page.
+[Triton project](https://github.com/TritonDataCenter/triton) page.
 
-`triton` is a CLI tool for working with the CloudAPI for Joyent's Triton [Public Cloud]
-(https://docs.joyent.com/public-cloud) and [Private Cloud] (https://docs.joyent.com/private-cloud).
+`triton` is a CLI tool for working with the CloudAPI for Triton
+[public](https://docs.tritondatacenter.com/public-cloud) and
+[private](https://docs.tritondatacenter.com/private-cloud) clouds.
+
 CloudAPI is a RESTful API for end users of the cloud to manage their accounts, instances,
 networks, images, and to inquire other relevant details. CloudAPI provides a single view of
 docker containers, infrastructure containers and hardware virtual machines available in the
 Triton solution.
 
-There is currently another CLI tool known as [node-smartdc](https://github.com/joyent/node-smartdc)
+There is currently another CLI tool known as [node-smartdc](https://github.com/TritonDataCenter/node-smartdc)
 for CloudAPI. `node-smartdc` CLI works off the 32-character object UUID to uniquely
 identify object instances in API requests, and returns response payload in JSON format.
-The CLI covers both basic and advanced usage of [CloudAPI](https://apidocs.joyent.com/cloudapi/).
+The CLI covers both basic and advanced usage of [CloudAPI](https://apidocs.tritondatacenter.com/cloudapi/).
 
 **The `triton` CLI is currently in beta (effectively because it does not yet
 have *complete* coverage of all commands from node-smartdc) and will be
@@ -33,16 +35,12 @@ Before you can use the CLI you'll need an account on the cloud to which you are 
 an SSH key uploaded. The SSH key is used to identify and secure SSH access to containers and
 other resources in Triton.
 
-If you do not already have an account on Joyent Public Cloud, sign up [here](https://www.joyent.com/public-cloud).
-
-
 ### API endpoint
 
-Each data center has a single CloudAPI endpoint. For Joyent Public Cloud, you can find the
-list of data centers [here](https://docs.joyent.com/public-cloud/data-centers).
-For private cloud implementations, please consult the private cloud operator for the correct URL.
-Have the URL handy as you'll need it in the next step.
-
+Each data center has a single CloudAPI endpoint. For MNX Public Cloud, you can find the
+list of data centers [here](https://docs.mnx.io/data-centers).
+For private cloud implementations, please consult the private cloud operator for
+the correct URL. Have the URL handy as you'll need it in the next step.
 
 ### Installation
 
@@ -54,7 +52,7 @@ Verify that it is installed and on your PATH:
 
     $ triton --version
     Triton CLI 4.15.0
-    https://github.com/joyent/node-triton
+    https://github.com/TritonDataCenter/node-triton
 
 To use `triton`, you'll need to configure it to talk to a Triton DataCenter
 API endpoint (called CloudAPI). Commonly that is done using a Triton profile:
@@ -62,10 +60,10 @@ API endpoint (called CloudAPI). Commonly that is done using a Triton profile:
     $ triton profile create
     A profile name. A short string to identify a CloudAPI endpoint to the
     `triton` CLI.
-    name: sw1
+    name: central1
 
     The CloudAPI endpoint URL.
-    url: https://us-sw-1.api.joyent.com
+    url: https://us-central-1.api.mnx.io
 
     Your account login name.
     account: bob
@@ -79,7 +77,7 @@ API endpoint (called CloudAPI). Commonly that is done using a Triton profile:
     in your SSH keys directory or loaded into the SSH agent.
     keyId: 1
 
-    Saved profile "sw1".
+    Saved profile "central1".
 
     WARNING: Docker uses TLS-based authentication with a different security model
     from SSH keys. As a result, the Docker client cannot currently support
@@ -88,25 +86,24 @@ API endpoint (called CloudAPI). Commonly that is done using a Triton profile:
     unencrypted TLS cert and place the copy in ~/.triton/docker for use by the
     Docker client.
     Continue? [y/n] y
-    Setting up profile "sw1" to use Docker.
-    Setup profile "sw1" to use Docker (v1.12.3). Try this:
-        eval "$(triton env --docker sw1)"
+    Setting up profile "central1" to use Docker.
+    Setup profile "central1" to use Docker (v1.12.3). Try this:
+        eval "$(triton env --docker central1)"
         docker info
 
-    Set "sw1" as current profile (because it is your only profile).
+    Set "central1" as current profile (because it is your only profile).
 
 Or instead of using profiles, you can set the required environment variables
 (`triton` defaults to an "env" profile that uses these environment variables if
 no profile is set). For example:
 
-    TRITON_URL=https://us-sw-1.api.joyent.com
+    TRITON_URL=https://us-central-1.api.mnx.io
     TRITON_ACCOUNT=bob
     TRITON_KEY_ID=SHA256:j2WoSeOWhFy69BQ0uCR3FAySp9qCZTSCEyT2vRKcL+s
 
 For compatibility with the older [sdc-* tools from
-node-smartdc](https://github.com/joyent/node-smartdc), `triton` also supports
+node-smartdc](https://github.com/TritonDataCenter/node-smartdc), `triton` also supports
 `SDC_URL`, `SDC_ACCOUNT`, etc. environment variables.
-
 
 ### Bash completion
 
@@ -130,7 +127,6 @@ play with the bash completions:
 
     triton <TAB>
 
-
 ## `triton` CLI Usage
 
 ### Create and view instances
@@ -143,16 +139,15 @@ an instance we need to specify two things: an image and a package.  An image
 represents what will be used as the root of the instances filesystem, and the
 package represents the size of the instance, eg. ram, disk size, cpu shares,
 etc.  More information on images and packages below - for now we'll just use
-SmartOS 64bit and a small 128M ram package which is a combo available on the
-Joyent Public Cloud.
+SmartOS 64bit and a small 128M ram package.
 
-    $ triton instance create base-64 t4-standard-128M
+    triton instance create base-64 t4-standard-128M
 
 Without a name specified, the container created will have a generated ID. Now
 to create a container-native Ubuntu 14.04 container with 2GB of ram with the
 name "server-1"
 
-    $ triton instance create --name=server-1 ubuntu-14.04 t4-standard-2G
+    triton instance create --name=server-1 ubuntu-14.04 t4-standard-2G
 
 Now list your instances again
 
@@ -161,14 +156,13 @@ Now list your instances again
     7db6c907  b851ba9   base-64@15.2.0          running       165.225.169.63   9m
     9cf1f427  server-1  ubuntu-14.04@20150819   provisioning  -                0s
 
-
 Get a quick overview of your account
 
     $ triton info
     login: dave.eddy@joyent.com
     name: Dave Eddy
     email: dave.eddy@joyent.com
-    url: https://us-east-3b.api.joyent.com
+    url: https://us-central-1.api.mnx.io
     totalDisk: 50.5 GiB
     totalMemory: 2.0 MiB
     instances: 2
@@ -207,19 +201,18 @@ To obtain more detailed information of your instance
         "package": "t4-standard-2G"
     }
 
-
 ### SSH to an instance
 
 Connect to an instance over SSH
 
     $ triton ssh b851ba9
     Last login: Wed Aug 26 17:59:35 2015 from 208.184.5.170
-       __        .                   .
-     _|  |_      | .-. .  . .-. :--. |-
-    |_    _|     ;|   ||  |(.-' |  | |
-      |__|   `--'  `-' `;-| `-' '  ' `-'
-                       /  ; Instance (base-64 15.2.0)
-                       `-'  https://docs.joyent.com/images/smartos/base
+
+      ,---.                   |     ,---. ,---.
+      `---. ,-.-. ,---. ,---. |---  |   | `---.  base-64-lts
+          | | | | ,---| |     |     |   |     |  21.4.1
+      `---' ` ' ' `---' `     `---' `---' `---'
+
 
     [root@7db6c907-2693-42bc-ea9b-f38678f2554b ~]# uptime
      20:08pm  up   2:27,  0 users,  load average: 0.00, 0.00, 0.01
@@ -230,7 +223,6 @@ Or non-interactively
 
     $ triton ssh b851ba9 uname -v
     joyent_20150826T120743Z
-
 
 ### Manage an instance
 
@@ -259,23 +251,22 @@ and different Triton cloud implementations.
 To see all the packages offered in the data center and specific package
 information, use
 
-    $ triton package list
-    $ triton package get ID|NAME
+    triton package list
+    triton package get ID|NAME
 
 Similarly, to find out the available images and their details, do
 
-    $ triton image list
-    $ triton images ID|NAME
+    triton image list
+    triton images ID|NAME
 
 Note that docker images are not shown in `triton images` as they are
 maintained in Docker Hub and other third-party registries configured to be
-used with Joyent's Triton clouds. **In general, docker containers should be
+used with Triton clouds. **In general, docker containers should be
 provisioned and managed with the regular
 [`docker` CLI](https://docs.docker.com/installation/#installation)**
-(Triton provides an endpoint that represents the _entire datacenter_
+(Triton provides an endpoint that represents the *entire datacenter*
 as a single `DOCKER_HOST`. See the [Triton Docker
-documentation](https://apidocs.joyent.com/docker) for more information.)
-
+documentation](https://apidocs.tritondatacenter.com/docker) for more information.)
 
 ## `TritonApi` Module Usage
 
@@ -289,7 +280,7 @@ var mod_triton = require('triton');
 var log = mod_bunyan.createLogger({name: 'my-tool'});
 
 // See the `createClient` block comment for full usage details:
-//      https://github.com/joyent/node-triton/blob/master/lib/index.js
+//      https://github.com/TritonDataCenter/node-triton/blob/master/lib/index.js
 mod_triton.createClient({
     log: log,
     // Use 'env' to pick up 'TRITON_/SDC_' env vars. Or manually specify a
@@ -313,11 +304,11 @@ mod_triton.createClient({
 ```
 
 See the following for more details:
+
 - The block-comment for `createClient` in [lib/index.js](lib/index.js).
 - Some module-usage examples in [examples/](examples/).
 - The lower-level details in the top-comment in
   [lib/tritonapi.js](lib/tritonapi.js).
-
 
 ## Configuration
 
@@ -330,16 +321,14 @@ are in "etc/defaults.json" and can be overriden for the CLI in
 | profile | The name of the triton profile to use. The default with the CLI is "env", i.e. take config from `SDC_*` envvars. |
 | cacheDir | The path (relative to the config dir, "\~/.triton") where cache data is stored. The default is "cache", i.e. the `triton` CLI caches at "\~/.triton/cache". |
 
-
 ## node-triton differences with node-smartdc
 
 - There is a single `triton` command instead of a number of `sdc-*` commands.
 - `TRITON_*` environment variables are preferred to the `SDC_*` environment
   variables. However the `SDC_*` envvars are still supported.
 - Node-smartdc still has more complete coverage of the Triton
-  [CloudAPI](https://apidocs.joyent.com/cloudapi/). However, `triton` is
-  catching up and is much more friendly to use.
-
+  [CloudAPI](https://apidocs.tritondatacenter.com/cloudapi/). However, `triton`
+  is catching up and is much more friendly to use.
 
 ## Development Hooks
 
@@ -355,7 +344,6 @@ clone via:
 
 Also please run the full (longer) test suite (`make test`). See the next
 section.
-
 
 ## Testing
 
@@ -405,7 +393,7 @@ There are a few `TEST_...` vars that can tweak how the tests are run.
         $ make test TEST_CONFIG=test/coal.json
 
   where "coal" here refers to a development Triton (a.k.a SDC) ["Cloud On A
-  Laptop"](https://github.com/joyent/sdc#getting-started) standup.
+  Laptop"](https://github.com/TritonDataCenter/sdc#getting-started) standup.
 
 - `TEST_GLOB=<glob for test file basename>` - By default all "\*.test.js"
   in the "test/unit/" and "test/integration" dirs are run. To run just
@@ -417,7 +405,7 @@ There are a few `TEST_...` vars that can tweak how the tests are run.
   tests may be excluded from the default test run. These will show up in
   test output like this:
 
-    ```
+    ```shell
     test/integration/cli-snapshots.test.js ................ 0/1 1s
       Skipped: 1
         triton instance snapshot known failure, see TRITON-1387
@@ -427,7 +415,8 @@ There are a few `TEST_...` vars that can tweak how the tests are run.
   in the test run.
 
 - `TEST_JOBS=<number of test files to run concurrently>` - By default this is
-  10. Set to 1 to run tests serially.
+  10. Set to 1 to run tests serially. **Note:** Write tests *must* be run
+  serially.
 
 - `TEST_TIMEOUT_S=<number of seconds timeout for each test file>` - By default
   this is 1200 (10 minutes). Ideally tests are written to take much less than
@@ -435,14 +424,12 @@ There are a few `TEST_...` vars that can tweak how the tests are run.
 
 - `TAP=1` to have the test suite emit TAP output. This is a node-tap envvar.
 
-
 ### Testing Development Guide
 
 - Unit tests (i.e. not requiring the cloudapi endpoint) in "unit/\*.test.js".
   Integration tests "integration/\*.test.js".
 
-- We are using node-tap. Read [RFD
-  139](https://github.com/joyent/rfd/blob/master/rfd/0139/README.md#guidelines-for-using-node-tap-in-triton-repos)
+- We are using node-tap. Read [RFD 139](https://github.com/TritonDataCenter/rfd/blob/master/rfd/0139/README.md#guidelines-for-using-node-tap-in-triton-repos)
   for some guidelines for node-tap usage. The more common we can make some
   basic usage patterns in the many Triton repos, the easier the maintenance.
 
@@ -453,10 +440,9 @@ There are a few `TEST_...` vars that can tweak how the tests are run.
 
 - Node-tap supports running test files in parallel, and `make test` by
   default runs tests in parallel. Therefore:
-    - Ensure that test files do not depend on each other and can run
+  - Ensure that test files do not depend on each other and can run
       concurrently.
-    - Prefer more and smaller and more targetted test files.
-
+  - Prefer more and smaller and more targetted test files.
 
 ## Release process
 
@@ -464,9 +450,8 @@ Here is how to cut a release:
 
 1. Make a commit to set the intended version in "package.json#version" and changing `## not yet released` at the top of "CHANGES.md" to:
 
-    ```
+    ```markdown
     ## not yet released
-
 
     ## $version
     ```
@@ -475,13 +460,12 @@ Here is how to cut a release:
 
 3. Once that is merged and you've updated your local copy, run:
 
-    ```
+    ```shell
     make cutarelease
     ```
 
    This will run a couple checks (clean working copy, versions in package.json
    and CHANGES.md match), then will git tag and npm publish.
-
 
 ## License
 

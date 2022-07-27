@@ -5,7 +5,7 @@
     "profileName": "env",
     // ... or "profile":
     "profile": {
-        "url": "https://us-east-3b.api.joyent.com",
+        "url": "https://cloudapi.testdc.example.com",
         "account": "joe.blow",
         "keyId": "de:e7:73:32:b0:ab:31:cd:72:ef:9f:62:ca:58:a2:ec",
         "insecure": false
@@ -15,6 +15,11 @@
     // update and destroy resources: instances, images, networks, etc.
     // This is essentially the "safe" guard.
     "allowWriteActions": true,
+
+    // Image creation is well supported, but only available in datacenters that
+    // have explicitly allowed it. This means in most cases it will be
+    // unavailable.
+    "allowImageCreate": false,
 
     // While volumes support is still experimental (and not deployed everywhere)
     // volumes test are skipped by default. Set this to true to run them.

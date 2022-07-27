@@ -6,6 +6,13 @@ Known issues:
 
 ## not yet released
 
+- TRITON-1389 node-triton test failures
+- TOOLS-2543 MNX Tooling updates
+
+## 7.15.1
+
+- TOOLS-2525 Everything needs to stop cloning with git:// URLs
+
 ## 7.15.0
 
 - [node-triton#314] want act-as support for "triton profile docker-setup" and
