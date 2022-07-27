@@ -6,8 +6,13 @@ Known issues:
 
 ## not yet released
 
+- No changes yet
+
+## 7.15.2
+
 - TRITON-1389 node-triton test failures
 - TOOLS-2543 MNX Tooling updates
+- TRITON-2221 Fix TypeError when invoking triton rbac info.
 
 ## 7.15.1
 
