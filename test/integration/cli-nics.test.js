@@ -28,7 +28,7 @@ var NIC2;
 
 var testOpts = {
     skip: (
-        (!h.CONFIG.allowWriteActions && 'requires config.allowVolumesTests')
+        (!h.CONFIG.allowWriteActions && 'requires config.allowWriteActions')
     )
 };
 

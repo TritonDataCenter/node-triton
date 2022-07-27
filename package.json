@@ -1,9 +1,9 @@
 {
   "name": "triton",
-  "description": "Joyent Triton CLI and client (https://www.joyent.com/triton)",
+  "description": "Triton CLI and client (https://www.tritondatacenter.com/)",
   "version": "7.15.1",
-  "author": "Joyent (joyent.com)",
-  "homepage": "https://github.com/joyent/node-triton",
+  "author": "MNX Cloud (mnx.io)",
+  "homepage": "https://github.com/TritonDataCenter/node-triton",
   "dependencies": {
     "assert-plus": "0.2.0",
     "backoff": "2.4.1",
@@ -45,7 +45,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/joyent/node-triton.git"
+    "url": "https://github.com/TritonDataCenter/node-triton.git"
   },
   "engines": {
     "node": ">=0.10"

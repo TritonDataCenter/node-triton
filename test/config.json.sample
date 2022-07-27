@@ -5,7 +5,7 @@
     "profileName": "env",
     // ... or "profile":
     "profile": {
-        "url": "https://us-east-3b.api.joyent.com",
+        "url": "https://cloudapi.testdc.example.com",
         "account": "joe.blow",
         "keyId": "de:e7:73:32:b0:ab:31:cd:72:ef:9f:62:ca:58:a2:ec",
         "insecure": false

@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable code-block-style -->
 
-This repository is part of the Joyent Triton Data Center project. See the
+This repository is part of the Triton Data Center project. See the
 [contribution guidelines](https://github.com/TritonDataCenter/triton/blob/master/CONTRIBUTING.md)
 and general documentation at the main
 [Triton project](https://github.com/TritonDataCenter/triton) page.
@@ -19,7 +19,7 @@ Triton solution.
 There is currently another CLI tool known as [node-smartdc](https://github.com/TritonDataCenter/node-smartdc)
 for CloudAPI. `node-smartdc` CLI works off the 32-character object UUID to uniquely
 identify object instances in API requests, and returns response payload in JSON format.
-The CLI covers both basic and advanced usage of [CloudAPI](https://apidocs.joyent.com/cloudapi/).
+The CLI covers both basic and advanced usage of [CloudAPI](https://apidocs.tritondatacenter.com/cloudapi/).
 
 **The `triton` CLI is currently in beta (effectively because it does not yet
 have *complete* coverage of all commands from node-smartdc) and will be
@@ -35,14 +35,12 @@ Before you can use the CLI you'll need an account on the cloud to which you are 
 an SSH key uploaded. The SSH key is used to identify and secure SSH access to containers and
 other resources in Triton.
 
-If you do not already have an account on Joyent Public Cloud, sign up [here](https://www.joyent.com/public-cloud).
-
 ### API endpoint
 
-Each data center has a single CloudAPI endpoint. For Joyent Public Cloud, you can find the
-list of data centers [here](https://docs.joyent.com/public-cloud/data-centers).
-For private cloud implementations, please consult the private cloud operator for the correct URL.
-Have the URL handy as you'll need it in the next step.
+Each data center has a single CloudAPI endpoint. For MNX Public Cloud, you can find the
+list of data centers [here](https://docs.mnx.io/data-centers).
+For private cloud implementations, please consult the private cloud operator for
+the correct URL. Have the URL handy as you'll need it in the next step.
 
 ### Installation
 
@@ -62,10 +60,10 @@ API endpoint (called CloudAPI). Commonly that is done using a Triton profile:
     $ triton profile create
     A profile name. A short string to identify a CloudAPI endpoint to the
     `triton` CLI.
-    name: sw1
+    name: central1
 
     The CloudAPI endpoint URL.
-    url: https://us-sw-1.api.joyent.com
+    url: https://us-central-1.api.mnx.io
 
     Your account login name.
     account: bob
@@ -79,7 +77,7 @@ API endpoint (called CloudAPI). Commonly that is done using a Triton profile:
     in your SSH keys directory or loaded into the SSH agent.
     keyId: 1
 
-    Saved profile "sw1".
+    Saved profile "central1".
 
     WARNING: Docker uses TLS-based authentication with a different security model
     from SSH keys. As a result, the Docker client cannot currently support
@@ -88,18 +86,18 @@ API endpoint (called CloudAPI). Commonly that is done using a Triton profile:
     unencrypted TLS cert and place the copy in ~/.triton/docker for use by the
     Docker client.
     Continue? [y/n] y
-    Setting up profile "sw1" to use Docker.
-    Setup profile "sw1" to use Docker (v1.12.3). Try this:
-        eval "$(triton env --docker sw1)"
+    Setting up profile "central1" to use Docker.
+    Setup profile "central1" to use Docker (v1.12.3). Try this:
+        eval "$(triton env --docker central1)"
         docker info
 
-    Set "sw1" as current profile (because it is your only profile).
+    Set "central1" as current profile (because it is your only profile).
 
 Or instead of using profiles, you can set the required environment variables
 (`triton` defaults to an "env" profile that uses these environment variables if
 no profile is set). For example:
 
-    TRITON_URL=https://us-sw-1.api.joyent.com
+    TRITON_URL=https://us-central-1.api.mnx.io
     TRITON_ACCOUNT=bob
     TRITON_KEY_ID=SHA256:j2WoSeOWhFy69BQ0uCR3FAySp9qCZTSCEyT2vRKcL+s
 
@@ -141,8 +139,7 @@ an instance we need to specify two things: an image and a package.  An image
 represents what will be used as the root of the instances filesystem, and the
 package represents the size of the instance, eg. ram, disk size, cpu shares,
 etc.  More information on images and packages below - for now we'll just use
-SmartOS 64bit and a small 128M ram package which is a combo available on the
-Joyent Public Cloud.
+SmartOS 64bit and a small 128M ram package.
 
     triton instance create base-64 t4-standard-128M
 
@@ -165,7 +162,7 @@ Get a quick overview of your account
     login: dave.eddy@joyent.com
     name: Dave Eddy
     email: dave.eddy@joyent.com
-    url: https://us-east-3b.api.joyent.com
+    url: https://us-central-1.api.mnx.io
     totalDisk: 50.5 GiB
     totalMemory: 2.0 MiB
     instances: 2
@@ -210,12 +207,12 @@ Connect to an instance over SSH
 
     $ triton ssh b851ba9
     Last login: Wed Aug 26 17:59:35 2015 from 208.184.5.170
-       __        .                   .
-     _|  |_      | .-. .  . .-. :--. |-
-    |_    _|     ;|   ||  |(.-' |  | |
-      |__|   `--'  `-' `;-| `-' '  ' `-'
-                       /  ; Instance (base-64 15.2.0)
-                       `-'  https://docs.joyent.com/images/smartos/base
+
+      ,---.                   |     ,---. ,---.
+      `---. ,-.-. ,---. ,---. |---  |   | `---.  base-64-lts
+          | | | | ,---| |     |     |   |     |  21.4.1
+      `---' ` ' ' `---' `     `---' `---' `---'
+
 
     [root@7db6c907-2693-42bc-ea9b-f38678f2554b ~]# uptime
      20:08pm  up   2:27,  0 users,  load average: 0.00, 0.00, 0.01
@@ -264,12 +261,12 @@ Similarly, to find out the available images and their details, do
 
 Note that docker images are not shown in `triton images` as they are
 maintained in Docker Hub and other third-party registries configured to be
-used with Joyent's Triton clouds. **In general, docker containers should be
+used with Triton clouds. **In general, docker containers should be
 provisioned and managed with the regular
 [`docker` CLI](https://docs.docker.com/installation/#installation)**
 (Triton provides an endpoint that represents the *entire datacenter*
 as a single `DOCKER_HOST`. See the [Triton Docker
-documentation](https://apidocs.joyent.com/docker) for more information.)
+documentation](https://apidocs.tritondatacenter.com/docker) for more information.)
 
 ## `TritonApi` Module Usage
 
@@ -330,8 +327,8 @@ are in "etc/defaults.json" and can be overriden for the CLI in
 - `TRITON_*` environment variables are preferred to the `SDC_*` environment
   variables. However the `SDC_*` envvars are still supported.
 - Node-smartdc still has more complete coverage of the Triton
-  [CloudAPI](https://apidocs.joyent.com/cloudapi/). However, `triton` is
-  catching up and is much more friendly to use.
+  [CloudAPI](https://apidocs.tritondatacenter.com/cloudapi/). However, `triton`
+  is catching up and is much more friendly to use.
 
 ## Development Hooks
 
