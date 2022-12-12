@@ -1,7 +1,7 @@
 {
   "name": "triton",
   "description": "Triton CLI and client (https://www.tritondatacenter.com/)",
-  "version": "7.15.2",
+  "version": "7.15.3",
   "author": "MNX Cloud (mnx.io)",
   "homepage": "https://github.com/TritonDataCenter/node-triton",
   "dependencies": {

@@ -8,6 +8,10 @@ Known issues:
 
 - No changes yet
 
+## 7.15.3
+
+- [node-triton[#329] AssertionError in keyring.js caused by OpenSSL 3
+
 ## 7.15.2
 
 - TRITON-1389 node-triton test failures
