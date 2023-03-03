@@ -8,7 +8,12 @@ Known issues:
 
 ## not yet released
 
+- No changes yet
+
+## 7.17.0
+
 - [node-triton#344] Add docs about tritoncli.ssh.port to instance ssh --help
+- TRITON-2378 Add support for ed25519 keys
 
 ## 7.16.0
 
