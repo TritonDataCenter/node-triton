@@ -8,7 +8,7 @@ Known issues:
 
 ## not yet released
 
-- No changes yet
+- TRITON-2378 Add support for ed25519 keys
 
 ## 7.16.0
 
