@@ -8,9 +8,14 @@ Known issues:
 
 - No changes yet
 
+## 7.15.4
+
+- [node-triton#332] BadDigestError: Content-MD5 when body has non-ascii
+  characters
+
 ## 7.15.3
 
-- [node-triton[#329] AssertionError in keyring.js caused by OpenSSL 3
+- [node-triton#329] AssertionError in keyring.js caused by OpenSSL 3
 
 ## 7.15.2
 
