@@ -6,6 +6,7 @@
 
 /*
  * Copyright 2019 Joyent, Inc.
+ * Copyright 2023 MNX Cloud, Inc.
  */
 
 /*
@@ -41,6 +42,10 @@ var OPTIONS = [
     },
     {
         names: ['script'],
+        type: 'arrayOfString'
+    },
+    {
+        names: ['cloud-config'],
         type: 'arrayOfString'
     }
 ];
@@ -118,6 +123,16 @@ var cases = [
             metadata: {
                 foo: 'bar',
                 'user-script': '#!/bin/sh\necho "hi"\n'
+            }
+        }
+    },
+    {
+        argv: ['triton', 'create',
+            '--cloud-config', __dirname + '/corpus/cloud.cfg'],
+        expect: {
+            metadata: {
+                /* JSSTYLED */
+                'cloud-init:user-data': '#cloud-config\n\nfinal_message: \"Triton was here.\"\n'
             }
         }
     },

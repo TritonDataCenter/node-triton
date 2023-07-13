@@ -1,5 +1,7 @@
 # node-triton changelog
 
+<!-- markdownlint-disable code-block-style -->
+
 Known issues:
 
 - `triton ssh ...` disables ssh ControlMaster to avoid issue #52.
@@ -7,6 +9,10 @@ Known issues:
 ## not yet released
 
 - No changes yet
+
+## 7.15.5
+
+- [node-triton#337] want cloud-config syntactic sugar
 
 ## 7.15.4
 
@@ -66,7 +72,7 @@ Known issues:
 
 ## 7.10.0
 
-- [TRITON-1950][joyent/node-triton#276] Added `triton image update` and
+- [TRITON-1950](joyent/node-triton#276) Added `triton image update` and
   `triton image tag` subcommands. Fixed help for `triton image create`.
   Updated `triton completion` for `triton image update` possible fields.
 
@@ -118,7 +124,7 @@ Known issues:
 ## 7.5.0
 
 - [joyent/node-triton#264] Update `triton rbac role[s]` to use the new
-  CloudAPI role API (see https://apidocs.joyent.com/cloudapi/#900).
+  CloudAPI role API (see <https://apidocs.joyent.com/cloudapi/#900>).
 
 - [joyent/node-triton#265] Un-hide the `triton --act-as ACCOUNT ...`
   option (and add a matching `TRITON_ACT_AS=ACCCOUNT` envvar) that allows
@@ -263,7 +269,7 @@ Known issues:
   another datacenter within the same cloud using the `triton image copy` cli
   command. Example:
 
-  ```
+  ```sh
   triton -p us-east-1 image cp my-custom-image us-sw-1
   ```
 
@@ -278,7 +284,7 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
   expressions, tags and globs, and works across a wider variety of situations.
   Examples:
 
-  ```
+  ```sh
   # regular expressions
   triton instance create --affinity='instance!=/^production-db/' ...
 
@@ -295,9 +301,9 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
   However:
   - Use of regular expressions requires a cloudapi version of 8.8.0 or later.
   - 'inst' as a affinity shorthand no longer works. Use 'instance' instead.
-    E.g.: --affinity='instance==db1' instead of --affinity='inst==db1'
-  - The shorthand --affinity=<INST> no longer works. Use
-    --affinity='instance===<INST>' instead.
+    E.g.: `--affinity='instance==db1'` instead of `--affinity='inst==db1'`
+  - The shorthand `--affinity=<INST>` no longer works. Use
+    `--affinity='instance===<INST>'` instead.
 
 ## 5.10.0
 
@@ -381,10 +387,10 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
   [joyent/node-triton#175] Add support for creating and managing NFS shared
   volumes. New `triton volume` commands are available:
 
-  * `triton volume create` to create NFS shared volumes
-  * `triton volume list` to list existing volumes
-  * `triton volume get` to get information about a given volume
-  * `triton volume delete` to delete one or more volumes
+  - `triton volume create` to create NFS shared volumes
+  - `triton volume list` to list existing volumes
+  - `triton volume get` to get information about a given volume
+  - `triton volume delete` to delete one or more volumes
 
   Use `triton volume --help` to get help on all of these commands.
 
@@ -517,11 +523,11 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
 - PUBAPI-1171/PUBAPI-1205/PUBAPI-1351 The handling of legacy `SDC_*`
   environment variables has been cleaned up.  These environment
   variables are used for compatibility with the node-smartdc toolset.
-   * `SDC_TESTING` is now evaluated the same way as node-smartdc.  Any
-     set value but the empty string is true.
-   * Errors on boolean environment variables will now identify the
-     variable at fault.
-   * `triton env` will emit additional comments grouping variables.
+  - `SDC_TESTING` is now evaluated the same way as node-smartdc.  Any
+    set value but the empty string is true.
+  - Errors on boolean environment variables will now identify the
+    variable at fault.
+  - `triton env` will emit additional comments grouping variables.
 
 - [joyent/node-triton#80] Add `triton network list public=true|false`
   filtering. Note that this filtering is client-side.
@@ -541,7 +547,6 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
 - [joyent/node-triton#158] tritonapi image cache never expires
 
 - [joyent/node-triton#153] Bump restify-clients dep. Thanks, github.com/tomgco.
-
 
 ## 4.15.0
 
@@ -575,7 +580,6 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
 - [#130] Include disabled images when using an image cache (e.g. for filling in
   image name and version details in `triton ls` output.
 
-
 ## 4.13.0
 
 - [#120] Don't fail `triton instance list` if the retrieval of *image* info
@@ -588,7 +592,7 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
 
   - Command synopses when argument errors:
 
-    ```
+    ```sh
         $ triton create
         triton instance create: error (Usage): incorrect number of args
     >   usage: triton instance create [OPTIONS] IMAGE PACKAGE
@@ -596,7 +600,7 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
 
   - Option synopsis with option errors:
 
-    ```
+    ```sh
         $ triton image ls --bogus
         triton image ls: error (Option): unknown option: "--bogus"
     >   usage: triton image ls [ --help | -h ] [ --all | -a ] [ -H ] [ -o field1,... ]
@@ -605,7 +609,7 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
 
   - Suggested command name misspellings:
 
-    ```
+    ```sh
         $ triton in
         triton: error (UnknownCommand): unknown command: "in"
     >   Did you mean this?
@@ -613,11 +617,9 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
     >       inst
     ```
 
-
 ## 4.12.0
 
 - [#120] `triton -r,--role ROLE ...` option to take up an RBAC role(s).
-
 
 ## 4.11.0
 
@@ -625,7 +627,6 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
 - [#111] `triton env --unset,-u` option to emit environment commands to *unset*
   relevant envvars.
 - Unhide `triton env` from `triton --help` output.
-
 
 ## 4.10.0
 
@@ -677,13 +678,12 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
   - For existing Triton CLI profiles, there is a new `triton profile
     docker-setup [PROFILE]`.
 
-        $ triton profile docker-setup
-        $ eval "$(triton env --docker)"
-        $ docker info
+        triton profile docker-setup
+        eval "$(triton env --docker)"
+        docker info
 
   - `triton env` will now emit commands to setup `DOCKER_` envvars. That
     can be limited to just the Docker-relevant env via `triton env --docker`.
-
 
 ## 4.8.0
 
@@ -694,7 +694,6 @@ than 8.0.0 (mid 2016); for an older cloudapi endpoint, use node-triton 5.9.0.
   See <https://github.com/joyent/node-triton/issues/52> for details.
 - #97 `triton profile set -` to set the *last* profile as current.
 - PUBAPI-1266 Added `instance enable-firewall` and `instance disable-firewall`
-
 
 ## 4.7.0
 
@@ -710,7 +709,6 @@ Upgrade to v4.7.1.**
   See `triton completion --help` for adding/updating Bash completion.
 - #99 `triton profile set ...` alias for `set-current`
 
-
 ## 4.6.0
 
 **Known issue: `triton ssh` interactive sessions are broken.
@@ -723,13 +721,11 @@ Upgrade to v4.7.1.**
 - PUBAPI-1234 instance snapshots: `triton inst snapshot ...`
 - #52 Fix 'triton ssh ...' stdout/stderr to fully flush with node >= 4.x.
 
-
 ## 4.5.2
 
 - #95 Fix breakage of `triton image create` in v4.5.0. (By Kris Shannon.)
 - #94, #93 `triton inst create ...` is broken if "images.json" cache file
   is missing. (By Kris Shannon.)
-
 
 ## 4.5.1
 
@@ -737,23 +733,19 @@ Upgrade to v4.7.1.**
   Per <https://github.com/joyent/eng/blob/master/docs/index.md#error-handling>,
   CloudAPI error response will sometimes have extra error details to show.
 
-
 ## 4.5.0
 
 - #88 'triton inst tag ...' for managing instance tags.
-
 
 ## 4.4.4
 
 - #90 Update sshpk and smartdc-auth to attempt to deal with multiple package
   inter-deps.
 
-
 ## 4.4.3
 
 - #86 Ensure `triton profile ls` and `triton profile set-current` work
   when there is no current profile.
-
 
 ## 4.4.2
 
@@ -761,13 +753,11 @@ Upgrade to v4.7.1.**
   `configDir`. Basically this then fallsback to a `TritonApi` with the default
   config.
 
-
 ## 4.4.1
 
 - #83, #84 Fix running `triton` on Windows.
   Note: Triton config is stored in "%APPDATA%/Joyent/Triton/..." on Windows,
   "~/.triton/..." on other platforms.
-
 
 ## 4.4.0
 
@@ -777,11 +767,9 @@ Upgrade to v4.7.1.**
 - PUBAPI-1227: Note that `triton image list` doesn't include Docker images, at
   least currently.
 
-
 ## 4.3.1
 
 - #77 triton create error in v4.3.0
-
 
 ## 4.3.0
 
@@ -790,14 +778,12 @@ Upgrade to v4.7.1.**
 - #76 `triton image create ...` and `triton image wait ...`
 - #72 want `triton image` to still return image details even when it is not in 'active' state
 
-
 ## 4.2.0
 
 - Bash completion: Add completion for *args* to `triton account update <TAB>`.
   This isn't perfect because a space is added after completion of "FIELD=",
   but hopefully is helpful.
 - #75 `triton account update ...`
-
 
 ## 4.1.0
 
@@ -815,13 +801,13 @@ Upgrade to v4.7.1.**
 
     tl;dr:
 
-    - `triton image list` default output now includes the `type` instead of
-      `state`. The `state` column is still in output with `-l`, `-j`,
-      `-o state`.
-    - `triton instance list` default output now includes a `flags` column
-      instead of `primaryIp`. The 'D' and 'K' flags identify Docker and KVM
-      instances.
-    - `triton instance list -l` includes the brand.
+  - `triton image list` default output now includes the `type` instead of
+    `state`. The `state` column is still in output with `-l`, `-j`,
+    `-o state`.
+  - `triton instance list` default output now includes a `flags` column
+    instead of `primaryIp`. The 'D' and 'K' flags identify Docker and KVM
+    instances.
+  - `triton instance list -l` includes the brand.
 
     Default output examples showing the various cases (and the attempt to
     stay within 80 columns):
@@ -850,7 +836,6 @@ Upgrade to v4.7.1.**
     da7c6edd  cocky_noyce  3d996aaa  running  DF     13m
     ```
 
-
 ## 4.0.1
 
 - Add `triton env -t` to be able to emit a shell environment to configure `triton` itself.
@@ -858,7 +843,6 @@ Upgrade to v4.7.1.**
   `triton` and node-smartdc tooling:
 
         function triton-select { eval $(triton env $1); }
-
 
 ## 4.0.0
 
@@ -905,25 +889,21 @@ Upgrade to v4.7.1.**
 
 - `triton key add` was added (<https://apidocs.joyent.com/cloudapi/#CreateKey>).
 
-
 ## 3.6.0
 
 - #67 Add `triton create --network,-N NETWORK ...` option for specifying
   networks for instance creation. "NETWORK" is a network id, name, or
   short id; or a comma-separated array of networks.
 
-
 ## 3.5.0
 
 - #67 Add `triton create --tag|-t ...` option for adding tags on instance creation.
   E.g. `triton create -n NAME -t foo=bar -t @my-tags-file.json IMAGE PACKAGE`.
 
-
 ## 3.4.2
 
 - #63 "triton images" with a filter should not be cached.
 - #65 Fix `triton profile(s)` handling when the user has no profiles yet.
-
 
 ## 3.4.1
 
@@ -931,7 +911,6 @@ Upgrade to v4.7.1.**
 - Add `-d,--data <data>` option to `triton cloudapi`.
 - Fix `triton rbac role ROLE`. Also get that command to have a stable order for the
   displayed fields.
-
 
 ## 3.4.0
 
@@ -946,17 +925,15 @@ Upgrade to v4.7.1.**
 
   See the README and "lib/index.js" for more info.
 
-
 ## 3.3.0
 
 - #59 CLI options to `triton create` to add metadata on instance creation:
-    - `triton create -m,--metadata KEY=VALUE` to add a single value
-    - `triton create -m,--metadata @FILE` to add values from a JSON
-      or key/value-per-line file
-    - `triton create -M,--metadata-file KEY=FILE` to set a key from a file
-    - `triton create --script FILE` to set the special "user-script" key
-      from a file
-
+  - `triton create -m,--metadata KEY=VALUE` to add a single value
+  - `triton create -m,--metadata @FILE` to add values from a JSON
+    or key/value-per-line file
+  - `triton create -M,--metadata-file KEY=FILE` to set a key from a file
+  - `triton create --script FILE` to set the special "user-script" key
+    from a file
 
 ## 3.2.0
 
@@ -970,7 +947,6 @@ Upgrade to v4.7.1.**
   forcing a different version *could* result in breaking in the triton client
   code that handles the response. IOW, this is just a tool for developers
   of this Triton client and CloudAPI itself.
-
 
 ## 3.1.0
 
@@ -989,12 +965,12 @@ Upgrade to v4.7.1.**
   experimenting/dev/testing to quickly generate and add user keys and setup
   Triton CLI profiles for all users in the RBAC config.
 - #54 RBAC support, see <https://docs.joyent.com/public-cloud/rbac> to start.
-    - `triton rbac info` improvements: better help, use brackets to show
-      non-default roles.
-    - `triton rbac reset`
-    - change `triton rbac user USER` output a little for the 'keys' (show
-      the key fingerprint and name instead of the key content), 'roles',
-      and 'default_roles' fields.
+  - `triton rbac info` improvements: better help, use brackets to show
+    non-default roles.
+  - `triton rbac reset`
+  - change `triton rbac user USER` output a little for the 'keys' (show
+    the key fingerprint and name instead of the key content), 'roles',
+    and 'default_roles' fields.
 - #54 *Drop* support for shortIds for `triton rbac {users,roles,policies}`
   commands. They all have unique *`name`* fields, just use that.
 - #54 `triton rbac apply` will implicitly look for a user key file at
@@ -1006,42 +982,39 @@ Upgrade to v4.7.1.**
   get the old behaviour (just the key content, i.e. output appropriate
   for "~/.ssh/authorized\_keys").
 
-
 ## 3.0.0
 
 - #54 RBAC support, see <https://docs.joyent.com/public-cloud/rbac> to start.
-    - [Backward incompatible.] The `triton` CLI option for the cloudapi URL has
-      changed from `--url,-u` to **`--url,-U`**.
-    - Add `triton --user,-u USER` CLI option and `TRITON_USER` (or `SDC_USER`)
-      environment variable support for specifying the RBAC user.
-    - `triton profiles` now shows the optional `user` fields.
-    - A (currently experimental and hidden) `triton rbac ...` command to
-      house RBAC CLI functionality.
-    - `triton rbac users` to list all users.
-    - `triton rbac user ...` to show, create, edit and delete users.
-    - `triton rbac roles` to list all roles.
-    - `triton rbac role ...` to show, create, edit and delete roles.
-    - `triton rbac policies` to list all policies.
-    - `triton rbac policy ...` to show, create, edit and delete policies.
-    - `triton rbac keys` to list all RBAC user SSH keys.
-    - `triton rbac key ...` to show, create, edit and delete user keys.
-    - `triton rbac {instance,image,network,package,}role-tags ...` to list
-      and manage role tags on each of those resources.
-    - `triton rbac info` will dump a summary of the full current RBAC
-      state. This command is still in development.
-    - `triton rbac apply` will synchronize a local RBAC config (by default it
-      looks for "./rbac.json") to live RBAC state. Current the RBAC config
-      file format is undocumented. See "examples/rbac-\*" for examples.
+  - [Backward incompatible.] The `triton` CLI option for the cloudapi URL has
+    changed from `--url,-u` to **`--url,-U`**.
+  - Add `triton --user,-u USER` CLI option and `TRITON_USER` (or `SDC_USER`)
+    environment variable support for specifying the RBAC user.
+  - `triton profiles` now shows the optional `user` fields.
+  - A (currently experimental and hidden) `triton rbac ...` command to
+    house RBAC CLI functionality.
+  - `triton rbac users` to list all users.
+  - `triton rbac user ...` to show, create, edit and delete users.
+  - `triton rbac roles` to list all roles.
+  - `triton rbac role ...` to show, create, edit and delete roles.
+  - `triton rbac policies` to list all policies.
+  - `triton rbac policy ...` to show, create, edit and delete policies.
+  - `triton rbac keys` to list all RBAC user SSH keys.
+  - `triton rbac key ...` to show, create, edit and delete user keys.
+  - `triton rbac {instance,image,network,package,}role-tags ...` to list
+    and manage role tags on each of those resources.
+  - `triton rbac info` will dump a summary of the full current RBAC
+    state. This command is still in development.
+  - `triton rbac apply` will synchronize a local RBAC config (by default it
+    looks for "./rbac.json") to live RBAC state. Current the RBAC config
+    file format is undocumented. See "examples/rbac-\*" for examples.
 - #55 Update of smartdc-auth/sshpk deps, removal of duplicated code for
   composing Authorization headers
-
 
 ## 2.1.4
 
 - #51: Update deps to get dtrace-provider 0.6 build fix for node v4.2.x.
 - #49: `triton create ... --firewall` to enable [Cloud
   Firewall](https://docs.joyent.com/public-cloud/network/firewall).
-
 
 ## 2.1.3
 
@@ -1060,7 +1033,6 @@ Upgrade to v4.7.1.**
 - #39 Test suite: Change the test config 'destructiveAllowed' var to
   'writeActionsAllowed'.
 
-
 ## 2.1.0
 
 - Errors and exit status: Change `Usage` errors to always have an exit status
@@ -1072,7 +1044,6 @@ Upgrade to v4.7.1.**
 - Test suite: Integration tests always require a config file
   (either `$TRITON_TEST_CONFIG` path or "test/config.json").
   Drop the other `TRITON_TEST_*` envvars.
-
 
 ## 2.0.0
 
