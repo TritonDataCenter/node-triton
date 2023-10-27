@@ -10,6 +10,10 @@ Known issues:
 
 - No changes yet
 
+## 7.16.0
+
+- [node-triton#171] Add support for instance metadata
+
 ## 7.15.5
 
 - [node-triton#337] want cloud-config syntactic sugar

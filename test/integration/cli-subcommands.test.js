@@ -6,6 +6,7 @@
 
 /*
  * Copyright 2019 Joyent, Inc.
+ * Copyright 2023 MNX Cloud, Inc.
  */
 
 /*
@@ -74,6 +75,11 @@ var subs = [
     ['instance migration get'],
     ['instance migration list'],
     ['instance migration automatic'],
+    ['instance metadata'],
+    ['instance metadata update'],
+    ['instance metadata list', 'instance metadata ls', 'instance metadatas'],
+    ['instance metadata get'],
+    ['instance metadata delete', 'instance metadata rm'],
     ['ip'],
     ['ssh'],
     ['network'],
