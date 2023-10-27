@@ -20,7 +20,7 @@
     "restify-clients": "1.5.2",
     "restify-errors": "3.0.0",
     "rimraf": "2.4.4",
-    "semver": "6.3.1",
+    "semver": "7.5.2",
     "smartdc-auth": "2.5.7",
     "sshpk": "^1.14.1",
     "sshpk-agent": "1.7.0",
