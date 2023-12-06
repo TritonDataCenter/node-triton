@@ -21,7 +21,7 @@
     "restify-errors": "3.0.0",
     "rimraf": "2.4.4",
     "semver": "6.3.1",
-    "smartdc-auth": "git+https://github.com/TritonDataCenter/node-smartdc-auth.git#61fd462",
+    "smartdc-auth": "2.6.0",
     "sshpk": "^1.18.0",
     "sshpk-agent": "1.8.1",
     "strsplit": "1.0.0",
