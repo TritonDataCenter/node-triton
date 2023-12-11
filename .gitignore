@@ -7,3 +7,4 @@
 /triton-*.tgz
 *.swp
 *.vim
+.DS_Store
