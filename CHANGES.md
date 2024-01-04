@@ -8,7 +8,7 @@ Known issues:
 
 ## not yet released
 
-- No changes yet
+- [node-triton#344] Add docs about tritoncli.ssh.port to instance ssh --help
 
 ## 7.16.0
 
