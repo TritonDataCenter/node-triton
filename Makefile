@@ -1,5 +1,6 @@
 #
 # Copyright 2019 Joyent, Inc.
+# Copyright 2024 MNX Cloud, Inc.
 #
 # Makefile for node-triton
 #
@@ -76,7 +77,7 @@ cutarelease: versioncheck
 	ver=$(shell cat package.json | json version) && \
 	    date=$(shell date -u "+%Y-%m-%d") && \
 	    git tag -a "$$ver" -m "version $$ver ($$date)" && \
-	    git push origin "v$$ver" && \
+	    git push origin "$$ver" && \
 	    npm publish
 
 .PHONY: git-hooks
