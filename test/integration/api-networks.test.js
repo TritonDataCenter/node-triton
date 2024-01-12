@@ -6,6 +6,7 @@
 
 /*
  * Copyright 2019 Joyent, Inc.
+ * Copyright 2023 MNX Cloud, Inc.
  */
 
 /*
@@ -23,6 +24,9 @@ var NET_NAME = 'node-triton-testnet967';
 var CLIENT;
 var NET;
 
+var writeTestOpts = {
+    skip: !h.CONFIG.allowWriteActions && 'requires config.allowWriteActions'
+};
 
 // --- Tests
 
@@ -84,7 +88,7 @@ test('TritonApi networks', function (suite) {
     });
 
 
-    suite.test(' TritonApi deleteFabricNetwork', function (t) {
+    suite.test(' TritonApi deleteFabricNetwork', writeTestOpts, function (t) {
         function check(genId, idType, vlanId, cb) {
             CLIENT.cloudapi.createFabricNetwork({
                 name: NET_NAME,

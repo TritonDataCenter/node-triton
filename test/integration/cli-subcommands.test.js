@@ -76,7 +76,7 @@ var subs = [
     ['instance migration list'],
     ['instance migration automatic'],
     ['instance metadata'],
-    ['instance metadata update'],
+    ['instance metadata set'],
     ['instance metadata list', 'instance metadata ls', 'instance metadatas'],
     ['instance metadata get'],
     ['instance metadata delete', 'instance metadata rm'],

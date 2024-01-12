@@ -1,7 +1,7 @@
 {
   "name": "triton",
   "description": "Triton CLI and client (https://www.tritondatacenter.com/)",
-  "version": "7.16.0",
+  "version": "7.17.0",
   "author": "MNX Cloud (mnx.io)",
   "homepage": "https://github.com/TritonDataCenter/node-triton",
   "dependencies": {
@@ -21,9 +21,9 @@
     "restify-errors": "3.0.0",
     "rimraf": "2.4.4",
     "semver": "6.3.1",
-    "smartdc-auth": "2.5.7",
-    "sshpk": "^1.14.1",
-    "sshpk-agent": "1.7.0",
+    "smartdc-auth": "2.6.0",
+    "sshpk": "^1.18.0",
+    "sshpk-agent": "1.8.1",
     "strsplit": "1.0.0",
     "tabula": "1.10.0",
     "vasync": "1.6.3",

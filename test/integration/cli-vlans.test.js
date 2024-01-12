@@ -6,6 +6,7 @@
 
 /*
  * Copyright 2019 Joyent, Inc.
+ * Copyright 2023 MNX Cloud, Inc.
  */
 
 /*
@@ -250,8 +251,10 @@ test('triton vlan networks', function (suite) {
                 return;
             }
 
-            var vlan = JSON.parse(stdout);
-            t.equal(vlan.vlan_id, VLAN.vlan_id);
+            stdout.trim().split('\n').forEach(function (line) {
+                var vlan = JSON.parse(line);
+                t.equal(vlan.vlan_id, VLAN.vlan_id);
+            });
 
             t.end();
         });
@@ -265,8 +268,10 @@ test('triton vlan networks', function (suite) {
                 return;
             }
 
-            var vlan = JSON.parse(stdout);
-            t.equal(vlan.vlan_id, VLAN.vlan_id);
+            stdout.trim().split('\n').forEach(function (line) {
+                var vlan = JSON.parse(line);
+                t.equal(vlan.vlan_id, VLAN.vlan_id);
+            });
 
             t.end();
         });
