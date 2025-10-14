@@ -10,6 +10,10 @@ Known issues:
 
 - No changes yet
 
+## 7.18.0
+
+- TRITON-2510 Add `triton accesskeys` commands to manage access keys.
+
 ## 7.17.0
 
 - [node-triton#344] Add docs about tritoncli.ssh.port to instance ssh --help

@@ -1,8 +1,8 @@
 {
   "name": "triton",
   "description": "Triton CLI and client (https://www.tritondatacenter.com/)",
-  "version": "7.17.0",
-  "author": "MNX Cloud (mnx.io)",
+  "version": "7.18.0",
+  "author": "Edgecast Cloud LLC.",
   "homepage": "https://github.com/TritonDataCenter/node-triton",
   "dependencies": {
     "assert-plus": "0.2.0",
