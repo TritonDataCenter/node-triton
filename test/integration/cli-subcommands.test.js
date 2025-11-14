@@ -132,11 +132,17 @@ var subs = [
     ['rbac network-role-tags'],
     ['rbac package-role-tags'],
     ['rbac role-tags'],
+    ['rbac accesskeys'],
+    ['rbac accesskey'],
     ['volume', 'vol'],
     ['volume list', 'volume ls', 'volumes', 'vols'],
     ['volume delete', 'volume rm'],
     ['volume create'],
-    ['volume get']
+    ['volume get'],
+    ['accesskeys', 'accesskeys list'],
+    ['accesskeys create'],
+    ['accesskeys get'],
+    ['accesskeys delete']
 ];
 
 // --- Tests

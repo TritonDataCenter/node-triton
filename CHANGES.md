@@ -12,7 +12,7 @@ Known issues:
 
 ## 7.18.0
 
-- TRITON-2510 Add `triton accesskeys` and `triton rbac accesskey{s}` commands
+- TRITON-2510 Add `triton accesskeys` and `triton rbac accesskey` commands
   to manage access keys.
 
 ## 7.17.0
