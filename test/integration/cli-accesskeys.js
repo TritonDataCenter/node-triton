@@ -9,7 +9,7 @@
  */
 
 /*
- * Integration tests for `triton accesskeys ...`
+ * Integration tests for `triton accesskey ...`
  */
 
 var h = require('./helpers');
@@ -18,7 +18,7 @@ var backoff = require('backoff');
 
 var MAX_CHECK_KEY_TRIES = 10;
 
-// Set by `triton accesskeys create` and used by other tests
+// Set by `triton accesskey create` and used by other tests
 var accessKey = null;
 
 var testOpts = {
@@ -30,9 +30,9 @@ if (!h.CONFIG.allowWriteActions) {
 }
 
 test('triton accesskey', testOpts, function (suite) {
-    suite.test('accesskeys create', function (t) {
-        h.triton('accesskeys create -j', function (err, stdout, stderr) {
-            if (h.ifErr(t, err, 'accesskeys create')) {
+    suite.test('accesskey create', function (t) {
+        h.triton('accesskey create -j', function (err, stdout, stderr) {
+            if (h.ifErr(t, err, 'accesskey create')) {
                 return t.end();
             }
 
@@ -53,10 +53,10 @@ test('triton accesskey', testOpts, function (suite) {
         });
     });
 
-    suite.test('accesskeys get', function (t) {
-        h.triton('accesskeys get -j ' + accessKey.accesskeyid,
+    suite.test('accesskey get', function (t) {
+        h.triton('accesskey get -j ' + accessKey.accesskeyid,
             function (err, stdout, stderr) {
-            if (h.ifErr(t, err, 'accesskeys get')) {
+            if (h.ifErr(t, err, 'accesskey get')) {
                 return t.end();
             }
             var response = JSON.parse(stdout);
@@ -65,10 +65,10 @@ test('triton accesskey', testOpts, function (suite) {
         });
     });
 
-    suite.test('accesskeys list', function (t) {
+    suite.test('accesskey list', function (t) {
         var call = backoff.call(function findAccessKey(next) {
-            h.triton('accesskeys list -j', function (err, stdout, stderr) {
-                if (h.ifErr(t, err, 'accesskeys list')) {
+            h.triton('accesskey list -j', function (err, stdout, stderr) {
+                if (h.ifErr(t, err, 'accesskey list')) {
                     return next(err);
                 }
 
@@ -93,7 +93,7 @@ test('triton accesskey', testOpts, function (suite) {
             });
         }, function (err2) {
             h.ifErr(t, err2,
-                'triton accesskeys list did not return access key');
+                'triton accesskey list did not return access key');
             t.end();
         });
 
@@ -101,24 +101,24 @@ test('triton accesskey', testOpts, function (suite) {
         call.start();
     });
 
-    suite.test('accesskeys update', function (t) {
+    suite.test('accesskey update', function (t) {
         var status = 'Inactive';
         var desc = 'Some Desc';
-        var cmd = 'accesskeys update ' + accessKey.accesskeyid +
+        var cmd = 'accesskey update ' + accessKey.accesskeyid +
             ' status=' + status + ' description="' + desc + '"';
 
         h.triton(cmd, function (err, stdout) {
-            if (h.ifErr(t, err, 'accesskeys update')) {
+            if (h.ifErr(t, err, 'accesskey update')) {
                 return t.end();
             }
             t.match(stdout, 'Updated access key ' + accessKey.accesskeyid);
             t.match(stdout, 'fields: status, description');
 
             var call = backoff.call(function findAccessKey(next) {
-                h.triton('accesskeys get -j ' + accessKey.accesskeyid,
+                h.triton('accesskey get -j ' + accessKey.accesskeyid,
                     function (err2, stdout2) {
 
-                    if (h.ifErr(t, err2, 'accesskeys get')) {
+                    if (h.ifErr(t, err2, 'accesskey get')) {
                         return next(err2);
                     }
 
@@ -134,7 +134,7 @@ test('triton accesskey', testOpts, function (suite) {
                 });
             }, function (err3) {
                 h.ifErr(t, err3,
-                    'triton accesskeys get failed to return access key');
+                    'triton accesskey get failed to return access key');
                 t.end();
             });
 
@@ -143,17 +143,17 @@ test('triton accesskey', testOpts, function (suite) {
         });
     });
 
-    suite.test('accesskeys delete', function (t) {
-        var cmd = 'accesskeys delete -f ' + accessKey.accesskeyid;
+    suite.test('accesskey delete', function (t) {
+        var cmd = 'accesskey delete -f ' + accessKey.accesskeyid;
 
         h.triton(cmd, function (err, stdout) {
-            if (h.ifErr(t, err, 'accesskeys delete')) {
+            if (h.ifErr(t, err, 'accesskey delete')) {
                 return t.end();
             }
             t.match(stdout, 'Deleted access key "' + accessKey.accesskeyid);
 
             var call = backoff.call(function findAccessKey(next) {
-                h.triton('accesskeys get ' + accessKey.accesskeyid,
+                h.triton('accesskey get ' + accessKey.accesskeyid,
                     function (err2, _stdout, stderr) {
                     if (!err2) {
                         return next(new Error('access key still exists'));
@@ -164,7 +164,7 @@ test('triton accesskey', testOpts, function (suite) {
                 });
             }, function (err3) {
                 h.ifErr(t, err3,
-                    'triton accesskeys delete did not delete access key');
+                    'triton accesskey delete did not delete access key');
                 t.end();
             });
 

@@ -139,10 +139,12 @@ var subs = [
     ['volume delete', 'volume rm'],
     ['volume create'],
     ['volume get'],
-    ['accesskeys', 'accesskeys list'],
-    ['accesskeys create'],
-    ['accesskeys get'],
-    ['accesskeys delete']
+    ['accesskeys'],
+    ['accesskey'],
+    ['accesskey create'],
+    ['accesskey get'],
+    ['accesskey delete', 'accesskey rm'],
+    ['accesskey list', 'accesskey ls']
 ];
 
 // --- Tests
