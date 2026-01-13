@@ -11,6 +11,10 @@
         "insecure": false
     },
 
+    // Optional. User for RBAC related tests
+    // This user must already exist and be a sub user for the configured profile
+    "rbacUser": "test.subuser",
+
     // Optional. Set this to allow the parts of the test suite that create,
     // update and destroy resources: instances, images, networks, etc.
     // This is essentially the "safe" guard.
@@ -39,13 +43,13 @@
     // the smallest RAM package, the latest base* image.
     "package": "<package name or uuid>",
     "resizePackage": "<package name>",
-    "image": "<image uuid, name or name@version>"
+    "image": "<image uuid, name or name@version>",
 
     // The params used for test *KVM* provisions. By default the tests use:
     // the smallest RAM package with "kvm" in the name, the latest
     // ubuntu-certified image. Required when "skipKvmTest" is not false.
     "kvmPackage": "<package name or uuid>",
-    "kvmImage": "<image uuid, name or name@version>"
+    "kvmImage": "<image uuid, name or name@version>",
 
     // Optional. Set to 'true' to skip flexible disk tests. These tests assume
     // the datacenter has flexible disk packages.
