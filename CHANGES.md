@@ -10,6 +10,16 @@ Known issues:
 
 - No changes yet
 
+## 7.19.0
+
+- Support per-bucket access-key scope in the CLI. `triton accesskey create`
+  and `triton rbac accesskey --create` accept `--scope=JSON|@FILE`. For
+  updates, `triton accesskey update` accepts the inline `scope=...`
+  KEY=VALUE form and `-f JSON-FILE`; `triton rbac accesskey --update`
+  accepts `--scope=JSON|@FILE`. Both update commands also accept a new
+  `--remove-scope` flag that clears the scope. `accesskey get` and
+  `accesskey list` now surface the parsed envelope under `-l`.
+
 ## 7.18.0
 
 - TRITON-2510 Add `triton accesskeys` and `triton rbac accesskey` commands

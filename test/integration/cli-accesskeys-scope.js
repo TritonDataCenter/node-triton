@@ -186,6 +186,52 @@ test('triton accesskey scope', testOpts, function (suite) {
         });
     });
 
+    suite.test('update -f FILE with scope replaces scope', function (t) {
+        // Following the previous test, scope is currently SCOPE_RW.
+        // Update it back to SCOPE_RO via the -f JSON-FILE form so the
+        // assertion is meaningful.
+        var tmpFile = path.join(os.tmpdir(),
+            'triton-scope-upd-' + process.pid + '-' + Date.now() + '.json');
+        fs.writeFileSync(tmpFile, JSON.stringify({scope: SCOPE_RO}));
+
+        var cmd = 'accesskey update -f ' + tmpFile + ' ' +
+            scopedKey.accesskeyid;
+        h.triton(cmd, function (err, stdout) {
+            try { fs.unlinkSync(tmpFile); } catch (_e) { /* ignore */ }
+
+            if (h.ifErr(t, err, 'accesskey update -f FILE')) {
+                return t.end();
+            }
+            t.match(stdout, 'Updated access key ' + scopedKey.accesskeyid);
+            t.match(stdout, 'fields: scope');
+
+            var call = backoff.call(function checkScope(next) {
+                h.triton('accesskey get -j ' + scopedKey.accesskeyid,
+                    function (err2, stdout2) {
+                        if (h.ifErr(t, err2, 'accesskey get')) {
+                            return next(err2);
+                        }
+                        var response = JSON.parse(stdout2);
+                        if (!response.scope ||
+                            response.scope.permissions[0].level !== 'read') {
+                            return next(new Error(
+                                'scope not yet replicated to read level'));
+                        }
+                        t.same(response.scope, SCOPE_RO,
+                            '-f-updated scope visible via get');
+                        return next();
+                    });
+            }, function (err3) {
+                h.ifErr(t, err3,
+                    '-f scope update not visible after backoff');
+                t.end();
+            });
+
+            call.failAfter(MAX_CHECK_KEY_TRIES);
+            call.start();
+        });
+    });
+
     suite.test('update --remove-scope clears scope', function (t) {
         var cmd = 'accesskey update --remove-scope ' +
             scopedKey.accesskeyid;
