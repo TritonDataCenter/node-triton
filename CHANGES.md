@@ -10,6 +10,10 @@ Known issues:
 
 - No changes yet
 
+## 7.18.1
+
+- TRITON-2553 Add optional blocksize parameter to `triton inst disk add...`.
+
 ## 7.18.0
 
 - TRITON-2510 Add `triton accesskeys` and `triton rbac accesskey` commands
